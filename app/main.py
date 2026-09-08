@@ -197,8 +197,9 @@ if st.session_state.get("user"):
 DB_PATH = os.path.join(BASE_DIR, "railway.db")
 
 # Import Agents
+# Import Agents
 try:
-    from agents import (
+    from scripts.agents import (
         DepartmentAgent,
         TrafficAgent,
         CoordinatorAgent,
@@ -218,7 +219,7 @@ try:
         notify
     )
 except ImportError:
-    from scripts.agents import (
+    from agents import (
         DepartmentAgent,
         TrafficAgent,
         CoordinatorAgent,
@@ -240,15 +241,15 @@ except ImportError:
 
 # Import PDF Reports
 try:
-    from reports import generate_report, generate_periodic_report
-except ImportError:
     from app.reports import generate_report, generate_periodic_report
+except ImportError:
+    from reports import generate_report, generate_periodic_report
 
 # Import Chatbot & Data Search
 try:
-    from chatbot import ask_explainer, parse_nl_defect, find_particular_data, detect_language
-except ImportError:
     from app.chatbot import ask_explainer, parse_nl_defect, find_particular_data, detect_language
+except ImportError:
+    from chatbot import ask_explainer, parse_nl_defect, find_particular_data, detect_language
 
 
 _db_schema_checked = False
