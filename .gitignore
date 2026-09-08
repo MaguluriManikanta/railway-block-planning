@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+.venv1/
+venv/
+.idea/
+reports_output/
+*.db-journal

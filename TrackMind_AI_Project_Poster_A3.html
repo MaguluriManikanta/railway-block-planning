@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrackMind AI - A3 Project Poster (No Title Labels Drawn)</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @page {
+      size: A3 landscape;
+      margin: 0;
+    }
+    @media print {
+      body {
+        width: 420mm;
+        height: 297mm;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .poster-container {
+        box-shadow: none !important;
+        border: none !important;
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+    
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #0f172a;
+      margin: 0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* A3 Aspect Ratio Canvas (1414px x 1000px) matching media_1788870328418.jpg background */
+    .poster-container {
+      width: 1414px;
+      height: 1000px;
+      background-image: url('template_a3_base.png');
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      padding: 16px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .quadrant-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+      margin-top: 110px;
+      height: calc(100% - 120px);
+    }
+
+    .quadrant-box {
+      padding: 44px 18px 14px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Print Button Bar (Hidden in Print) -->
+  <div class="no-print mb-3 flex gap-4 items-center bg-slate-800 text-white px-6 py-2.5 rounded-lg shadow-lg">
+    <div class="font-semibold text-sm">📄 Clean Content-Only Poster Preview (Pre-Printed Template Titles Preserved)</div>
+    <span class="text-xs text-slate-300">Click to print or save to PDF (Select Paper Size: A3, Orientation: Landscape, Margins: None)</span>
+    <button onclick="window.print()" class="ml-auto bg-sky-500 hover:bg-sky-600 text-white font-bold py-1.5 px-4 rounded-md text-sm transition flex items-center gap-2 shadow">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 000-4h-6a2 2 0 000 4zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+      Print / Save to A3 PDF
+    </button>
+  </div>
+
+  <!-- Main A3 Poster Canvas -->
+  <div class="poster-container">
+
+    <!-- Top Header Values overlaid under pre-printed labels -->
+    <div class="absolute top-7 left-10 text-left">
+      <div class="text-2xl font-black text-sky-700 tracking-tight">TrackMind AI</div>
+      <div class="text-xs text-slate-600 font-bold">Smart India Hackathon • PS 26027</div>
+    </div>
+
+    <div class="absolute top-5 right-10 text-left">
+      <div class="text-xs text-slate-900 font-bold leading-tight grid grid-cols-2 gap-x-3 gap-y-0.5">
+        <div class="col-span-2 text-sky-700 font-black text-sm">• Sk.Kalesha Vali (Team Lead)</div>
+        <div>• K.Vaishika</div>
+        <div>• G.Navya Sri</div>
+        <div>• K.Nikitha</div>
+        <div>• M.Sravani</div>
+        <div class="col-span-2">• M.Manikanta</div>
+      </div>
+      <div class="mt-0.5 text-[10px] text-slate-600 font-bold flex gap-2">
+        <span>📧 n220895@gmail.com</span>
+        <span>📞 8498898017</span>
+      </div>
+    </div>
+
+    <!-- 4 Quadrants Container -->
+    <div class="quadrant-grid">
+
+      <!-- QUADRANT 1: Top-Left -> Box 1 -->
+      <div class="quadrant-box">
+        <div>
+          <div class="text-sm font-black text-sky-800 leading-snug mb-3 p-2 bg-white border-2 border-sky-300 rounded shadow-sm ml-12">
+            AI-Powered Automatic Block Planning to Maximize Asset Availability for Train Operations on Indian Railways (Smart India Hackathon PS 26027)
+          </div>
+
+          <div class="mt-8 space-y-2 text-xs text-slate-900 leading-relaxed font-semibold">
+            <p>
+              • <strong>Problem</strong>: Track (TMS), Signals (SMMS) and OHE (TDMS) submit uncoordinated block requests, causing 8+ hours of daily corridor downtime & train delays.
+            </p>
+            <p>
+              • <strong>AI Engine</strong>: TrackMind AI unifies defect backlogs, COA slots, passenger timetables & goods forecasts into a single AI optimization pipeline.
+            </p>
+            <p>
+              • <strong>Optimization</strong>: Random Forest breakdown risk ML + Google OR-Tools CP-SAT solver schedule concurrent <strong>Joint Shadow Blocks</strong>.
+            </p>
+            <p>
+              • <strong>Governance</strong>: Features 13 autonomous governance agents, 3 Risk Auto-Approval Tiers, live Gantt timeline, and multilingual AI voice assistant.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-1 p-2 bg-sky-50 border-2 border-sky-400 rounded text-xs text-sky-950 font-black flex justify-between items-center">
+          <span>⚡ Key Result: 4+ Hours Saved Daily | 100% Timetable Protection | 66% Stoppage Reduction</span>
+        </div>
+      </div>
+
+      <!-- QUADRANT 2: Top-Right -> Box 2 (Workflow) -->
+      <div class="quadrant-box">
+        <div>
+          <div class="bg-white border-2 border-slate-300 rounded-lg p-2.5 my-0.5 shadow-sm">
+            <div class="text-center font-black text-xs text-slate-900 uppercase tracking-widest mb-2 border-b-2 border-slate-200 pb-1">
+              End-to-End System Workflow Architecture
+            </div>
+
+            <!-- ROW 1: Box 1 -> Box 2 -> Box 3 -->
+            <div class="grid grid-cols-3 gap-2 items-center">
+              
+              <div class="bg-sky-50 border-2 border-sky-500 rounded-lg p-1.5 text-center relative">
+                <div class="w-5 h-5 rounded-full bg-sky-600 text-white font-black text-xs flex items-center justify-center absolute -top-2 -left-2">1</div>
+                <div class="text-xs font-black text-slate-900 mb-0.5">📁 Data Ingestion</div>
+                <ul class="text-[9.5px] text-slate-800 text-left pl-0.5 font-bold space-y-0.5">
+                  <li>• TMS / SMMS / TDMS</li>
+                  <li>• COA Slots</li>
+                  <li>• Timetables & Freight</li>
+                </ul>
+              </div>
+
+              <div class="text-center font-black text-sky-600 text-base">➔</div>
+
+              <div class="bg-amber-50 border-2 border-amber-500 rounded-lg p-1.5 text-center relative">
+                <div class="w-5 h-5 rounded-full bg-amber-600 text-white font-black text-xs flex items-center justify-center absolute -top-2 -left-2">2</div>
+                <div class="text-xs font-black text-slate-900 mb-0.5">⚠️ Priority & Risk</div>
+                <ul class="text-[9.5px] text-slate-800 text-left pl-0.5 font-bold space-y-0.5">
+                  <li>• Severity Analysis</li>
+                  <li>• Impact Prediction</li>
+                  <li>• Random Forest P(f)</li>
+                </ul>
+              </div>
+
+            </div>
+
+            <!-- Arrow Row 1 to Row 2 -->
+            <div class="grid grid-cols-3 gap-2 my-1 items-center">
+              <div class="bg-purple-50 border-2 border-purple-500 rounded-lg p-1.5 text-center relative col-span-3">
+                <div class="w-5 h-5 rounded-full bg-purple-600 text-white font-black text-xs flex items-center justify-center absolute -top-2 -left-2">3</div>
+                <div class="text-xs font-black text-slate-900 mb-0.5">🛡️ Safety Filter</div>
+                <div class="grid grid-cols-3 text-[9.5px] text-slate-800 text-center font-bold">
+                  <span>• Rule Validation</span>
+                  <span>• Conflict Detection</span>
+                  <span>• Resource & Crew Check</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center text-purple-600 font-black text-sm my-0.5">↓</div>
+
+            <!-- ROW 2: Box 4 -> Box 5 -> Box 6 -> Output Box 7 -->
+            <div class="grid grid-cols-4 gap-1.5 items-center">
+              
+              <div class="bg-emerald-50 border-2 border-emerald-500 rounded-lg p-1 text-center relative">
+                <div class="w-4 h-4 rounded-full bg-emerald-600 text-white font-black text-[9px] flex items-center justify-center absolute -top-1.5 -left-1.5">4</div>
+                <div class="text-[9.5px] font-black text-slate-900">⚙️ Optimization</div>
+                <ul class="text-[8.5px] text-slate-800 text-left pl-0.5 font-bold space-y-0.5">
+                  <li>• OR-Tools CP-SAT</li>
+                  <li>• Timetable Shield</li>
+                </ul>
+              </div>
+
+              <div class="bg-indigo-50 border-2 border-indigo-500 rounded-lg p-1 text-center relative">
+                <div class="w-4 h-4 rounded-full bg-indigo-600 text-white font-black text-[9px] flex items-center justify-center absolute -top-1.5 -left-1.5">5</div>
+                <div class="text-[9.5px] font-black text-slate-900">👥 Shadow Plan</div>
+                <ul class="text-[8.5px] text-slate-800 text-left pl-0.5 font-bold space-y-0.5">
+                  <li>• Eng + S&T + TRD</li>
+                  <li>• Saves 4+ Hours</li>
+                </ul>
+              </div>
+
+              <div class="bg-rose-50 border-2 border-rose-500 rounded-lg p-1 text-center relative">
+                <div class="w-4 h-4 rounded-full bg-rose-600 text-white font-black text-[9px] flex items-center justify-center absolute -top-1.5 -left-1.5">6</div>
+                <div class="text-[9.5px] font-black text-slate-900">👔 Control Office</div>
+                <ul class="text-[8.5px] text-slate-800 text-left pl-0.5 font-bold space-y-0.5">
+                  <li>• 3 Auto-Risk Tiers</li>
+                  <li>• Live Timeline UI</li>
+                </ul>
+              </div>
+
+              <div class="bg-emerald-100 border-2 border-emerald-700 rounded-lg p-1 text-center relative">
+                <div class="text-[9.5px] font-black text-emerald-950">📅 Final Plan</div>
+                <div class="text-[8px] text-emerald-900 font-extrabold leading-tight">
+                  Timetable + PDF + Voice AI
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-1 p-1.5 bg-purple-50 border-2 border-purple-300 rounded text-[10px] text-purple-950 font-extrabold">
+          💡 Closed-Loop Governance: 13 Autonomous Agents manage safety SLAs, crew rosters & auto-approvals.
+        </div>
+      </div>
+
+      <!-- QUADRANT 3: Bottom-Left -> Box 3 (Challenges) -->
+      <div class="quadrant-box">
+        <div>
+          <div class="grid grid-cols-2 gap-2 my-0.5">
+            <div class="p-2 border-2 border-rose-300 rounded bg-rose-50/80">
+              <div class="text-xs font-black text-rose-950 mb-0.5">❌ Uncoordinated Stoppages</div>
+              <p class="text-[10px] text-slate-900 font-bold leading-snug">
+                Track, Signals, and OHE request isolated blocks on the same section, causing 3 separate shutdowns totaling 8+ hours of daily downtime.
+              </p>
+            </div>
+
+            <div class="p-2 border-2 border-amber-300 rounded bg-amber-50/80">
+              <div class="text-xs font-black text-amber-950 mb-0.5">⚠️ Data Silos & Friction</div>
+              <p class="text-[10px] text-slate-900 font-bold leading-snug">
+                Absence of a real-time unified database linking TMS, SMMS, and TDMS with live timetables and freight forecasts causes friction.
+              </p>
+            </div>
+
+            <div class="p-2 border-2 border-slate-300 rounded bg-slate-50">
+              <div class="text-xs font-black text-slate-900 mb-0.5">⌛ Intractable Manual Math</div>
+              <p class="text-[10px] text-slate-900 font-bold leading-snug">
+                Balancing overdue safety defect SLAs, track machine availability, crew roster limits, and zero train delay is manually intractable.
+              </p>
+            </div>
+
+            <div class="p-2 border-2 border-sky-300 rounded bg-sky-50/80">
+              <div class="text-xs font-black text-sky-950 mb-0.5">📌 Scope & API Limits</div>
+              <p class="text-[10px] text-slate-900 font-bold leading-snug">
+                Requires standardized digital API feeds from legacy software (BDMS/COA/TMS). Prototype uses SQLite; production scales to Turso / PostgreSQL.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-1 p-2 bg-amber-50 border-2 border-amber-400 rounded text-[10.5px] text-amber-950 font-black">
+          🛡️ SLA Governance: Monitored by 13 Autonomous Governance Agents with 3 Auto-Approval Risk Tiers.
+        </div>
+      </div>
+
+      <!-- QUADRANT 4: Bottom-Right -> Box 4 (Proposed Solution) -->
+      <div class="quadrant-box">
+        <div>
+          <div class="grid grid-cols-2 gap-1.5 my-0.5">
+            
+            <div class="p-1.5 border-2 border-emerald-300 rounded bg-emerald-50">
+              <div class="text-[10px] font-black text-emerald-950">1. Joint Shadow Block Clustering</div>
+              <div class="text-[9px] text-slate-800 font-bold leading-tight">Bundles Track, Signal & OHE into 1 shared outage—saving 4+ hrs daily!</div>
+            </div>
+
+            <div class="p-1.5 border-2 border-sky-300 rounded bg-sky-50">
+              <div class="text-[10px] font-black text-sky-950">2. Google OR-Tools CP-SAT Solver</div>
+              <div class="text-[9px] text-slate-800 font-bold leading-tight">Math constraint optimization for 7-day & 30-day zero-collision schedules.</div>
+            </div>
+
+            <div class="p-1.5 border-2 border-purple-300 rounded bg-purple-50">
+              <div class="text-[10px] font-black text-purple-950">3. Hybrid ML (Random Forest + Isolation)</div>
+              <div class="text-[9px] text-slate-800 font-bold leading-tight">Predicts breakdown risk P(f) & detects duration anomalies across 40 sections.</div>
+            </div>
+
+            <div class="p-1.5 border-2 border-amber-300 rounded bg-amber-50">
+              <div class="text-[10px] font-black text-amber-950">4. Dynamic Math Priority Scoring</div>
+              <div class="text-[9px] text-slate-800 font-bold leading-tight">Formula = 40% Severity + 25% Overdue + 20% Train Impact + 15% ML Risk.</div>
+            </div>
+
+            <div class="p-1.5 border-2 border-indigo-300 rounded bg-indigo-50">
+              <div class="text-[10px] font-black text-indigo-950">5. 13 Autonomous Governance Agents</div>
+              <div class="text-[9px] text-slate-800 font-bold leading-tight">Coordinates SLA compliance, cost optimization, crew rosters & advisories.</div>
+            </div>
+
+            <div class="p-1.5 border-2 border-rose-300 rounded bg-rose-50">
+              <div class="text-[10px] font-black text-rose-950">6. 3-Tier Risk Auto-Approval Engine</div>
+              <div class="text-[9px] text-slate-800 font-bold leading-tight">Tier 1 Auto-Approve, Tier 2 Auto+Log, Tier 3 Critical Escalation.</div>
+            </div>
+
+            <div class="p-1.5 border-2 border-teal-300 rounded bg-teal-50">
+              <div class="text-[10px] font-black text-teal-950">7. Live Gantt & Plotly Timeline UI</div>
+              <div class="text-[9px] text-slate-800 font-bold leading-tight">Real-time zoomable corridor timeline visualization with live status logs.</div>
+            </div>
+
+            <div class="p-1.5 border-2 border-sky-300 rounded bg-sky-50">
+              <div class="text-[10px] font-black text-sky-950">8. Multilingual Voice AI (Groq LLM)</div>
+              <div class="text-[9px] text-slate-800 font-bold leading-tight">Llama-3.3-70B Web Speech API for voice in English, Hindi & Telugu.</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Live Prototype Banner -->
+        <div class="mt-1 p-2 bg-slate-900 text-white rounded-lg flex items-center justify-between text-[10px] shadow">
+          <div>
+            <span class="text-sky-300 font-black">🌐 Live Interactive Prototype Link:</span> 
+            <span class="font-extrabold text-white text-xs">https://railway-block-planning.streamlit.app</span>
+          </div>
+          <div class="bg-sky-500 text-white px-2 py-0.5 rounded font-black text-xs">admin1 / admin123</div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
