@@ -27,6 +27,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 import bcrypt
 
+# Ensure workspace directories (app, scripts, root) are in sys.path
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPTS_DIR = os.path.join(BASE_DIR, "scripts")
+for p in [APP_DIR, SCRIPTS_DIR, BASE_DIR]:
+    if p not in sys.path:
+        sys.path.insert(0, p)
+
 # Set page configuration
 st.set_page_config(
     page_title="Railway Block Planning — Indian Railways",
@@ -186,40 +194,61 @@ if st.session_state.get("user"):
     """, unsafe_allow_html=True)
 
 # Workspace Paths
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-APP_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "railway.db")
-SCRIPTS_DIR = os.path.join(BASE_DIR, "scripts")
-for p in [APP_DIR, SCRIPTS_DIR, BASE_DIR]:
-    if p not in sys.path:
-        sys.path.insert(0, p)
 
 # Import Agents
-from agents import (
-    DepartmentAgent,
-    TrafficAgent,
-    CoordinatorAgent,
-    ReplanningAgent,
-    DeadlineAlertAgent,
-    AnomalyDetectionAgent,
-    ComplianceAgent,
-    CostOptimizationAgent,
-    SimulationAgent,
-    PassengerAdvisoryAgent,
-    DataManagementAgent,
-    FeedbackLoopAgent,
-    SlotRequestAgent,
-    LocopilotSpeedAgent,
-    BlockMergingAgent,
-    log_action,
-    notify
-)
+try:
+    from agents import (
+        DepartmentAgent,
+        TrafficAgent,
+        CoordinatorAgent,
+        ReplanningAgent,
+        DeadlineAlertAgent,
+        AnomalyDetectionAgent,
+        ComplianceAgent,
+        CostOptimizationAgent,
+        SimulationAgent,
+        PassengerAdvisoryAgent,
+        DataManagementAgent,
+        FeedbackLoopAgent,
+        SlotRequestAgent,
+        LocopilotSpeedAgent,
+        BlockMergingAgent,
+        log_action,
+        notify
+    )
+except ImportError:
+    from scripts.agents import (
+        DepartmentAgent,
+        TrafficAgent,
+        CoordinatorAgent,
+        ReplanningAgent,
+        DeadlineAlertAgent,
+        AnomalyDetectionAgent,
+        ComplianceAgent,
+        CostOptimizationAgent,
+        SimulationAgent,
+        PassengerAdvisoryAgent,
+        DataManagementAgent,
+        FeedbackLoopAgent,
+        SlotRequestAgent,
+        LocopilotSpeedAgent,
+        BlockMergingAgent,
+        log_action,
+        notify
+    )
 
 # Import PDF Reports
-from reports import generate_report, generate_periodic_report
+try:
+    from reports import generate_report, generate_periodic_report
+except ImportError:
+    from app.reports import generate_report, generate_periodic_report
 
 # Import Chatbot & Data Search
-from chatbot import ask_explainer, parse_nl_defect, find_particular_data, detect_language
+try:
+    from chatbot import ask_explainer, parse_nl_defect, find_particular_data, detect_language
+except ImportError:
+    from app.chatbot import ask_explainer, parse_nl_defect, find_particular_data, detect_language
 
 
 _db_schema_checked = False
