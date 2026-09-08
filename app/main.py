@@ -2159,60 +2159,309 @@ else:
             loco_agent = LocopilotSpeedAgent()
             merger_agent = BlockMergingAgent()
 
-            # Simulation State Management
-            if "early_clear_simulated" not in st.session_state:
-                st.session_state.early_clear_simulated = False
-            if "merge_simulated" not in st.session_state:
-                st.session_state.merge_simulated = False
+            # Initialize 10-Train State Data across 2 Divisions
+            if "trains_10_state" not in st.session_state:
+                st.session_state.trains_10_state = {
+                    # --- VIJAYAWADA DIVISION (BZA) ---
+                    "Vijayawada Train 01": {
+                        "id": "Vijayawada Train 01",
+                        "division": "Vijayawada Division (BZA)",
+                        "number": "12727",
+                        "name": "Godavari Express",
+                        "type": "Superfast Express",
+                        "corridor": "Vijayawada → Kondapalli → Madhira",
+                        "section_id": "BZA-RAY",
+                        "current_km": 105,
+                        "current_speed": 110,
+                        "mps": 110,
+                        "status": "Cruising (On Time)",
+                        "signal": "🟢 Green (Clearance Fit)",
+                        "delay_minutes": 0,
+                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                        "work_zone_kms": [114, 116, 118],
+                        "speed_profile": [110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110],
+                        "early_cleared": True,
+                        "merged": False
+                    },
+                    "Vijayawada Train 02": {
+                        "id": "Vijayawada Train 02",
+                        "division": "Vijayawada Division (BZA)",
+                        "number": "12759",
+                        "name": "Charminar Express",
+                        "type": "Superfast",
+                        "corridor": "Vijayawada → Kondapalli → Madhira",
+                        "section_id": "BZA-KDM",
+                        "current_km": 114,
+                        "current_speed": 30,
+                        "mps": 110,
+                        "status": "Regulated (30 km/h Caution)",
+                        "signal": "🔴 Red / Amber Caution",
+                        "delay_minutes": 12,
+                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                        "work_zone_kms": [114, 116, 118],
+                        "speed_profile": [110, 110, 110, 45, 30, 30, 30, 80, 110, 110, 110],
+                        "early_cleared": False,
+                        "merged": False
+                    },
+                    "Vijayawada Train 03": {
+                        "id": "Vijayawada Train 03",
+                        "division": "Vijayawada Division (BZA)",
+                        "number": "20833",
+                        "name": "Vande Bharat Express",
+                        "type": "Semi High Speed",
+                        "corridor": "Vijayawada → Kondapalli → Madhira",
+                        "section_id": "KDM-KMT",
+                        "current_km": 122,
+                        "current_speed": 120,
+                        "mps": 130,
+                        "status": "Speed Boost Active",
+                        "signal": "🟢 Green (Clear Run)",
+                        "delay_minutes": 0,
+                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                        "work_zone_kms": [114, 116, 118],
+                        "speed_profile": [120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120],
+                        "early_cleared": True,
+                        "merged": False
+                    },
+                    "Vijayawada Train 04": {
+                        "id": "Vijayawada Train 04",
+                        "division": "Vijayawada Division (BZA)",
+                        "number": "G-402",
+                        "name": "Coal Freight Rake",
+                        "type": "Heavy Freight",
+                        "corridor": "Vijayawada → Kondapalli → Madhira",
+                        "section_id": "RAY-KDM",
+                        "current_km": 111,
+                        "current_speed": 45,
+                        "mps": 75,
+                        "status": "Approach Braking",
+                        "signal": "🟡 Double Yellow (Attention)",
+                        "delay_minutes": 18,
+                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                        "work_zone_kms": [114, 116, 118],
+                        "speed_profile": [75, 75, 75, 45, 30, 30, 30, 60, 75, 75, 75],
+                        "early_cleared": False,
+                        "merged": False
+                    },
+                    "Vijayawada Train 05": {
+                        "id": "Vijayawada Train 05",
+                        "division": "Vijayawada Division (BZA)",
+                        "number": "57231",
+                        "name": "BZA-KMT Passenger Local",
+                        "type": "Passenger Local",
+                        "corridor": "Vijayawada → Kondapalli → Madhira",
+                        "section_id": "KDM-MDR",
+                        "current_km": 128,
+                        "current_speed": 40,
+                        "mps": 90,
+                        "status": "Station Approach",
+                        "signal": "🟡 Yellow (Station Signal)",
+                        "delay_minutes": 5,
+                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                        "work_zone_kms": [114, 116, 118],
+                        "speed_profile": [90, 90, 60, 90, 90, 90, 90, 90, 40, 75, 90],
+                        "early_cleared": True,
+                        "merged": False
+                    },
 
-            # Top Action & Simulation Controls - ALL 5 BUTTONS PERMANENTLY VISIBLE AT ALL TIMES
+                    # --- HOWRAH DIVISION (HWH) ---
+                    "Howrah Train 01": {
+                        "id": "Howrah Train 01",
+                        "division": "Howrah Division (HWH)",
+                        "number": "12301",
+                        "name": "Howrah Rajdhani Express",
+                        "type": "Superfast Rajdhani",
+                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                        "section_id": "HWH-SRP",
+                        "current_km": 25,
+                        "current_speed": 130,
+                        "mps": 130,
+                        "status": "High Speed Cruising",
+                        "signal": "🟢 Green (Automatic Block)",
+                        "delay_minutes": 0,
+                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                        "work_zone_kms": [40, 45, 50],
+                        "speed_profile": [130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130],
+                        "early_cleared": True,
+                        "merged": False
+                    },
+                    "Howrah Train 02": {
+                        "id": "Howrah Train 02",
+                        "division": "Howrah Division (HWH)",
+                        "number": "37211",
+                        "name": "Bandel EMU Suburban Local",
+                        "type": "Suburban EMU",
+                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                        "section_id": "SRP-BDC",
+                        "current_km": 15,
+                        "current_speed": 65,
+                        "mps": 90,
+                        "status": "Suburban Service",
+                        "signal": "🟡 Yellow (Distant Caution)",
+                        "delay_minutes": 3,
+                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                        "work_zone_kms": [40, 45, 50],
+                        "speed_profile": [65, 45, 65, 45, 65, 45, 65, 45, 65, 45, 65],
+                        "early_cleared": False,
+                        "merged": False
+                    },
+                    "Howrah Train 03": {
+                        "id": "Howrah Train 03",
+                        "division": "Howrah Division (HWH)",
+                        "number": "F-819",
+                        "name": "Steel Coil Special Freight",
+                        "type": "Heavy Goods",
+                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                        "section_id": "BDC-BWN",
+                        "current_km": 42,
+                        "current_speed": 30,
+                        "mps": 75,
+                        "status": "Active TSR Caution (30 km/h)",
+                        "signal": "🔴 Red / Amber Caution",
+                        "delay_minutes": 25,
+                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                        "work_zone_kms": [40, 45, 50],
+                        "speed_profile": [75, 75, 75, 50, 30, 30, 30, 60, 75, 75, 75],
+                        "early_cleared": False,
+                        "merged": False
+                    },
+                    "Howrah Train 04": {
+                        "id": "Howrah Train 04",
+                        "division": "Howrah Division (HWH)",
+                        "number": "12339",
+                        "name": "Coalfield Express",
+                        "type": "Superfast Express",
+                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                        "section_id": "BWN-DGR",
+                        "current_km": 65,
+                        "current_speed": 105,
+                        "mps": 110,
+                        "status": "Clear Block Run",
+                        "signal": "🟢 Green (Clearance)",
+                        "delay_minutes": 0,
+                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                        "work_zone_kms": [40, 45, 50],
+                        "speed_profile": [105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105],
+                        "early_cleared": True,
+                        "merged": False
+                    },
+                    "Howrah Train 05": {
+                        "id": "Howrah Train 05",
+                        "division": "Howrah Division (HWH)",
+                        "number": "22301",
+                        "name": "Vande Bharat Express HWH-NJP",
+                        "type": "Semi High Speed",
+                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                        "section_id": "BWN-DGR",
+                        "current_km": 85,
+                        "current_speed": 115,
+                        "mps": 130,
+                        "status": "Accelerated Cruise",
+                        "signal": "🟢 Green (High Speed Fit)",
+                        "delay_minutes": 0,
+                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                        "work_zone_kms": [40, 45, 50],
+                        "speed_profile": [115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115],
+                        "early_cleared": True,
+                        "merged": False
+                    }
+                }
+
+            # DIVISION AND TRAIN SELECTOR UI
+            st.markdown("---")
+            sel_div_col, sel_trn_col = st.columns([1.5, 2.5])
+            with sel_div_col:
+                selected_division = st.selectbox(
+                    "🏛️ Select Railway Division:",
+                    ["Vijayawada Division (BZA)", "Howrah Division (HWH) (Simulated / Demo Data)"],
+                    key="ctrl_sel_division"
+                )
+            
+            with sel_trn_col:
+                if "Vijayawada" in selected_division:
+                    train_options = ["Vijayawada Train 01", "Vijayawada Train 02", "Vijayawada Train 03", "Vijayawada Train 04", "Vijayawada Train 05"]
+                else:
+                    train_options = ["Howrah Train 01", "Howrah Train 02", "Howrah Train 03", "Howrah Train 04", "Howrah Train 05"]
+
+                selected_train_id = st.selectbox(
+                    "🚆 Select Train for Telemetry & Locopilot Speed Controls:",
+                    train_options,
+                    key="ctrl_sel_train"
+                )
+
+            # Get current active train object
+            tr = st.session_state.trains_10_state[selected_train_id]
+            is_early = tr["early_cleared"]
+            is_merged = tr["merged"]
+
+            st.caption(f"⚠️ **Simulation / Demo Data Notice**: Displaying independent telemetry, moving track vectors, and speed advisories for **{tr['name']} ({tr['number']})** on `{tr['corridor']}`.")
+
+            # Top Action & Simulation Controls
             ctrl_col1, ctrl_col2, ctrl_col3, ctrl_col4, ctrl_col5 = st.columns([1.4, 1.4, 1.4, 1.2, 1.0])
     
             with ctrl_col1:
-                early_active = st.session_state.early_clear_simulated
-                early_btn_label = "⚡ Simulate Early Release" if not early_active else "🟢 Early Release Active (+45m)"
-                early_btn_type = "primary" if not early_active else "secondary"
-                if st.button(early_btn_label, key="btn_early_clear", type=early_btn_type, use_container_width=True, help="Simulate maintenance gang completing work 45 minutes early with Track Fit Certificate"):
-                    st.session_state.early_clear_simulated = True
-                    st.session_state.merge_simulated = False
-                    loco_agent.generate_speed_advisory("Vijayawada-SEC-01", freed_minutes=45.0, department_source="Engineering")
-                    st.session_state.last_action_banner = ("success", "⚡ Early Block Clearance Activated! (+45m Freed) · Track Fit Certificate issued for KM 114–118 · Speed limit restored to 110 km/h · Prioritization Scoreboard activated below.")
+                early_btn_label = "⚡ Simulate Early Release" if not is_early else "🟢 Early Release Active (+45m)"
+                early_btn_type = "primary" if not is_early else "secondary"
+                if st.button(early_btn_label, key=f"btn_early_{tr['id']}", type=early_btn_type, use_container_width=True):
+                    tr["early_cleared"] = True
+                    tr["merged"] = False
+                    tr["speed_profile"] = [tr["mps"]] * len(tr["km_options"])
+                    tr["current_speed"] = tr["mps"]
+                    tr["status"] = "🟢 Early Released (Full Speed Fit)"
+                    tr["signal"] = "🟢 Green (Clearance Fit)"
+                    loco_agent.generate_speed_advisory(tr["section_id"], freed_minutes=45.0, department_source="Engineering")
+                    st.session_state.last_action_banner = ("success", f"⚡ Early Block Clearance Activated for {tr['id']}! Speed limit restored to {tr['mps']} km/h.")
                     st.rerun()
 
             with ctrl_col2:
-                merge_active = st.session_state.merge_simulated
-                merge_btn_label = "🤝 Merge Multi-Dept Blocks" if not merge_active else "🟡 Mega-Block Active (Merged)"
-                merge_btn_type = "primary" if not merge_active else "secondary"
-                if st.button(merge_btn_label, key="btn_merge_blocks", type=merge_btn_type, use_container_width=True, help="Aggregate Engineering + TRD requests on same section into single mega-block"):
-                    st.session_state.merge_simulated = True
-                    st.session_state.early_clear_simulated = False
-                    merger_agent.execute_merge("Vijayawada-SEC-01")
-                    st.session_state.last_action_banner = ("warning", "🤝 Multi-Department Mega-Block Activated! TMS + TDMS merged into unified 4.5h window · 3.8 corridor hours saved · Caution speed 30 km/h enforced for crew safety.")
+                merge_btn_label = "🤝 Merge Multi-Dept Blocks" if not is_merged else "🟡 Mega-Block Active"
+                merge_btn_type = "primary" if not is_merged else "secondary"
+                if st.button(merge_btn_label, key=f"btn_merge_{tr['id']}", type=merge_btn_type, use_container_width=True):
+                    tr["merged"] = True
+                    tr["early_cleared"] = False
+                    tr["current_speed"] = 30
+                    tr["status"] = "🟡 Mega-Block Active (Merged)"
+                    tr["signal"] = "🟡 Amber (Caution Speed)"
+                    merger_agent.execute_merge(tr["section_id"])
+                    st.session_state.last_action_banner = ("warning", f"🤝 Multi-Department Mega-Block Activated for {tr['id']}! Speed regulated to 30 km/h.")
                     st.rerun()
 
             with ctrl_col3:
-                if st.button("⚡ Execute Instant Dispatch", key="btn_instant_dispatch_top", type="primary", use_container_width=True, help="Execute priority dispatch for top-ranked delayed train"):
-                    st.session_state.early_clear_simulated = True
+                if st.button("⚡ Execute Instant Dispatch", key=f"btn_dispatch_{tr['id']}", type="primary", use_container_width=True):
+                    tr["early_cleared"] = True
+                    tr["current_speed"] = tr["mps"]
+                    tr["status"] = "⚡ Priority Dispatched"
                     loco_agent.dispatch_advisories()
-                    st.session_state.last_action_banner = ("success", "⚡ Instant Priority Dispatch Executed! Train 12723 Telangana Express dispatched into freed corridor · Speed elevated to 110 km/h · Section delay reduced by 18 minutes.")
+                    st.session_state.last_action_banner = ("success", f"⚡ Instant Priority Dispatch Executed for {tr['name']}! Section delay reduced.")
                     st.balloons()
                     st.rerun()
 
             with ctrl_col4:
-                if st.button("📡 Dispatch to Locopilots", key="btn_dispatch_loco_top", use_container_width=True, help="Transmit active speed restriction orders to in-cab Locomotive Pilot displays"):
+                if st.button("📡 Dispatch to Locopilots", key=f"btn_trans_{tr['id']}", use_container_width=True):
                     loco_agent.dispatch_advisories()
                     now_time = datetime.now().strftime("%H:%M:%S")
-                    st.session_state.last_action_banner = ("info", f"📡 Speed Orders Dispatched! [{now_time}] All active cautionary and speed advisories transmitted via RTIS/GSM-R to Locopilot CAB displays.")
+                    st.session_state.last_action_banner = ("info", f"📡 Speed Orders Dispatched! [{now_time}] Transmitted to {tr['name']} CAB display.")
                     st.rerun()
 
             with ctrl_col5:
-                if st.button("🔄 Reset Normal", key="btn_reset_corridor", use_container_width=True, help="Reset corridor back to normal active maintenance block"):
-                    st.session_state.early_clear_simulated = False
-                    st.session_state.merge_simulated = False
-                    st.session_state.last_action_banner = ("info", "🔄 Corridor Reset to Default State: Active maintenance block restored at KM 114–118 under TSR Caution Orders (30–45 km/h).")
+                if st.button("🔄 Reset Normal", key=f"btn_reset_{tr['id']}", use_container_width=True):
+                    tr["early_cleared"] = False
+                    tr["merged"] = False
+                    tr["current_speed"] = 30 if tr["km_options"][4] in tr["work_zone_kms"] else tr["mps"]
+                    tr["status"] = "Regulated (30 km/h Caution)"
+                    st.session_state.last_action_banner = ("info", f"🔄 Reset corridor to normal active maintenance block for {tr['id']}.")
                     st.rerun()
 
-            # Display Persistent Action Feedback Banner
             if "last_action_banner" in st.session_state and st.session_state.last_action_banner:
                 b_type, b_msg = st.session_state.last_action_banner
                 if b_type == "success":
@@ -2222,530 +2471,136 @@ else:
                 else:
                     st.info(b_msg)
 
+            # LAYER 1: TELEMETRY OVERVIEW SUMMARY CARDS
+            st.markdown("#### 📊 Live Train Telemetry & Status Summary")
+            t_col1, t_col2, t_col3, t_col4 = st.columns(4)
+            with t_col1:
+                st.metric("Train Name / No.", f"{tr['number']}", delta=tr['name'])
+            with t_col2:
+                st.metric("Current Speed", f"{tr['current_speed']} km/h", delta=f"MPS: {tr['mps']} km/h")
+            with t_col3:
+                st.metric("Current Location", f"KM {tr['current_km']}", delta=tr['section_id'])
+            with t_col4:
+                st.metric("Signal Aspect", tr['signal'], delta=f"Delay: {tr['delay_minutes']} min", delta_color="inverse" if tr['delay_minutes'] > 0 else "normal")
+
             st.markdown("---")
 
-            # Dynamic Status Indicators based on Simulation State
-            is_early = st.session_state.early_clear_simulated
-            is_merged = st.session_state.merge_simulated
+            # LAYER 2: MOVING TRACK MAP CANVASES
+            st.markdown(f"#### 🗺️ Live Corridor Track Map — `{tr['corridor']}`")
+            st.caption(f"Interactive Vector Map showing station posts, work zones, signal aspects, and real-time marker for **{tr['id']} ({tr['name']})**.")
 
-            block_status_label = "🟢 EARLY CLEARANCE ISSUED · FIT CERTIFIED (+45m FREED)" if is_early else ("🤝 CO-ORDINATED MEGA-BLOCK ACTIVE (TMS + TDMS)" if is_merged else "🚧 ACTIVE MAINTENANCE BLOCK IN PROGRESS (KM 114–118)")
-            block_status_color = "#10b981" if is_early else ("#f59e0b" if is_merged else "#ef4444")
-            train_speed_disp = "110 km/h (SPEED BOOST RESTORED)" if is_early else ("30 km/h (REGULATED CAUTION SPEED)" if is_merged else "45 km/h (APPROACHING CAUTION)")
+            # Dynamic stations SVG rendering
+            st_svg_elements = ""
+            for st_km, st_lbl in tr["stations"]:
+                min_km = tr["km_options"][0]
+                max_km = tr["km_options"][-1]
+                svg_x = int(100 + ((st_km - min_km) / (max_km - min_km)) * 900)
+                st_svg_elements += f'''
+                <line x1="{svg_x}" y1="15" x2="{svg_x}" y2="140" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
+                <rect x="{svg_x-45}" y="15" width="90" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+                <text x="{svg_x}" y="30" fill="#f8fafc" font-size="11" font-weight="bold" text-anchor="middle">{st_lbl}</text>
+                <text x="{svg_x}" y="132" fill="#94a3b8" font-size="10" text-anchor="middle">KM {st_km}</text>
+                '''
 
-            # =======================================================================
-            # LAYER 1: INTERACTIVE LIVE MOVING TRAIN TRACK SCHEMATIC (SVG / HTML5)
-            # =======================================================================
-            st.markdown("#### 🗺️ Live Corridor Track Schematic & Moving Train Simulation (Vijayawada Division)")
-            st.caption("Real-time visual train vectors, signal telemetry, active maintenance block zones, and dynamic speed needle. Use the interactive controls to zoom, pan, focus, or pause the simulation.")
+            min_km = tr["km_options"][0]
+            max_km = tr["km_options"][-1]
+            train_svg_x = int(100 + ((tr["current_km"] - min_km) / (max_km - min_km)) * 900)
 
-            # Render moving train canvas natively via components.html to avoid markdown indentation issues
-            track_schematic_html = f"""<!DOCTYPE html>
-        <html>
-        <head>
-        <meta charset="utf-8">
-        <style>
-        body {{
-            margin: 0;
-            padding: 0;
-            background: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            overflow: hidden;
-        }}
-        .track-card {{
-            background: #0a1628;
-            border: 1.5px solid #1e3a8a;
-            border-radius: 14px;
-            padding: 14px 18px 16px 18px;
-            box-sizing: border-box;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }}
-        @keyframes moveTrainUp {{
-            0% {{ transform: translateX(20px); }}
-            45% {{ transform: translateX(380px); }}
-            55% {{ transform: translateX(410px); }}
-            100% {{ transform: translateX(880px); }}
-        }}
-        @keyframes moveTrainDown {{
-            0% {{ transform: translateX(880px); }}
-            100% {{ transform: translateX(40px); }}
-        }}
-        @keyframes pulseZone {{
-            0% {{ opacity: 0.35; }}
-            50% {{ opacity: 0.85; }}
-            100% {{ opacity: 0.35; }}
-        }}
-        .train-vector-up {{
-            animation: moveTrainUp 16s linear infinite;
-        }}
-        .train-vector-down {{
-            animation: moveTrainDown 22s linear infinite;
-        }}
-        .block-glow {{
-            animation: pulseZone 2s ease-in-out infinite;
-        }}
-        .ctrl-btn {{
-            background: #1e293b;
-            color: #93c5fd;
-            border: 1px solid #3b82f6;
-            border-radius: 6px;
-            padding: 4px 9px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-        }}
-        .ctrl-btn:hover {{
-            background: #2563eb;
-            color: #ffffff;
-            border-color: #60a5fa;
-            transform: translateY(-1px);
-        }}
-        .ctrl-btn:active {{
-            transform: translateY(1px);
-        }}
-        #corridorSvg {{
-            cursor: grab;
-            transition: transform 0.1s ease-out;
-        }}
-        #corridorSvg:active {{
-            cursor: grabbing;
-        }}
-        .corridor-scroll-bar {{
-            flex: 1;
-            height: 12px;
-            overflow-x: auto;
-            overflow-y: hidden;
-            background: #07111e;
-            border-radius: 6px;
-            border: 1px solid #1e293b;
-            box-sizing: border-box;
-            scrollbar-width: thin;
-            scrollbar-color: #3b82f6 #07111e;
-        }}
-        .corridor-scroll-bar::-webkit-scrollbar {{
-            height: 8px;
-        }}
-        .corridor-scroll-bar::-webkit-scrollbar-track {{
-            background: #07111e;
-            border-radius: 4px;
-        }}
-        .corridor-scroll-bar::-webkit-scrollbar-thumb {{
-            background: #3b82f6;
-            border-radius: 4px;
-            border: 1px solid #1d4ed8;
-        }}
-        .corridor-scroll-bar::-webkit-scrollbar-thumb:hover {{
-            background: #60a5fa;
-        }}
-        .corridor-scroll-spacer {{
-            height: 1px;
-            width: 100%;
-        }}
-        </style>
-        </head>
-        <body>
-        <div class="track-card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                    <span style="color:#93c5fd; font-weight:700; font-size:12.5px;">CORRIDOR:</span>
-                    <span style="color:#e2e8f0; font-size:12px;">Vijayawada (BZA) — Kondapalli (KI) — Madhira (MDR) | Double Electrified (25kV AC)</span>
-                    <span style="display:inline-flex; align-items:center; gap:5px; background:rgba(15,23,42,0.85); padding:3px 9px; border-radius:6px; border:1px solid {block_status_color};">
-                        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:{block_status_color};"></span>
-                        <strong style="color:{block_status_color}; font-size:11px;">{block_status_label}</strong>
-                    </span>
-                </div>
-                <div style="display:flex; gap:6px; align-items:center;">
-                    <button onclick="zoomIn()" class="ctrl-btn" title="Zoom In on Corridor">🔍 +</button>
-                    <button onclick="zoomOut()" class="ctrl-btn" title="Zoom Out">🔍 −</button>
-                    <button onclick="focusWorkZone()" class="ctrl-btn" title="Focus Work Zone KM 114 to 118">🎯 Focus Zone</button>
-                </div>
+            svg_map_html = f'''
+            <div style="background-color: #0f172a; border-radius: 8px; padding: 15px; border: 1px solid #1e293b; color: #ffffff;">
+                <svg width="100%" height="160" viewBox="0 0 1100 160">
+                    <line x1="50" y1="75" x2="1050" y2="75" stroke="#475569" stroke-width="6"/>
+                    <line x1="50" y1="85" x2="1050" y2="85" stroke="#475569" stroke-width="6"/>
+                    {st_svg_elements}
+                    <rect x="450" y="55" width="200" height="50" fill="rgba(239, 68, 68, 0.2)" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4"/>
+                    <text x="550" y="50" fill="#f87171" font-size="11" font-weight="bold" text-anchor="middle">WORK ZONE TSR (30 km/h)</text>
+                    <g transform="translate({train_svg_x}, 80)">
+                        <circle r="16" fill="#3b82f6" stroke="#ffffff" stroke-width="3">
+                            <animate attributeName="r" values="14;18;14" dur="2s" repeatCount="indefinite"/>
+                        </circle>
+                        <text y="4" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">🚆</text>
+                        <rect x="-60" y="-38" width="120" height="20" rx="4" fill="#1d4ed8" stroke="#60a5fa" stroke-width="1"/>
+                        <text x="0" y="-24" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">{tr['id']} ({tr['current_speed']} km/h)</text>
+                    </g>
+                </svg>
             </div>
+            '''
+            components.html(svg_map_html, height=190)
 
-            <svg id="corridorSvg" width="100%" height="165" viewBox="0 0 940 165" xmlns="http://www.w3.org/2000/svg" style="background:#07111e; border-radius:8px; border:1px solid #1e293b;">
-                <line x1="60" y1="15" x2="60" y2="140" stroke="#1e293b" stroke-dasharray="3 3"/>
-                <text x="60" y="152" fill="#64748b" font-size="10" text-anchor="middle">KM 100</text>
-                <line x1="200" y1="15" x2="200" y2="140" stroke="#1e293b" stroke-dasharray="3 3"/>
-                <text x="200" y="152" fill="#64748b" font-size="10" text-anchor="middle">KM 108</text>
-                <line x1="360" y1="15" x2="360" y2="140" stroke="#1e293b" stroke-dasharray="3 3"/>
-                <text x="360" y="152" fill="#64748b" font-size="10" text-anchor="middle">KM 114</text>
-                <line x1="520" y1="15" x2="520" y2="140" stroke="#1e293b" stroke-dasharray="3 3"/>
-                <text x="520" y="152" fill="#64748b" font-size="10" text-anchor="middle">KM 118</text>
-                <line x1="680" y1="15" x2="680" y2="140" stroke="#1e293b" stroke-dasharray="3 3"/>
-                <text x="680" y="152" fill="#64748b" font-size="10" text-anchor="middle">KM 125</text>
-                <line x1="860" y1="15" x2="860" y2="140" stroke="#1e293b" stroke-dasharray="3 3"/>
-                <text x="860" y="152" fill="#64748b" font-size="10" text-anchor="middle">KM 135</text>
+            st.markdown("---")
 
-                <rect x="30" y="6" width="65" height="15" rx="3" fill="#1e3a8a"/>
-                <text x="62" y="17" fill="#ffffff" font-size="8.5" font-weight="bold" text-anchor="middle">BZA JN</text>
-                <rect x="325" y="6" width="75" height="15" rx="3" fill="#1e293b"/>
-                <text x="362" y="17" fill="#93c5fd" font-size="8.5" font-weight="bold" text-anchor="middle">RAYYANAPADU</text>
-                <rect x="645" y="6" width="75" height="15" rx="3" fill="#1e293b"/>
-                <text x="682" y="17" fill="#93c5fd" font-size="8.5" font-weight="bold" text-anchor="middle">KONDAPALLI</text>
-
-                <line x1="20" y1="48" x2="920" y2="48" stroke="#475569" stroke-width="3.5"/>
-                <text x="25" y="40" fill="#94a3b8" font-size="9" font-weight="bold">UP LINE (Northbound)</text>
-
-                <line x1="20" y1="92" x2="920" y2="92" stroke="#475569" stroke-width="3.5"/>
-                <text x="25" y="85" fill="#94a3b8" font-size="9" font-weight="bold">DOWN LINE (Southbound)</text>
-
-                <path d="M 180 48 Q 210 128 250 128 L 600 128 Q 640 128 670 48" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="4 2"/>
-                <text x="260" y="122" fill="#64748b" font-size="8.5">LOOP SIDING (Freight Buffer)</text>
-
-                <rect x="360" y="34" width="160" height="28" rx="5" fill="{block_status_color}" fill-opacity="0.25" stroke="{block_status_color}" stroke-width="2" stroke-dasharray="5 3" class="block-glow"/>
-                <text x="440" y="52" fill="{block_status_color}" font-size="9.5" font-weight="bold" text-anchor="middle">
-                    {"🟢 TRACK FIT CERTIFIED" if is_early else ("🤝 MERGED MEGA-BLOCK" if is_merged else "🚧 ACTIVE TRACK BLOCK")}
-                </text>
-
-                <circle cx="180" cy="38" r="4.5" fill="#10b981"/>
-                <circle cx="350" cy="38" r="4.5" fill="{'#10b981' if is_early else ('#fbbf24' if is_merged else '#ef4444')}"/>
-                <circle cx="660" cy="38" r="4.5" fill="#10b981"/>
-
-                <g transform="translate(320, 120)">
-                    <rect x="0" y="2" width="110" height="14" rx="2" fill="#78350f" stroke="#d97706" stroke-width="1"/>
-                    <text x="55" y="12" fill="#fef3c7" font-size="8" font-weight="bold" text-anchor="middle">📦 BOXN COAL (42 RAKES)</text>
-                </g>
-
-                <g class="train-vector-up">
-                    <polygon points="68,48 90,41 90,55" fill="#fef08a" opacity="0.65"/>
-                    <rect x="0" y="40" width="68" height="16" rx="3" fill="#1d4ed8" stroke="#60a5fa" stroke-width="1.2"/>
-                    <text x="34" y="51" fill="#ffffff" font-size="7.5" font-weight="bold" text-anchor="middle">🚆 12723 TELANGANA</text>
-                    <circle cx="66" cy="48" r="2" fill="#fef08a"/>
-                </g>
-
-                <g class="train-vector-down">
-                    <rect x="0" y="84" width="70" height="16" rx="3" fill="#047857" stroke="#34d399" stroke-width="1.2"/>
-                    <text x="35" y="95" fill="#ffffff" font-size="7.5" font-weight="bold" text-anchor="middle">🚆 12805 JANMABHOOMI</text>
-                </g>
-            </svg>
-
-            <!-- Corridor Navigation Scrollbar -->
-            <div style="display:flex; align-items:center; gap:8px; margin-top:8px; margin-bottom:2px;">
-                <span style="color:#64748b; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px; white-space:nowrap;">Corridor Scroll:</span>
-                <div id="corridorScrollContainer" class="corridor-scroll-bar" title="Scroll horizontally along corridor (KM 100 to KM 135)">
-                    <div id="corridorScrollSpacer" class="corridor-scroll-spacer"></div>
-                </div>
-            </div>
-
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; padding:8px 12px; background:#0f1d32; border-radius:8px; border:1px solid #1e3a8a; font-size:12px; color:#cbd5e1; flex-wrap:wrap; gap:10px;">
-                <div style="display:flex; align-items:center; gap:6px;">
-                    <span style="color:#64748b; font-weight:600;">Locopilot Speed:</span>
-                    <span style="color:#38bdf8; font-weight:700; font-size:12.5px; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:4px; border:1px solid rgba(56,189,248,0.3);">{train_speed_disp}</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:6px;">
-                    <span style="color:#64748b; font-weight:600;">Safety Headway:</span>
-                    <span style="color:#10b981; font-weight:700; font-size:12px; background:rgba(16,185,129,0.12); padding:2px 8px; border-radius:4px; border:1px solid rgba(16,185,129,0.3);">✓ 4.8 KM (Zero-Collision Compliant)</span>
-                </div>
-                <div style="display:flex; align-items:center; gap:6px;">
-                    <span style="color:#64748b; font-weight:600;">Active Crews:</span>
-                    <span style="color:#f59e0b; font-weight:600; font-size:12px;">Engineering Track Gang #4 + TRD Tower Wagon</span>
-                </div>
-            </div>
-        </div>
-
-        <script>
-        let vbX = 0, vbY = 0, vbW = 940, vbH = 165;
-        let isSyncing = false;
-
-        function updateViewBox() {{
-            const svg = document.getElementById('corridorSvg');
-            if (svg) {{
-                svg.setAttribute('viewBox', vbX + ' ' + vbY + ' ' + vbW + ' ' + vbH);
-            }}
-        }}
-
-        function updateScrollbar() {{
-            const scrollContainer = document.getElementById('corridorScrollContainer');
-            const scrollSpacer = document.getElementById('corridorScrollSpacer');
-            if (!scrollContainer || !scrollSpacer || isSyncing) return;
-    
-            isSyncing = true;
-            if (vbW < 940) {{
-                const ratio = 940 / vbW;
-                scrollSpacer.style.width = Math.round(ratio * 100) + '%';
-                const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-                if (maxScroll > 0) {{
-                    const pos = Math.max(0, Math.min(1, vbX / (940 - vbW)));
-                    scrollContainer.scrollLeft = pos * maxScroll;
-                }}
-            }} else {{
-                scrollSpacer.style.width = '100%';
-                scrollContainer.scrollLeft = 0;
-            }}
-            setTimeout(function() {{ isSyncing = false; }}, 40);
-        }}
-
-        function zoomIn() {{
-            if (vbW > 300) {{
-                const dw = vbW * 0.22;
-                const dh = vbH * 0.22;
-                const newW = Math.max(300, vbW - dw);
-                const newH = Math.max(50, vbH - dh);
-                vbX = Math.max(0, Math.min(940 - newW, vbX + dw / 2));
-                vbY = Math.max(0, Math.min(165 - newH, vbY + dh / 2));
-                vbW = newW;
-                vbH = newH;
-                updateViewBox();
-                updateScrollbar();
-            }}
-        }}
-
-        function zoomOut() {{
-            if (vbW < 940) {{
-                const dw = vbW * 0.25;
-                const dh = vbH * 0.25;
-                const newW = Math.min(940, vbW + dw);
-                const newH = Math.min(165, vbH + dh);
-                if (newW >= 920) {{
-                    vbX = 0;
-                    vbY = 0;
-                    vbW = 940;
-                    vbH = 165;
-                }} else {{
-                    vbX = Math.max(0, Math.min(940 - newW, vbX - dw / 2));
-                    vbY = Math.max(0, Math.min(165 - newH, vbY - dh / 2));
-                    vbW = newW;
-                    vbH = newH;
-                }}
-                updateViewBox();
-                updateScrollbar();
-            }}
-        }}
-
-        function focusWorkZone() {{
-            vbX = 290;
-            vbY = 12;
-            vbW = 340;
-            vbH = 145;
-            updateViewBox();
-            updateScrollbar();
-        }}
-
-        // Wire up scrollbar scroll event
-        const scrollContainer = document.getElementById('corridorScrollContainer');
-        if (scrollContainer) {{
-            scrollContainer.addEventListener('scroll', function() {{
-                if (isSyncing) return;
-                const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-                if (maxScroll > 0 && vbW < 940) {{
-                    const ratio = scrollContainer.scrollLeft / maxScroll;
-                    vbX = Math.round(ratio * (940 - vbW));
-                    updateViewBox();
-                }}
-            }});
-        }}
-
-        // Mouse Pan / Drag on SVG track
-        const svg = document.getElementById('corridorSvg');
-        let isDragging = false;
-        let startX, startY;
-
-        if (svg) {{
-            svg.addEventListener('mousedown', function(e) {{
-                isDragging = true;
-                startX = e.clientX;
-                startY = e.clientY;
-            }});
-            window.addEventListener('mousemove', function(e) {{
-                if (!isDragging) return;
-                const dx = (e.clientX - startX) * (vbW / svg.clientWidth);
-                const dy = (e.clientY - startY) * (vbH / svg.clientHeight);
-                vbX = Math.max(0, Math.min(940 - vbW, vbX - dx));
-                vbY = Math.max(0, Math.min(165 - vbH, vbY - dy));
-                startX = e.clientX;
-                startY = e.clientY;
-                updateViewBox();
-                updateScrollbar();
-            }});
-            window.addEventListener('mouseup', function() {{
-                isDragging = false;
-            }});
-            // Touchpad and mouse wheel zoom listener removed to prevent unwanted zoom on touch
-        }}
-        </script>
-        </body>
-        </html>"""
-            components.html(track_schematic_html, height=335)
-
-            # =======================================================================
-            # LAYER 2: INSTANT PRIORITIZATION SCOREBOARD (When Early Release is Active)
-            # =======================================================================
-            if is_early:
-                st.markdown("### 🏆 AI Instant Prioritization Scoreboard (Corridor Opportunity Dispatch)")
-                st.markdown("""
-                > **Dynamic Opportunity Detected**: Track block handed over **45 minutes ahead of schedule**.  
-                > Prioritization Formula: **$S_{instant} = 0.40 \\cdot P_{train} + 0.35 \\cdot D_{delay} + 0.15 \\cdot C_{freight} + 0.10 \\cdot T_{safety}$**
-                """)
-
-                p_candidates = loco_agent.calculate_instant_prioritization(section_id="Vijayawada-SEC-01", freed_minutes=45.0)
-                df_priorities = pd.DataFrame(p_candidates)
-
-                c_sc1, c_sc2 = st.columns([3, 1])
-                with c_sc1:
-                    st.dataframe(
-                        df_priorities[["candidate", "category", "delay_status", "score", "speed_action", "action", "collision_check"]],
-                        use_container_width=True,
-                        hide_index=True
-                    )
-                with c_sc2:
-                    st.markdown("##### ⚡ Controller One-Click Dispatch")
-                    top_cand = p_candidates[0]
-                    st.success(f"**Recommended:** {top_cand['candidate']}\n\n**Action:** {top_cand['action']}\n\n**Score:** {top_cand['score']} / 100")
-                    if st.button("⚡ Execute Instant Dispatch", key="btn_instant_dispatch_score", type="primary", use_container_width=True):
-                        st.session_state.early_clear_simulated = True
-                        loco_agent.dispatch_advisories()
-                        st.session_state.last_action_banner = ("success", "⚡ Instant Priority Dispatch Executed! Train 12723 Telangana Express dispatched into freed corridor · Speed elevated to 110 km/h · Section delay reduced by 18 minutes.")
-                        st.balloons()
-                        st.rerun()
-
-                st.markdown("---")
-
-            # =======================================================================
-            # LAYER 3: DYNAMIC SYNCHRONIZATION — TRACK VISUALIZATION ➔ SPEED GRAPH
-            # =======================================================================
-            st.markdown("#### 📈 Synchronized Locopilot Speed Profile w.r.t Track Kilometer (KM)")
-    
-            # Direct cause-and-effect correlation alert box based on current simulation state
-            if is_early:
-                st.success("""
-                **🟢 DIRECT SYNCHRONIZATION ACTIVE — EARLY BLOCK RELEASE (+45m FREED):**  
-                • **Track Map Above:** The maintenance block at **KM 114–118** is marked **`TRACK FIT CERTIFIED`** (Signal turned **GREEN**).  
-                • **Speed Graph Below:** The green curve shows that the Locopilot is authorized to run at **110 km/h full sectional speed** straight through KM 114–118. The caution braking dip has been completely eliminated!
-                """)
-            elif is_merged:
-                st.warning("""
-                **🤝 DIRECT SYNCHRONIZATION ACTIVE — MULTI-DEPARTMENT MEGA-BLOCK:**  
-                • **Track Map Above:** Engineering + TRD crews are working simultaneously at **KM 114–118** (**`MERGED MEGA-BLOCK`**).  
-                • **Speed Graph Below:** Locopilot speed is strictly capped at **30 km/h** between KM 114 and KM 118 for dual-crew track safety, with progressive braking starting from KM 111.
-                """)
-            else:
-                st.info("""
-                **⚠️ DIRECT SYNCHRONIZATION ACTIVE — TSR CAUTION RESTRICTION ACTIVE:**  
-                • **Track Map Above:** Maintenance work zone is live at **KM 114–118** (Signal is **AMBER**).  
-                • **Speed Graph Below:** Notice the progressive step-down braking curve: **110 km/h (KM 108) ➔ 80 km/h (KM 111) ➔ 45 km/h (KM 114) ➔ 30 km/h (KM 116–118)**, smoothly decelerating the train ahead of the work crew.
-                """)
-
-            km_points = [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135]
-            normal_speeds = [110, 110, 110, 80, 45, 30, 45, 90, 110, 110, 110]
-            merged_speeds = [110, 110, 110, 75, 40, 30, 30, 80, 110, 110, 110]
-            early_clear_speeds = [110, 110, 110, 110, 110, 105, 110, 110, 110, 110, 110]
-
-            current_profile = early_clear_speeds if is_early else (merged_speeds if is_merged else normal_speeds)
-            profile_label = "🟢 AI Dynamic Speed Restoration (110 km/h Restored)" if is_early else ("🤝 Merged Mega-Block Caution Profile (30 km/h Capped)" if is_merged else "⚠️ Caution Restricted Profile (TSR Active)")
-            profile_color = "#10b981" if is_early else ("#f59e0b" if is_merged else "#f97316")
+            # LAYER 3: PLOTLY SPEED PROFILE & TELEMETRY GRAPHS
+            st.markdown("#### 📈 Speed Profile & Telemetry Graphs")
+            
+            km_points = tr["km_options"]
+            speed_vals = tr["speed_profile"]
+            mps_vals = [tr["mps"]] * len(km_points)
 
             fig_speed = go.Figure()
-
-            # Max Permissible Sectional Speed Reference
             fig_speed.add_trace(go.Scatter(
-                x=km_points, y=[120]*len(km_points),
-                mode="lines", name="Max Permissible Speed (120 km/h)",
-                line=dict(color="#64748b", dash="dash")
+                x=km_points, y=speed_vals,
+                mode="lines+markers", name=f"{tr['id']} Speed Profile",
+                line=dict(color="#3b82f6", width=3.5),
+                marker=dict(size=8, color="#3b82f6")
             ))
-
-            # Active Instructed Speed Curve
             fig_speed.add_trace(go.Scatter(
-                x=km_points, y=current_profile,
-                mode="lines+markers", name=profile_label,
-                line=dict(color=profile_color, width=3.5),
-                marker=dict(size=8, color=profile_color)
+                x=km_points, y=mps_vals,
+                mode="lines", name="Maximum Permissible Speed (MPS)",
+                line=dict(color="#10b981", dash="dash", width=2)
             ))
-
-            # Normal baseline for comparison if in early release or merged state
-            if is_early or is_merged:
-                fig_speed.add_trace(go.Scatter(
-                    x=km_points, y=normal_speeds,
-                    mode="lines", name="Previous Caution Restricted Baseline",
-                    line=dict(color="#94a3b8", dash="dot", width=1.5)
-                ))
-
-            # Highlight the Work Zone (KM 114 to KM 118) directly on the graph to link with Track Map
-            zone_fill = "rgba(16,185,129,0.18)" if is_early else ("rgba(245,158,11,0.18)" if is_merged else "rgba(239,68,68,0.18)")
-            zone_text = "🟢 WORK ZONE FREED (110 km/h)" if is_early else ("🤝 MERGED MEGA-BLOCK (30 km/h)" if is_merged else "🚧 ACTIVE TSR CAUTION ZONE (30 km/h)")
-
-            fig_speed.add_vrect(
-                x0=114, x1=118,
-                fillcolor=zone_fill,
-                line=dict(color=profile_color, width=1.5, dash="dash"),
-                annotation_text=zone_text,
-                annotation_position="top left",
-                annotation=dict(font_size=10, font_color=profile_color)
-            )
-
-            # Physical Station & Asset Markers matching the SVG Track Map
-            stations_info = [
-                (100, "BZA JN", "top center"),
-                (108, "RAYYANAPADU", "top center"),
-                (125, "KONDAPALLI", "top center"),
-                (135, "MADHIRA", "top center")
-            ]
-            for st_km, st_name, st_pos in stations_info:
-                fig_speed.add_vline(x=st_km, line=dict(color="#334155", width=1, dash="dot"))
-                fig_speed.add_annotation(
-                    x=st_km, y=130, text=st_name, showarrow=False,
-                    font=dict(size=9, color="#94a3b8")
-                )
 
             fig_speed.update_layout(
-                title="Locopilot Instructed Speed Profile vs Track Kilometer Post (KM 100 to KM 135)",
-                xaxis_title="Track Kilometer Post (KM) — Corresponds 1:1 with Track Map Above",
+                title=f"Instructed Speed Profile vs Track Kilometer Post — {tr['id']} ({tr['name']})",
+                xaxis_title="Track Kilometer Post (KM)",
                 yaxis_title="Instructed Speed (km/h)",
-                yaxis=dict(range=[0, 140]),
+                yaxis=dict(range=[0, 150]),
                 margin=dict(l=40, r=40, t=50, b=40),
                 legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
             )
             st.plotly_chart(fig_speed, use_container_width=True)
 
-            # Interactive KM-by-KM Synchronized Telemetry Inspector
-            st.markdown("##### 🔍 Kilometer-by-Kilometer Telemetry & In-Cab Advisory Inspector")
-            st.caption("Select any track kilometer to inspect the exact signal aspect, permissible speed, and driver advisory linked to both the map and graph above:")
+            # LAYER 4: KILOMETER-BY-KILOMETER IN-CAB ADVISORY INSPECTOR
+            st.markdown("#### 🔍 Kilometer-by-Kilometer Telemetry & In-Cab Advisory Inspector")
+            st.caption("Select any track kilometer post to inspect signal aspect, permissible speed, and driver advisory display:")
 
-            km_col1, km_col2, km_col3, km_col4 = st.columns(4)
             selected_km = st.select_slider(
-                "Select Kilometer Post to Inspect:",
-                options=[100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                value=114,
-                format_func=lambda x: f"KM {x}"
+                "Select Track Kilometer Post (KM) to Inspect:",
+                options=tr["km_options"],
+                value=tr["km_options"][4],
+                format_func=lambda x: f"KM {x}",
+                key=f"slider_km_{tr['id']}"
             )
 
-            # Dynamic lookup based on inspected KM and current simulation state
-            km_speed_val = current_profile[km_points.index(selected_km)]
-            if selected_km in [114, 116, 118]:
-                km_loc_desc = "Inside / Approaching Work Zone (KM 114–118)"
-                km_signal_disp = "🟢 Green (Clearance Fit)" if is_early else ("🟡 Yellow (Caution Speed)" if is_merged else "🔴 Red / Amber Caution")
-                km_advisory_disp = "Corridor cleared early! Full 110 km/h acceleration authorized." if is_early else ("Multi-crew safety caution: Maintain strict 30 km/h." if is_merged else "Active maintenance gang ahead: Regulate speed to 30 km/h.")
-            elif selected_km == 111:
-                km_loc_desc = "Advance Distant Warning Signal Post"
-                km_signal_disp = "🟢 Green (No Caution)" if is_early else "🟡 Double Yellow (Attention)"
-                km_advisory_disp = "Clear run — Maintain cruise speed." if is_early else "Begin gradual service brake application (Target: 45 km/h by KM 114)."
-            elif selected_km in [100, 108, 125, 135]:
-                km_loc_desc = f"Station Zone ({'BZA JN' if selected_km==100 else ('RAYYANAPADU' if selected_km==108 else ('KONDAPALLI' if selected_km==125 else 'MADHIRA'))})"
-                km_signal_disp = "🟢 Green (All Clear)"
-                km_advisory_disp = f"Sectional MPS Authorized: {km_speed_val} km/h."
+            idx_km = tr["km_options"].index(selected_km)
+            km_speed = speed_vals[idx_km]
+            
+            if selected_km in tr["work_zone_kms"]:
+                km_desc = f"Inside / Approaching Work Zone (KM {tr['work_zone_kms'][0]}–{tr['work_zone_kms'][-1]})"
+                km_signal = "🟢 Green (Clearance Fit)" if is_early else ("🟡 Yellow (Caution Speed)" if is_merged else "🔴 Red / Amber Caution")
+                km_adv = "Corridor cleared early! Full permissible speed authorized." if is_early else ("Multi-crew safety caution: Maintain 30 km/h." if is_merged else "Active maintenance gang ahead: Regulate speed to 30 km/h.")
             else:
-                km_loc_desc = "Open Intermediate Block Section"
-                km_signal_disp = "🟢 Green (Automatic Block)"
-                km_advisory_disp = f"Normal cruise running: {km_speed_val} km/h."
+                km_desc = "Open Block Section"
+                km_signal = "🟢 Green (Automatic Clearance)"
+                km_adv = f"Sectional MPS Authorized: {km_speed} km/h."
 
-            with km_col1:
-                st.metric("Inspected Track KM", f"KM {selected_km}", delta=km_loc_desc, delta_color="off")
-            with km_col2:
-                st.metric("Permissible Speed", f"{km_speed_val} km/h", delta=f"{'+0' if km_speed_val==110 else f'-{110-km_speed_val}'} km/h vs MPS")
-            with km_col3:
-                st.metric("Signal Aspect on Map", km_signal_disp, delta="Aspect Telemetry", delta_color="off")
-            with km_col4:
-                st.metric("Safety Headway", "4.8 KM", delta="✓ Zero Collision", delta_color="normal")
+            km_c1, km_c2, km_c3, km_c4 = st.columns(4)
+            with km_c1:
+                st.metric("Inspected Track KM", f"KM {selected_km}", delta=km_desc, delta_color="off")
+            with km_c2:
+                st.metric("Permissible Speed", f"{km_speed} km/h", delta=f"{'+0' if km_speed==tr['mps'] else f'-{tr["mps"]-km_speed}'} km/h vs MPS")
+            with km_c3:
+                st.metric("Signal Aspect on Map", km_signal, delta="Aspect Telemetry", delta_color="off")
+            with km_c4:
+                st.metric("Safety Headway", "4.8 KM", delta="Zero Collision", delta_color="normal")
 
-            st.info(f"**🧑‍✈️ Locopilot In-Cab Advisory Display at KM {selected_km}:** `{km_advisory_disp}`")
+            st.info(f"**🚆 Locopilot In-Cab Advisory Display at KM {selected_km}:** `{km_adv}`")
 
             st.markdown("---")
 
-            # =======================================================================
-            # LAYER 4: MULTI-DEPARTMENT BLOCK MERGING CONSOLE (SHADOW BLOCKING)
-            # =======================================================================
+            # LAYER 5: MULTI-DEPARTMENT BLOCK MERGING CONSOLE
             st.markdown("#### 🤝 Multi-Department Block Merging (Shadow Block Aggregator)")
-            st.caption("When multiple departments request track time on different days, AI clusters them into a single Mega-Block, eliminating repeated corridor shutdowns.")
-
+            st.caption("AI clusters multi-department track time requests on the active corridor to prevent repeated shutdowns.")
+            
             merge_ops = merger_agent.find_merge_opportunities()
             if merge_ops:
                 for mop in merge_ops[:2]:
@@ -2766,28 +2621,35 @@ else:
 
             st.markdown("---")
 
-            # Detail Tabs
+            # LAYER 6: DATA REGISTERS TABS
             l_tab1, l_tab2, l_tab3 = st.tabs([
-                "📋 Locopilot Speed Advisories Register",
-                "🚆 Live Trains Telemetry",
-                "🚂 Goods Freight Allocation"
+                "📑 Active Speed Advisories",
+                "🚆 Live Train Telemetry Register",
+                "📦 Freight & Goods Train Forecast"
             ])
 
             with l_tab1:
-                df_advisories = loco_agent.get_active_advisories()
+                st.markdown("##### 📑 Active Speed Advisories & Caution Orders")
+                conn = get_db()
+                df_advisories = pd.read_sql("SELECT * FROM locopilot_speed_advisories ORDER BY advisory_id DESC LIMIT 30", conn)
+                conn.close()
                 if not df_advisories.empty:
                     st.dataframe(df_advisories, use_container_width=True, hide_index=True)
                 else:
                     st.info("No active speed advisories.")
 
             with l_tab2:
-                df_live_trains = loco_agent.get_live_trains()
+                st.markdown("##### 🚆 Live Train Telemetry Register")
+                conn = get_db()
+                df_live_trains = pd.read_sql("SELECT * FROM live_train_status ORDER BY delay_minutes DESC", conn)
+                conn.close()
                 if not df_live_trains.empty:
                     st.dataframe(df_live_trains, use_container_width=True, hide_index=True)
                 else:
-                    st.info("No live train telemetry.")
+                    st.info("No live train telemetry records.")
 
             with l_tab3:
+                st.markdown("##### 📦 Freight & Goods Train Forecast")
                 conn = get_db()
                 df_goods = pd.read_sql("SELECT * FROM goods_forecast ORDER BY expected_rakes DESC", conn)
                 conn.close()
@@ -2795,7 +2657,6 @@ else:
                     st.dataframe(df_goods, use_container_width=True, hide_index=True)
                 else:
                     st.info("No goods freight forecast data.")
-
         elif admin_menu == "📩 Department Requests":
             st.subheader("📩 Department Time Slot Requests & Approval Center")
             st.caption("Review incoming corridor maintenance block requests from Engineering, S&T, and TRD. Accept to schedule or Decline to generate AI Conflict Reports.")
