@@ -3088,10 +3088,13 @@ else:
                         """, (em_defect_id, em_sec, em_dept, now_str, end_str))
 
                         # Issue Caution Order into locopilot_speed_advisories
-                        conn.execute("""
-                            INSERT INTO locopilot_speed_advisories (section_id, train_id, train_name, from_station, to_station, km_start, km_end, normal_speed_kmh, advised_speed_kmh, reason, status, timestamp)
-                            VALUES (?, 'ALL-TRAINS', 'Emergency Caution', 'BZA', 'KI', 114.0, 118.0, 110.0, 30.0, ?, 'Dispatched to Locopilots', ?)
-                        """, (em_sec, f"EMERGENCY BLOCK ({em_dept}): {em_defect}", now_dt.strftime("%Y-%m-%d %H:%M:%S")))
+                        try:
+                            conn.execute("""
+                                INSERT INTO locopilot_speed_advisories (train_id, section_id, station_from, station_to, km_start, km_end, normal_speed_kmh, recommended_speed_kmh, time_saved_minutes, reason, department_notified, status, created_at)
+                                VALUES ('ALL-TRAINS', ?, 'BZA', 'KI', 114.0, 118.0, 110.0, 30.0, 0.0, ?, ?, 'Dispatched to Locopilots', ?)
+                            """, (em_sec, f"EMERGENCY BLOCK ({em_dept}): {em_defect}", em_dept, now_dt.strftime("%Y-%m-%d %H:%M:%S")))
+                        except Exception as adv_err:
+                            log_action("Controller", "advisory_warning", f"Locopilot advisory insert note: {adv_err}")
 
                         conn.commit()
                         conn.close()
