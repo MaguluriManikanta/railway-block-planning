@@ -690,7 +690,7 @@ if not st.session_state.user:
                 st.rerun()
 
         st.markdown("""
-        <div style="background-color: #fef2f2; border: 1px solid #fca5a5; border-radius: 8px; padding: 12px 14px; margin-top: 14px; margin-bottom: 10px; color: #dc2626; font-size: 0.88rem; line-height: 1.4; font-weight: 600;">
+        <div style="background: transparent; border: 1px solid rgba(255, 77, 77, 0.4); border-radius: 8px; padding: 12px 14px; margin-top: 14px; margin-bottom: 10px; color: #ff4d4d; font-size: 0.88rem; line-height: 1.45; font-weight: 600;">
             ⚠️ <strong>Prototype Notice</strong>: Quick Department Access is provided only for convenient demonstration and navigation of this prototype. It does not represent the complete security/authentication mechanism required for a production railway system.
         </div>
         """, unsafe_allow_html=True)
