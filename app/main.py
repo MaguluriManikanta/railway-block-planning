@@ -431,7 +431,7 @@ def authenticate_user(username, password):
 
 
 if "user" not in st.session_state:
-    st.session_state.user = authenticate_user("admin1", "admin123")
+    st.session_state.user = None
 
 
 # ---------------------------------------------------------------------------
@@ -1116,6 +1116,10 @@ st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 if st.sidebar.button("🚪 Sign Out", use_container_width=True):
     st.session_state.user = None
+    if "trains_10_state" in st.session_state:
+        del st.session_state["trains_10_state"]
+    if "last_action_banner" in st.session_state:
+        del st.session_state["last_action_banner"]
     st.rerun()
 
 
