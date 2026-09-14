@@ -660,7 +660,7 @@ if not st.session_state.user:
 
         with st.form("login_form"):
             u_input = st.text_input("👤 BDMS User ID", placeholder="e.g. engineer1 / admin1")
-            p_input = st.text_input("🔑 Passphrase", type="password", placeholder="Enter your password")
+            p_input = st.text_input("🔑 Password", type="password", placeholder="Enter your password")
             login_btn = st.form_submit_button("🚆  Sign In to BDMS Portal", use_container_width=True)
 
             if login_btn:
