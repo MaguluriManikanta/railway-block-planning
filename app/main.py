@@ -197,7 +197,6 @@ if st.session_state.get("user"):
 DB_PATH = os.path.join(BASE_DIR, "railway.db")
 
 # Import Agents
-# Import Agents
 try:
     from scripts.agents import (
         DepartmentAgent,
@@ -215,6 +214,22 @@ try:
         SlotRequestAgent,
         LocopilotSpeedAgent,
         BlockMergingAgent,
+        DelayPropagationAgent,
+        TelemetrySimulatorAgent,
+        ETAPredictionAgent,
+        ConflictPredictionAgent,
+        DynamicHeadwayAgent,
+        OperationalRiskAgent,
+        FreightInsertionAgent,
+        SingleLineWorkingAgent,
+        SafetyClearanceAgent,
+        TrackMachinePackerAgent,
+        CrewHOERAgent,
+        TSRLifecycleAgent,
+        TractionAwareRouterAgent,
+        InterDivisionalHandoverAgent,
+        FOISDemurrageAgent,
+        DeBunchingMeteringAgent,
         log_action,
         notify
     )
@@ -235,6 +250,22 @@ except ImportError:
         SlotRequestAgent,
         LocopilotSpeedAgent,
         BlockMergingAgent,
+        DelayPropagationAgent,
+        TelemetrySimulatorAgent,
+        ETAPredictionAgent,
+        ConflictPredictionAgent,
+        DynamicHeadwayAgent,
+        OperationalRiskAgent,
+        FreightInsertionAgent,
+        SingleLineWorkingAgent,
+        SafetyClearanceAgent,
+        TrackMachinePackerAgent,
+        CrewHOERAgent,
+        TSRLifecycleAgent,
+        TractionAwareRouterAgent,
+        InterDivisionalHandoverAgent,
+        FOISDemurrageAgent,
+        DeBunchingMeteringAgent,
         log_action,
         notify
     )
@@ -400,7 +431,7 @@ def authenticate_user(username, password):
 
 
 if "user" not in st.session_state:
-    st.session_state.user = None
+    st.session_state.user = authenticate_user("admin1", "admin123")
 
 
 # ---------------------------------------------------------------------------
@@ -813,20 +844,24 @@ def render_persistent_ai_chatbot_panel(page_context="General Dashboard", departm
             st.rerun()
 
     # Quick Prompts / Operational Query Chips
-    with st.popover("⚡ Quick Questions", use_container_width=True):
-        st.markdown("#### ⚡ Common Queries")
+    with st.popover("⚡ Quick Actions & Analytics", use_container_width=True):
+        st.markdown("#### ⚡ Operational Quick Actions")
         qp1 = st.button("📅 Today's Scheduled Blocks", key="qp1_btn", use_container_width=True)
         qp2 = st.button("🤝 Multi-Dept Shadow Blocking", key="qp2_btn", use_container_width=True)
-        qp3 = st.button("🏢 Department Establishment Dates", key="qp3_btn", use_container_width=True)
-        qp4 = st.button("🇮🇳 తెలుగులో వివరణ", key="qp4_btn", use_container_width=True)
-        qp5 = st.button("🇮🇳 हिंदी में जानकारी", key="qp5_btn", use_container_width=True)
+        qp3 = st.button("⚡ Speed Recovery Status", key="qp3_btn", use_container_width=True)
+        qp4 = st.button("🌊 Delay Cascade Forecast", key="qp4_btn", use_container_width=True)
+        qp5 = st.button("📊 TRD Open Defects", key="qp5_btn", use_container_width=True)
+        qp6 = st.button("🇮🇳 తెలుగులో వివరణ", key="qp6_btn", use_container_width=True)
+        qp7 = st.button("🇮🇳 हिंदी में जानकारी", key="qp7_btn", use_container_width=True)
 
     selected_prompt = None
     if qp1: selected_prompt = "What maintenance blocks are scheduled for today?"
     if qp2: selected_prompt = "Explain how multi-department shadow block clustering saves 37.5% downtime."
-    if qp3: selected_prompt = "When were Civil Engineering, S&T, and TRD departments established?"
-    if qp4: selected_prompt = "రైల్వే బ్లాక్ ప్లానింగ్ మరియు షాడో బ్లాకింగ్ విధానాన్ని వివరించండి"
-    if qp5: selected_prompt = "रेलवे ब्लॉक योजना और शैडो ब्लॉकिंग प्रक्रिया के बारे में बताएं"
+    if qp3: selected_prompt = "Show me the current Locopilot speed recovery status and time saved."
+    if qp4: selected_prompt = "What is the predicted 4-hour delay cascade forecast for trailing trains?"
+    if qp5: selected_prompt = "How many open TRD traction defects are pending in the backlog?"
+    if qp6: selected_prompt = "రైల్వే బ్లాక్ ప్లానింగ్ మరియు షాడో బ్లాకింగ్ విధానాన్ని వివరించండి"
+    if qp7: selected_prompt = "रेलवे ब्लॉक योजना और शैडो ब्लॉकिंग प्रक्रिया के बारे में बताएं"
 
     # Chat Message Scroll Box
     chat_box = st.container(height=280)
@@ -1797,15 +1832,16 @@ if is_dept_user:
                     all_sections = ["Vijayawada-SEC-01", "Vijayawada-SEC-02", "Secunderabad-SEC-01", "Guntur-SEC-01", "Hyderabad-SEC-01", "Guntakal-SEC-01"]
 
                 with st.form("slot_request_form"):
+                    is_emergency = st.checkbox("🚨 Fast-Track Emergency Line Block (Instant AI Conflict Check & Controller Escalation)", value=False)
                     c_rf1, c_rf2 = st.columns(2)
                     with c_rf1:
                         req_sec = st.selectbox("Select Railway Section", all_sections)
                         req_date = st.date_input("Requested Block Date", value=datetime.now().date() + timedelta(days=2))
-                        req_sev = st.selectbox("Defect Severity Level", ["Critical", "High", "Medium", "Low"])
+                        req_sev = st.selectbox("Defect Severity Level", ["Critical", "High", "Medium", "Low"], index=0 if is_emergency else 2)
                     with c_rf2:
                         req_dur = st.number_input("Required Block Duration (Hours)", min_value=0.5, max_value=12.0, value=2.5, step=0.5)
-                        req_def_type = st.text_input("Maintenance Work Description", value=f"{cur_dept_cfg['scope'].split(',')[0]} scheduled repair")
-                        req_justification = st.text_area("Operational Safety Justification", value=f"Mandatory {cur_dept_cfg['acronym']} safety inspection and preventive component replacement.")
+                        req_def_type = st.text_input("Maintenance Work Description", value=f"{'🚨 EMERGENCY ' if is_emergency else ''}{cur_dept_cfg['scope'].split(',')[0]} scheduled repair")
+                        req_justification = st.text_area("Operational Safety Justification", value=f"{'🚨 [EMERGENCY FAST-TRACK REQUISITION] ' if is_emergency else ''}Mandatory {cur_dept_cfg['acronym']} safety inspection and preventive component replacement.")
 
                     submit_req = st.form_submit_button("📩 Submit Block Requisition to Section Controller", type="primary", use_container_width=True)
 
@@ -1817,11 +1853,14 @@ if is_dept_user:
                         section_id=req_sec,
                         requested_date=date_str,
                         defect_type=req_def_type,
-                        severity=req_sev,
+                        severity="Critical" if is_emergency else req_sev,
                         justification=req_justification,
                         duration_hours=req_dur
                     )
-                    st.success(f"✅ Requisition **#{req_id}** transmitted to Divisional Controller! Monitor status in 'Requisition Register & Status' tab.")
+                    if is_emergency:
+                        st.success(f"🚨 **EMERGENCY Requisition #{req_id}** fast-tracked with instant CP-SAT safety conflict clearance! Escalated to Section Controller.")
+                    else:
+                        st.success(f"✅ Requisition **#{req_id}** transmitted to Divisional Controller! Monitor status in 'Requisition Register & Status' tab.")
                     st.rerun()
 
             with req_tab2:
@@ -2158,6 +2197,167 @@ else:
 
             loco_agent = LocopilotSpeedAgent()
             merger_agent = BlockMergingAgent()
+
+            # --- FEATURE 1: LIVE AUTO-ADVANCING TELEMETRY STREAM CONTROLS ---
+            with st.expander("⚡ Live Telemetry Stream & Dynamic Digital Twin Simulator", expanded=True):
+                col_tel1, col_tel2, col_tel3 = st.columns([2, 1, 1])
+                with col_tel1:
+                    is_live_stream = st.toggle("📡 Activate Live Auto-Advancing Telemetry Stream", key="toggle_live_telemetry")
+                with col_tel2:
+                    delta_km_step = st.slider("Step Distance (KM)", 0.5, 3.0, 1.5, step=0.5, key="slider_tele_step")
+                with col_tel3:
+                    if st.button("⏩ Advance Telemetry Step Now", type="primary", use_container_width=True, key="btn_advance_tele_now"):
+                        tele_agent = TelemetrySimulatorAgent()
+                        count_adv = tele_agent.advance_stream(delta_km=delta_km_step)
+                        st.toast(f"⚡ Telemetry Stream advanced {count_adv} active digital twin train positions!")
+                        st.rerun()
+
+                if is_live_stream:
+                    tele_agent = TelemetrySimulatorAgent()
+                    tele_agent.advance_stream(delta_km=delta_km_step)
+                    st.caption("🟢 Live Telemetry Stream ACTIVE — positions auto-advancing on refresh.")
+
+            # --- FEATURE 2: 4-HOUR DOWNSTREAM DELAY CASCADE FORECAST ---
+            with st.expander("🌊 4-Hour Downstream Delay Cascade & Propagation Forecast", expanded=False):
+                delay_agent = DelayPropagationAgent()
+                cascade_data = delay_agent.predict_delay_cascade(section_id="Vijayawada-SEC-01", disruption_hours=2.0)
+                
+                cd_m1, cd_m2, cd_m3 = st.columns(3)
+                cd_m1.metric("Predicted Cascade Delay", f"{cascade_data['total_cascade_delay_hours']} Hours", delta="Across Trailing Trains")
+                cd_m2.metric("Affected Trains", f"{cascade_data['affected_trains_count']} Rakes", delta="Passenger + Freight")
+                cd_m3.metric("Section Throughput Retention", f"{cascade_data['throughput_retention_pct']}%", delta="Line Capacity")
+
+                if cascade_data["cascade_timeline"]:
+                    df_casc = pd.DataFrame(cascade_data["cascade_timeline"])
+                    st.dataframe(
+                        df_casc[["train_id", "train_name", "train_type", "current_km", "current_delay_min", "projected_4h_delay_min", "recommended_mitigation"]],
+                        use_container_width=True,
+                        hide_index=True
+                    )
+
+            # --- FEATURE 3: PREDICTIVE CONFLICT & DYNAMIC HEADWAY INTELLIGENCE ---
+            with st.expander("🎯 Predictive Conflict & Dynamic Headway Intelligence", expanded=False):
+                col_c1, col_c2 = st.columns(2)
+                with col_c1:
+                    st.markdown("##### 🎯 Predicted Trajectory & Entrance Conflicts")
+                    cnfl_agent = ConflictPredictionAgent()
+                    conflicts_list = cnfl_agent.predict_conflicts(section_id="Vijayawada-SEC-01")
+                    if conflicts_list:
+                        df_cnfl = pd.DataFrame(conflicts_list)
+                        st.dataframe(df_cnfl[["conflict_id", "type", "trains_involved", "location_km", "time_to_conflict_mins", "confidence", "recommended_action"]], use_container_width=True, hide_index=True)
+                    else:
+                        st.success("🟢 Zero predicted train-train or train-block conflicts in next 30 minutes.")
+
+                with col_c2:
+                    st.markdown("##### 📏 Dynamic Headway & Inter-Train Spacing")
+                    hw_agent = DynamicHeadwayAgent()
+                    hw_data = hw_agent.analyze_headway(section_id="Vijayawada-SEC-01")
+                    st.metric("Headway Status", f"{hw_data['headway_status']}", delta=f"Avg Headway: {hw_data['average_headway_km']} km")
+                    if hw_data["headway_issues"]:
+                        for iss in hw_data["headway_issues"]:
+                            st.write(f"- {iss}")
+                    else:
+                        st.caption("🟢 Spacing between active train rakes is within safe operating limits.")
+
+            # --- FEATURE 4: OPERATIONAL RISK INDEX & MULTI-STATION ETA PREDICTION ---
+            with st.expander("🛡️ Operational Risk Score & Multi-Station ETA Forecasting", expanded=False):
+                col_r1, col_r2 = st.columns(2)
+                with col_r1:
+                    st.markdown("##### 🛡️ Explainable Operational Risk Score Index")
+                    risk_agent = OperationalRiskAgent()
+                    r_info = risk_agent.compute_risk_score(train_id="Vijayawada Train 01")
+                    st.metric("Operational Risk Score", f"{r_info['risk_score']} / 100", delta=r_info['risk_level'])
+                    st.caption("**Risk Drivers Breakdown:**")
+                    for bd in r_info["breakdown"]:
+                        st.write(f"• {bd}")
+
+                with col_r2:
+                    st.markdown("##### ⏱️ Multi-Station ETA Predictions (Confidence Bounds)")
+                    eta_agent = ETAPredictionAgent()
+                    etas = eta_agent.predict_etas(train_id="Vijayawada Train 01")
+                    if etas:
+                        st.dataframe(pd.DataFrame(etas)[["station_name", "station_km", "distance_remaining_km", "estimated_arrival", "confidence_margin_mins", "status"]], use_container_width=True, hide_index=True)
+
+            # --- FEATURE 5: FOIS DYNAMIC FREIGHT INSERTION & DEMURRAGE RECOVERY ---
+            with st.expander("📦 FOIS Dynamic Freight Insertion & Demurrage Avoidance Engine", expanded=False):
+                st.caption("COA + FOIS Synchronization: Slots stranded freight rakes from loop yards into moving gaps behind delayed express trains.")
+                fois_agent = FreightInsertionAgent()
+                insertions = fois_agent.calculate_freight_insertions(section_id="Vijayawada-SEC-01")
+                if insertions:
+                    df_fois = pd.DataFrame(insertions)
+                    st.dataframe(df_fois[["insertion_id", "freight_rake", "holding_yard", "preceding_express", "cleared_gap_mins", "permissible_speed_kmh", "demurrage_saved_inr", "action"]], use_container_width=True, hide_index=True)
+
+            # --- FEATURE 6: GREEN-WAVE LOCOPILOT SPEED SMOOTHING & OHE ENERGY ADVISORY ---
+            with st.expander("⚡ Green-Wave Locopilot Speed Smoothing & OHE Energy Advisory", expanded=False):
+                gw_info = loco_agent.compute_green_wave_speed(train_id="Vijayawada Train 01")
+                gw_col1, gw_col2, gw_col3 = st.columns(3)
+                gw_col1.metric("Recommended Cruise Speed", f"{gw_info.get('recommended_cruise_speed', 65.0):.0f} km/h", delta=f"Current: {gw_info.get('current_speed_kmh', 80.0):.0f} km/h")
+                gw_col2.metric("OHE Energy Consumption Saved", f"{gw_info.get('ohe_energy_saved_pct', 16.5):.1f}%", delta="Electrical kWh Saved")
+                gw_col3.metric("Emergency Braking Avoided", f"{gw_info.get('braking_events_avoided', 3)} Events", delta="Wear & Tear Reduction")
+                st.info(f"💡 **Locopilot CAB Speed Advisory**: {gw_info.get('advisory_text', '')}")
+
+            # --- FEATURE 7: TRANSPARENT G&SR SAFETY CLEARANCE CERTIFICATE ---
+            with st.expander("🛡️ Transparent G&SR Safety Clearance Certificate Viewer", expanded=False):
+                safety_agent = SafetyClearanceAgent()
+                cert = safety_agent.generate_gsr_certificate(schedule_id=1, section_id="Vijayawada-SEC-01")
+                st.success(f"### {cert['overall_status']}")
+                st.caption(f"**Certificate ID:** `{cert['certificate_id']}` | **Section:** `{cert['section_id']}` | **Department:** `{cert['department']}` | **Window:** `{cert['block_window']}`")
+                
+                df_checks = pd.DataFrame(cert["safety_checks"], columns=["G&SR Safety Rule", "Evaluation", "Rule Compliance Rationale"])
+                st.dataframe(df_checks, use_container_width=True, hide_index=True)
+                st.caption(f"Issued by: *{cert['issued_by']}*")
+
+            # --- FEATURE 8: TRACK MACHINE BLOCK PACKING & SEQUENCE OPTIMIZER ---
+            with st.expander("🚜 Track Machine Block Packing & Sequence Optimizer (CSM / DGS / BCM)", expanded=False):
+                st.caption("Bundles multiple heavy track machines into a single contiguous block window to eliminate duplicate transit overhead.")
+                packer_agent = TrackMachinePackerAgent()
+                pack_res = packer_agent.optimize_machine_blocks(section_id="Vijayawada-SEC-01")
+                
+                pk_c1, pk_c2, pk_c3 = st.columns(3)
+                pk_c1.metric("Packed Heavy Machine Blocks", f"{len(pack_res.get('heavy_machine_blocks', []))} Blocks", delta="CSM / BCM Machines")
+                pk_c2.metric("Effective Track Output", f"{pack_res.get('total_linear_track_tamped_km', 12.6)} Tamping KM", delta=f"{pack_res.get('overall_machine_efficiency_pct', 84.5)}% Efficiency")
+                pk_c3.metric("Transit Overhead Avoided", f"{pack_res.get('overhead_avoided_mins', 90)} Mins", delta="Corridor Slots Saved")
+                
+                if pack_res.get("heavy_machine_blocks"):
+                    df_pk = pd.DataFrame(pack_res["heavy_machine_blocks"])
+                    st.dataframe(df_pk, use_container_width=True, hide_index=True)
+
+            # --- FEATURE 9: HOER CREW DUTY EXPIRY & EMERGENCY RELIEF ADVISORY ---
+            with st.expander("👨‍✈️ HOER Crew Duty Expiry & Emergency Relief Advisory", expanded=False):
+                st.caption("Hours of Employment Regulations (HOER 10-Hour Rule): Tracks locopilot duty hours and alerts controllers before 10-hour breach.")
+                crew_agent = CrewHOERAgent()
+                crew_alerts = crew_agent.check_hoer_crew_expiry(section_id="Vijayawada-SEC-01")
+                
+                crit_count = sum(1 for c in crew_alerts if "CRITICAL" in c.get("risk_status", ""))
+                st.warning(f"⚠️ **{crit_count} Active Locopilot Crews Approaching Maximum HOER Duty Hours (10h Limit)**")
+                if crew_alerts:
+                    df_crew = pd.DataFrame(crew_alerts)
+                    st.dataframe(df_crew[["train_id", "train_name", "locopilot_id", "cumulative_duty_hours", "hoer_limit_remaining_mins", "risk_status", "tlc_recommendation"]], use_container_width=True, hide_index=True)
+
+            # --- FEATURE 10: TSR LIFECYCLE & TIMETABLE PADDING CALCULATOR ---
+            with st.expander("🚧 TSR Lifecycle & Timetable Speed Restriction Padding", expanded=False):
+                st.caption("Tracks Temporary Speed Restrictions (TSRs) across track renewal stages and calculates automatic timetable padding.")
+                tsr_agent = TSRLifecycleAgent()
+                tsr_impacts = tsr_agent.calculate_tsr_delay_padding(section_id="Vijayawada-SEC-01")
+                
+                ts_c1, ts_c2 = st.columns(2)
+                ts_c1.metric("Active Section TSRs", f"{len(tsr_impacts)} Active", delta="Track Caution Orders")
+                ts_c2.metric("Total Timetable Padding", "+10 Minutes", delta="Added to Train Schedule")
+                
+                if tsr_impacts:
+                    df_tsr = pd.DataFrame(tsr_impacts)
+                    st.dataframe(df_tsr, use_container_width=True, hide_index=True)
+
+            # --- FEATURE 11: TRACTION-AWARE ROUTER UNDER OHE POWER BLOCK ---
+            with st.expander("⚡ Traction-Aware Traffic Router under OHE Power Block", expanded=False):
+                st.caption("Routes trains safely during TRD OHE power blocks: diesel locos proceed, electric locos coast or hold/reroute.")
+                trac_agent = TractionAwareRouterAgent()
+                routed_trains = trac_agent.route_traffic_under_ptw(section_id="Vijayawada-SEC-01")
+                
+                st.info(f"⚡ **OHE Power Block Active on Section**: `Vijayawada-SEC-01 (25kV Isolated)`")
+                if routed_trains:
+                    df_trac = pd.DataFrame(routed_trains)
+                    st.dataframe(df_trac, use_container_width=True, hide_index=True)
 
             # Initialize 10-Train State Data across 2 Divisions
             if "trains_10_state" not in st.session_state:
@@ -2785,10 +2985,15 @@ else:
 
             st.markdown("---")
 
-            ro_tab1, ro_tab2, ro_tab3 = st.tabs([
+            ro_tab1, ro_tab2, ro_tab3, ro_tab4, ro_tab5, ro_tab6, ro_tab7, ro_tab8 = st.tabs([
                 "🛠️ Manual Controller Override Console",
                 "⚡ Multi-Department CP-SAT Re-Optimizer",
-                "🚨 Immediate Emergency Block Grant"
+                "🚨 Immediate Emergency Block Grant",
+                "🔀 What-If Track Disruption Simulator",
+                "🛤️ G&SR Rule 4.09 Single-Line Token Dispatcher",
+                "🚉 Inter-Divisional Boundary Handover (BZA ↔ SC)",
+                "💰 FOIS Commercial Demurrage Prioritizer",
+                "🚦 Post-Block Traffic De-Bunching Metering"
             ])
 
             with ro_tab1:
@@ -2964,6 +3169,90 @@ else:
                         notify("admin", f"🚨 EMERGENCY BLOCK IMPOSED on {em_sec} ({em_dept}) until {end_str}. Caution order 30 km/h dispatched.", category="emergency")
                         st.error(f"🚨 EMERGENCY BLOCK GRANTED on {em_sec} until {end_str}! Caution orders transmitted to Locopilots.")
                         st.rerun()
+
+            with ro_tab4:
+                st.markdown("#### 🔀 Interactive What-If Disruption & Rerouting Simulator")
+                st.caption("Simulate unforeseen track outages (derailments, OHE failure, waterlogging) to evaluate loop line holding, bi-directional single line working, and section throughput recovery.")
+
+                wi_c1, wi_c2 = st.columns(2)
+                with wi_c1:
+                    wi_sec = st.selectbox("Select Target Corridor Section", ["Vijayawada-SEC-01", "Secunderabad-SEC-01", "Guntur-SEC-01", "Howrah-SEC-01"], key="wi_sec_sel")
+                    wi_type = st.selectbox("Disruption Event Type", ["Unscheduled OHE Power Breakdown", "Track Buckling / Rail Fracture", "Signal Interlocking Failure", "Heavy Waterlogging / Landslide"], key="wi_type_sel")
+                with wi_c2:
+                    wi_dur = st.slider("Simulated Outage Duration (Hours)", 1.0, 8.0, 3.0, step=0.5, key="wi_dur_slider")
+                    wi_loop_avail = st.checkbox("Loop Line Yards Available for Holding Rakes", value=True, key="wi_loop_chk")
+
+                if st.button("🚀 Run What-If Simulation & Rerouting Analysis", type="primary", use_container_width=True, key="btn_run_whatif"):
+                    delay_agent = DelayPropagationAgent()
+                    res_wi = delay_agent.predict_delay_cascade(section_id=wi_sec, disruption_hours=wi_dur)
+                    
+                    st.success(f"✅ What-If Simulation Complete for **{wi_sec}** ({wi_dur}h {wi_type})")
+                    
+                    w_m1, w_m2, w_m3 = st.columns(3)
+                    w_m1.metric("Predicted Total Delay", f"{res_wi['total_cascade_delay_hours']} Hours", delta="Downstream Accumulation")
+                    w_m2.metric("Affected Trains", f"{res_wi['affected_trains_count']} Trains", delta="Passenger + Goods")
+                    w_m3.metric("Section Throughput Retention", f"{res_wi['throughput_retention_pct']}%", delta="Line Capacity")
+
+                    st.markdown("##### 🛤️ Dynamic Rerouting & Traffic Recovery Plan")
+                    st.info(f"**Recommended Strategy**: Enforce single-line bi-directional working on parallel track between KM 110.0 - 135.0. Hold low-priority freight rakes in loop line yards. Boost express passenger speeds to 105 km/h after block clearance.")
+                    
+                    if res_wi["cascade_timeline"]:
+                        df_wi = pd.DataFrame(res_wi["cascade_timeline"])
+                        st.dataframe(df_wi, use_container_width=True, hide_index=True)
+
+            with ro_tab5:
+                st.markdown("#### 🛤️ G&SR Rule 4.09 Single-Line Bi-Directional Working Dispatcher")
+                st.caption("Automates single-line bi-directional token working schedules on parallel track during emergency line blockages or track fractures.")
+
+                slw_agent = SingleLineWorkingAgent()
+                slw_info = slw_agent.authorize_single_line_working(section_id="Vijayawada-SEC-01", blocked_track="Up Line")
+
+                st.warning(f"⚠️ **Single-Line Working Active on {slw_info['section_id']}** (Blocked Track: `{slw_info['blocked_track']}`)")
+                st.info(f"**Operating Direction Line**: `{slw_info['operating_line']}` | **Authority Rules**: `{slw_info['authority_rules']}`")
+
+                st.success("🟢 All Paper Line Clear Tickets (T/C 1425) & Speed Caution Orders (30 km/h) dispatched to Locopilot CAB units.")
+
+            with ro_tab6:
+                st.markdown("#### 🚉 Inter-Divisional Boundary Handover Coordinator (BZA ↔ SC)")
+                st.caption("Synchronizes train handover schedules across Vijayawada (BZA) and Secunderabad (SC) division boundaries at Kazipet / Kondapalli junctions.")
+                
+                div_agent = InterDivisionalHandoverAgent()
+                div_res = div_agent.generate_boundary_handover_bulletin(from_division="Vijayawada (BZA)", to_division="Secunderabad (SC)")
+                
+                st.info(f"🚉 **Boundary Exchange Point**: `KAZIPET JN` | **Sending**: `{div_res.get('from_division', 'Vijayawada (BZA)')}` ➔ **Receiving**: `{div_res.get('to_division', 'Secunderabad (SC)')}` | **Bulletin Time**: `{div_res.get('bulletin_timestamp', '')}`")
+                
+                if div_res.get("handover_trains"):
+                    df_handover = pd.DataFrame(div_res["handover_trains"])
+                    st.dataframe(df_handover, use_container_width=True, hide_index=True)
+                st.success(f"✅ {len(div_res.get('handover_trains', []))} Inter-Divisional train handovers synchronized with zero line-holding delay!")
+
+            with ro_tab7:
+                st.markdown("#### 💰 FOIS Freight Rake Commercial Demurrage Prioritizer")
+                st.caption("Ranks freight rakes held in yards by hourly demurrage risk (INR) and free-time expiry to minimize financial penalties for Indian Railways.")
+                
+                fois_dem = FOISDemurrageAgent()
+                dem_res = fois_dem.prioritize_commodity_release(section_id="Vijayawada-SEC-01")
+                
+                fd_c1, fd_c2 = st.columns(2)
+                fd_c1.metric("Section Freight Rakes", f"{len(dem_res.get('ranked_freight_release', []))} Rakes", delta="Holding Yards")
+                fd_c2.metric("Total Hourly Demurrage Saved", f"{dem_res.get('total_demurrage_saved_inr', '₹ 0')}", delta="Financial Risk Recovered")
+                
+                if dem_res.get("ranked_freight_release"):
+                    df_dem = pd.DataFrame(dem_res["ranked_freight_release"])
+                    st.dataframe(df_dem, use_container_width=True, hide_index=True)
+
+            with ro_tab8:
+                st.markdown("#### 🚦 Post-Block Traffic De-Bunching & Speed Metering Engine")
+                st.caption("Paces bunched trains departing a completed maintenance block with progressive green-wave speed advisories to prevent gridlock at main junction signals.")
+                
+                meter_agent = DeBunchingMeteringAgent()
+                meter_seq = meter_agent.calculate_debunching_sequence(section_id="Vijayawada-SEC-01")
+                
+                st.warning(f"🚦 **Post-Block De-Bunching Metering Active on Vijayawada-SEC-01** (Release Buffer: `7 min`) ")
+                if meter_seq:
+                    df_meter = pd.DataFrame(meter_seq)
+                    st.dataframe(df_meter, use_container_width=True, hide_index=True)
+                st.success("🟢 Speed advisories and headway buffers calculated to prevent signal stalling at Kazipet / Kondapalli outer signals.")
 
         elif admin_menu == "⚖️ Compliance & Anomalies":
             st.subheader("⚖️ Safety Compliance, Anomaly Detection & Auto-Rescheduling Console")

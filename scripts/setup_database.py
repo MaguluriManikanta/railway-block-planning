@@ -272,14 +272,22 @@ def create_dummy_crew(conn):
 
 def create_dummy_live_trains(conn):
     trains = [
-        {"train_id": "12727", "train_name": "Godavari Express", "train_type": "Superfast Express", "section_id": "Vijayawada-SEC-01", "current_km": 14.5, "delay_minutes": 25.0, "current_speed_kmh": 60.0, "recommended_speed_kmh": 90.0, "status": "Delayed - Speed Recovery Recommended", "last_updated": "2026-09-06 22:30:00"},
-        {"train_id": "12707", "train_name": "AP Sampark Kranti", "train_type": "Superfast Express", "section_id": "Secunderabad-SEC-01", "current_km": 28.0, "delay_minutes": 15.0, "current_speed_kmh": 65.0, "recommended_speed_kmh": 85.0, "status": "Delayed - Corridor Opening Boost", "last_updated": "2026-09-06 22:35:00"},
-        {"train_id": "12805", "train_name": "Jan Shatabdi Express", "train_type": "Express", "section_id": "Guntur-SEC-03", "current_km": 8.2, "delay_minutes": 0.0, "current_speed_kmh": 80.0, "recommended_speed_kmh": 80.0, "status": "On Time", "last_updated": "2026-09-06 22:40:00"},
-        {"train_id": "GDS-9901", "train_name": "Coal Rake Special (Goods)", "train_type": "Freight Goods Rake", "section_id": "Hyderabad-SEC-04", "current_km": 33.0, "delay_minutes": 40.0, "current_speed_kmh": 45.0, "recommended_speed_kmh": 65.0, "status": "Freight Slotting Active", "last_updated": "2026-09-06 22:42:00"},
-        {"train_id": "17225", "train_name": "Amaravati Express", "train_type": "Express", "section_id": "Vijayawada-SEC-02", "current_km": 19.4, "delay_minutes": 18.0, "current_speed_kmh": 55.0, "recommended_speed_kmh": 85.0, "status": "Delayed - Speed Recovery Recommended", "last_updated": "2026-09-06 22:43:00"}
+        # --- VIJAYAWADA DIVISION (BZA) ---
+        {"train_id": "12727", "train_name": "Godavari Express", "train_type": "Superfast Express", "division_id": "Vijayawada Division (BZA)", "section_id": "BZA-RAY", "current_km": 105.0, "delay_minutes": 0.0, "current_speed_kmh": 110.0, "recommended_speed_kmh": 110.0, "status": "Cruising (On Time)", "last_updated": "2026-09-12 10:00:00"},
+        {"train_id": "12759", "train_name": "Charminar Express", "train_type": "Superfast", "division_id": "Vijayawada Division (BZA)", "section_id": "BZA-KDM", "current_km": 114.0, "delay_minutes": 12.0, "current_speed_kmh": 30.0, "recommended_speed_kmh": 85.0, "status": "Regulated (30 km/h Caution)", "last_updated": "2026-09-12 10:05:00"},
+        {"train_id": "20833", "train_name": "Vande Bharat Express", "train_type": "Semi High Speed", "division_id": "Vijayawada Division (BZA)", "section_id": "KDM-KMT", "current_km": 122.0, "delay_minutes": 0.0, "current_speed_kmh": 120.0, "recommended_speed_kmh": 130.0, "status": "Speed Boost Active", "last_updated": "2026-09-12 10:10:00"},
+        {"train_id": "G-402", "train_name": "Coal Freight Rake", "train_type": "Heavy Freight", "division_id": "Vijayawada Division (BZA)", "section_id": "RAY-KDM", "current_km": 111.0, "delay_minutes": 18.0, "current_speed_kmh": 45.0, "recommended_speed_kmh": 65.0, "status": "Approach Braking", "last_updated": "2026-09-12 10:12:00"},
+        {"train_id": "57231", "train_name": "BZA-KMT Passenger Local", "train_type": "Passenger Local", "division_id": "Vijayawada Division (BZA)", "section_id": "KDM-MDR", "current_km": 128.0, "delay_minutes": 5.0, "current_speed_kmh": 40.0, "recommended_speed_kmh": 75.0, "status": "Station Approach", "last_updated": "2026-09-12 10:15:00"},
+
+        # --- HOWRAH DIVISION (HWH) ---
+        {"train_id": "12301", "train_name": "Howrah Rajdhani Express", "train_type": "Superfast Rajdhani", "division_id": "Howrah Division (HWH)", "section_id": "HWH-SRP", "current_km": 25.0, "delay_minutes": 0.0, "current_speed_kmh": 130.0, "recommended_speed_kmh": 130.0, "status": "High Speed Cruising", "last_updated": "2026-09-12 10:18:00"},
+        {"train_id": "37211", "train_name": "Bandel EMU Suburban Local", "train_type": "Suburban EMU", "division_id": "Howrah Division (HWH)", "section_id": "SRP-BDC", "current_km": 15.0, "delay_minutes": 3.0, "current_speed_kmh": 65.0, "recommended_speed_kmh": 85.0, "status": "Suburban Service", "last_updated": "2026-09-12 10:20:00"},
+        {"train_id": "F-819", "train_name": "Steel Coil Special Freight", "train_type": "Heavy Goods", "division_id": "Howrah Division (HWH)", "section_id": "BDC-BWN", "current_km": 42.0, "delay_minutes": 25.0, "current_speed_kmh": 30.0, "recommended_speed_kmh": 60.0, "status": "Active TSR Caution (30 km/h)", "last_updated": "2026-09-12 10:22:00"},
+        {"train_id": "12339", "train_name": "Coalfield Express", "train_type": "Superfast Express", "division_id": "Howrah Division (HWH)", "section_id": "BWN-DGR", "current_km": 65.0, "delay_minutes": 0.0, "current_speed_kmh": 105.0, "recommended_speed_kmh": 110.0, "status": "Clear Block Run", "last_updated": "2026-09-12 10:25:00"},
+        {"train_id": "22301", "train_name": "Vande Bharat HWH-NJP", "train_type": "Semi High Speed", "division_id": "Howrah Division (HWH)", "section_id": "BWN-DGR", "current_km": 85.0, "delay_minutes": 0.0, "current_speed_kmh": 115.0, "recommended_speed_kmh": 130.0, "status": "Accelerated Cruise", "last_updated": "2026-09-12 10:28:00"}
     ]
     pd.DataFrame(trains).to_sql("live_train_status", conn, if_exists="replace", index=False)
-    print(f"Loaded {len(trains)} live train tracking entries.")
+    print(f"Loaded {len(trains)} live train tracking entries across 2 divisions.")
 
 
 if __name__ == "__main__":

@@ -7,12 +7,25 @@ from datetime import datetime
 from fpdf import FPDF
 import pandas as pd
 
+import sqlite3
+
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "reports_output")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+DB_PATH = os.path.join(os.path.dirname(__file__), "..", "railway.db")
 
-def generate_report(schedule_df: pd.DataFrame) -> str:
+
+def generate_report(schedule_df: pd.DataFrame = None) -> str:
     """General block planning summary report."""
+    if schedule_df is None:
+        conn = sqlite3.connect(DB_PATH)
+        schedule_df = pd.read_sql(
+            "SELECT s.*, d.severity, d.defect_type FROM schedule s "
+            "LEFT JOIN defects d ON s.defect_id = d.defect_id "
+            "WHERE LOWER(s.status) != 'cancelled'", conn
+        )
+        conn.close()
+
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Helvetica", "B", 16)
@@ -47,11 +60,23 @@ def generate_report(schedule_df: pd.DataFrame) -> str:
     return path
 
 
-def generate_periodic_report(df: pd.DataFrame, period_type="Weekly", period_label="Week 1 (Sep 2026)", department="All") -> str:
+def generate_periodic_report(df=None, period_type="Weekly", period_label="Week 1 (Sep 2026)", department="All") -> str:
     """
     Automatic generation of reports (week by week, month by month) with
     completion analysis and performance metrics.
     """
+    if isinstance(df, str):
+        period_type = df
+        df = None
+
+    if df is None or not isinstance(df, pd.DataFrame):
+        conn = sqlite3.connect(DB_PATH)
+        df = pd.read_sql(
+            "SELECT s.*, d.severity, d.defect_type FROM schedule s "
+            "LEFT JOIN defects d ON s.defect_id = d.defect_id "
+            "WHERE LOWER(s.status) != 'cancelled'", conn
+        )
+        conn.close()
     pdf = FPDF()
     pdf.add_page()
     
