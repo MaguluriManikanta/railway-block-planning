@@ -7,3 +7,12 @@ venv/
 .idea/
 reports_output/
 *.db-journal
+*.db-wal
+*.db-shm
+node_modules/
+dist/
+.vite/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+app.db
