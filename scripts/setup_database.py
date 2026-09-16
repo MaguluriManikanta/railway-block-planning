@@ -16,7 +16,13 @@ DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
 
 
 def get_connection():
-    return sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=30.0)
+    try:
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA busy_timeout=30000;")
+    except Exception:
+        pass
+    return conn
 
 
 def create_tables(conn):

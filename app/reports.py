@@ -18,7 +18,12 @@ DB_PATH = os.path.join(os.path.dirname(__file__), "..", "railway.db")
 def generate_report(schedule_df: pd.DataFrame = None) -> str:
     """General block planning summary report."""
     if schedule_df is None:
-        conn = sqlite3.connect(DB_PATH)
+        conn = sqlite3.connect(DB_PATH, timeout=30.0)
+        try:
+            conn.execute("PRAGMA journal_mode=WAL;")
+            conn.execute("PRAGMA busy_timeout=30000;")
+        except Exception:
+            pass
         schedule_df = pd.read_sql(
             "SELECT s.*, d.severity, d.defect_type FROM schedule s "
             "LEFT JOIN defects d ON s.defect_id = d.defect_id "
@@ -70,7 +75,12 @@ def generate_periodic_report(df=None, period_type="Weekly", period_label="Week 1
         df = None
 
     if df is None or not isinstance(df, pd.DataFrame):
-        conn = sqlite3.connect(DB_PATH)
+        conn = sqlite3.connect(DB_PATH, timeout=30.0)
+        try:
+            conn.execute("PRAGMA journal_mode=WAL;")
+            conn.execute("PRAGMA busy_timeout=30000;")
+        except Exception:
+            pass
         df = pd.read_sql(
             "SELECT s.*, d.severity, d.defect_type FROM schedule s "
             "LEFT JOIN defects d ON s.defect_id = d.defect_id "

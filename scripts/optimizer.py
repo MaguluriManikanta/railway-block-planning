@@ -115,7 +115,12 @@ def filter_slots_against_locked_schedules(slots: pd.DataFrame, conn: sqlite3.Con
 
 
 def run_optimizer(horizon="weekly", horizon_days=7, max_tasks=400, max_slots=400):
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=30.0)
+    try:
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA busy_timeout=30000;")
+    except Exception:
+        pass
 
     defects = pd.read_sql(
         "SELECT * FROM defects WHERE status = 'Open' ORDER BY priority_score DESC LIMIT ?",

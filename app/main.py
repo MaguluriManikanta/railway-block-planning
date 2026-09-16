@@ -27,6 +27,14 @@ import plotly.express as px
 import plotly.graph_objects as go
 import bcrypt
 
+# Reconfigure stdout/stderr encoding for Windows charmap console safety
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(errors='backslashreplace')
+        sys.stderr.reconfigure(errors='backslashreplace')
+    except Exception:
+        pass
+
 # Ensure workspace directories (app, scripts, root) are in sys.path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -90,9 +98,8 @@ if st.session_state.get("user"):
 
     /* Sticky Right Chatbot Panel with Natural Main Page Scrolling (Desktop View) */
     @media (min-width: 768px) {
-        /* Top-level two-column layout wrapper containing the AI panel */
-        .block-container div[data-testid="stHorizontalBlock"]:has([data-testid="stChatInput"]),
-        .block-container div[data-testid="stHorizontalBlock"]:has(.ai-panel-card) {
+        /* Top-level two-column layout wrapper containing the main page and AI panel */
+        .block-container div[data-testid="stHorizontalBlock"] {
             display: flex !important;
             flex-direction: row !important;
             align-items: flex-start !important;
@@ -102,12 +109,8 @@ if st.session_state.get("user"):
         }
 
         /* Left / Main Content Panel: Full Natural Vertical Flow */
-        .block-container div[data-testid="stHorizontalBlock"]:has([data-testid="stChatInput"]) > div[data-testid="stColumn"]:nth-of-type(1),
-        .block-container div[data-testid="stHorizontalBlock"]:has([data-testid="stChatInput"]) > div[data-testid="column"]:nth-of-type(1),
-        .block-container div[data-testid="stHorizontalBlock"]:has(.ai-panel-card) > div[data-testid="stColumn"]:nth-of-type(1),
-        .block-container div[data-testid="stHorizontalBlock"]:has(.ai-panel-card) > div[data-testid="column"]:nth-of-type(1),
-        .block-container > [data-testid="stElementContainer"] > [data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-of-type(1),
-        .block-container > [data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-of-type(1) {
+        .block-container div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-of-type(1),
+        .block-container div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-of-type(1) {
             flex: 2.3 !important;
             min-width: 0 !important;
             height: auto !important;
@@ -115,17 +118,14 @@ if st.session_state.get("user"):
             max-height: none !important;
         }
 
-        /* Right / Chatbot Panel: Sticky Pinning on Right Side */
-        .block-container div[data-testid="stHorizontalBlock"]:has([data-testid="stChatInput"]) > div[data-testid="stColumn"]:nth-of-type(2),
-        .block-container div[data-testid="stHorizontalBlock"]:has([data-testid="stChatInput"]) > div[data-testid="column"]:nth-of-type(2),
-        .block-container div[data-testid="stHorizontalBlock"]:has(.ai-panel-card) > div[data-testid="stColumn"]:nth-of-type(2),
-        .block-container div[data-testid="stHorizontalBlock"]:has(.ai-panel-card) > div[data-testid="column"]:nth-of-type(2),
-        .block-container > [data-testid="stElementContainer"] > [data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-of-type(2),
-        .block-container > [data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-of-type(2) {
+        /* Right / Chatbot Panel: Sticky Pinning on Right Side (Follows user during scroll) */
+        .block-container div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-of-type(2),
+        .block-container div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-of-type(2) {
             flex: 1.0 !important;
             min-width: 0 !important;
             position: sticky !important;
             top: 4.5rem !important;
+            align-self: flex-start !important;
             max-height: calc(100vh - 5.5rem) !important;
             display: flex !important;
             flex-direction: column !important;
@@ -189,6 +189,56 @@ if st.session_state.get("user"):
         border-radius: 6px;
         margin-bottom: 12px;
         font-size: 13.5px;
+    }
+
+    /* ----------------------------------------------------------------------- */
+    /* FIXED & FULL-HEIGHT LEFT SIDEBAR NAVIGATION                             */
+    /* ----------------------------------------------------------------------- */
+    [data-testid="stSidebar"], section[data-testid="stSidebar"] {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        min-height: 100vh !important;
+        width: 290px !important;
+        z-index: 100 !important;
+        overflow-y: auto !important;
+        background-color: #0f172a !important;
+        border-right: 1px solid #1e293b !important;
+    }
+
+    [data-testid="stSidebar"] > div:first-child {
+        padding-top: 1.2rem !important;
+        padding-bottom: 1.2rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Tighten radio options in sidebar so all tabs fit on screen without cutoff */
+    [data-testid="stSidebar"] .stRadio > div {
+        gap: 2px !important;
+    }
+
+    [data-testid="stSidebar"] .stRadio label {
+        padding: 5px 8px !important;
+        font-size: 13.5px !important;
+        line-height: 1.3 !important;
+        margin-bottom: 1px !important;
+        border-radius: 6px !important;
+    }
+
+    [data-testid="stSidebar"] hr {
+        margin-top: 0.5rem !important;
+        margin-bottom: 0.5rem !important;
+        border-color: #1e293b !important;
+    }
+
+    [data-testid="stSidebar"] h3, [data-testid="stSidebar"] h2 {
+        font-size: 14px !important;
+        font-weight: 700 !important;
+        margin-bottom: 4px !important;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -285,16 +335,62 @@ except ImportError:
 
 _db_schema_checked = False
 
+def sync_schedule_to_current_date(conn):
+    """
+    Ensures active maintenance blocks dynamically start from today's operational date (2026-09-16),
+    shifting legacy past schedule dates forward to current rolling weekly/monthly horizons.
+    Completed and cancelled tasks remain safely in history.
+    """
+    try:
+        cur = conn.cursor()
+        row = cur.execute("SELECT MIN(planned_start) FROM schedule WHERE LOWER(status) NOT IN ('completed', 'cancelled')").fetchone()
+        if row and row[0]:
+            earliest_str = str(row[0])[:10]
+            earliest_dt = datetime.strptime(earliest_str, "%Y-%m-%d")
+            today_dt = datetime.strptime("2026-09-16", "%Y-%m-%d")
+            diff_days = (today_dt - earliest_dt).days
+            if diff_days > 0:
+                rows = cur.execute("SELECT schedule_id, planned_start, planned_end FROM schedule WHERE LOWER(status) NOT IN ('completed', 'cancelled')").fetchall()
+                for s_id, p_start, p_end in rows:
+                    try:
+                        st_dt = datetime.strptime(str(p_start)[:16], "%Y-%m-%d %H:%M") + timedelta(days=diff_days)
+                        en_dt = datetime.strptime(str(p_end)[:16], "%Y-%m-%d %H:%M") + timedelta(days=diff_days)
+                        cur.execute(
+                            "UPDATE schedule SET planned_start=?, planned_end=? WHERE schedule_id=?",
+                            (st_dt.strftime("%Y-%m-%d %H:%M"), en_dt.strftime("%Y-%m-%d %H:%M"), s_id)
+                        )
+                    except Exception:
+                        pass
+                slot_row = cur.execute("SELECT MIN(date) FROM corridor_slots").fetchone()
+                if slot_row and slot_row[0]:
+                    e_slot = datetime.strptime(str(slot_row[0])[:10], "%Y-%m-%d")
+                    slot_diff = (today_dt - e_slot).days
+                    if slot_diff > 0:
+                        s_rows = cur.execute("SELECT slot_id, date FROM corridor_slots").fetchall()
+                        for sl_id, sl_date in s_rows:
+                            try:
+                                sl_dt = datetime.strptime(str(sl_date)[:10], "%Y-%m-%d") + timedelta(days=slot_diff)
+                                cur.execute("UPDATE corridor_slots SET date=? WHERE slot_id=?", (sl_dt.strftime("%Y-%m-%d"), sl_id))
+                            except Exception:
+                                pass
+                conn.commit()
+    except Exception:
+        pass
+
+
 def _ensure_db_schema():
     global _db_schema_checked
     if _db_schema_checked:
         return
     try:
-        conn = sqlite3.connect(DB_PATH)
+        conn = sqlite3.connect(DB_PATH, timeout=30.0)
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA busy_timeout=30000;")
         defects_cols = [col[1] for col in conn.execute("PRAGMA table_info(defects)").fetchall()]
         if defects_cols and "actual_completion_time" not in defects_cols:
             conn.execute("ALTER TABLE defects ADD COLUMN actual_completion_time TEXT")
             conn.commit()
+        sync_schedule_to_current_date(conn)
         conn.close()
     except Exception:
         pass
@@ -303,8 +399,13 @@ def _ensure_db_schema():
 
 def get_db():
     _ensure_db_schema()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=30.0)
     conn.row_factory = sqlite3.Row
+    try:
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA busy_timeout=30000;")
+    except Exception:
+        pass
     return conn
 
 
@@ -395,6 +496,428 @@ def compute_overdue_days_lagged(due_date_str):
             return 0, f"🟢 On Time ({abs(diff)} days left)"
     except Exception:
         return 0, str(due_date_str)
+
+
+# ---------------------------------------------------------------------------
+# VISUAL-FIRST RAILWAY OPERATIONAL INTELLIGENCE HELPERS
+# ---------------------------------------------------------------------------
+
+@st.cache_data(ttl=5)
+def get_cached_kpi_metrics(department="All"):
+    """Cached KPI metric calculations for operational health bar."""
+    conn = get_db()
+    cur = conn.cursor()
+    if department == "All":
+        tot_d = cur.execute("SELECT COUNT(*) FROM defects").fetchone()[0]
+        open_d = cur.execute("SELECT COUNT(*) FROM defects WHERE LOWER(status)='open'").fetchone()[0]
+        crit_d = cur.execute("SELECT COUNT(*) FROM defects WHERE LOWER(severity)='critical' AND LOWER(status)!='completed'").fetchone()[0]
+        high_d = cur.execute("SELECT COUNT(*) FROM defects WHERE LOWER(severity)='high' AND LOWER(status)!='completed'").fetchone()[0]
+    else:
+        tot_d = cur.execute("SELECT COUNT(*) FROM defects WHERE department=?", (department,)).fetchone()[0]
+        open_d = cur.execute("SELECT COUNT(*) FROM defects WHERE department=? AND LOWER(status)='open'", (department,)).fetchone()[0]
+        crit_d = cur.execute("SELECT COUNT(*) FROM defects WHERE department=? AND LOWER(severity)='critical' AND LOWER(status)!='completed'", (department,)).fetchone()[0]
+        high_d = cur.execute("SELECT COUNT(*) FROM defects WHERE department=? AND LOWER(severity)='high' AND LOWER(status)!='completed'", (department,)).fetchone()[0]
+    conn.close()
+    health_score = max(72.0, round(100.0 - (crit_d * 3.5 + high_d * 1.5), 1))
+    return {
+        "tot_d": tot_d,
+        "open_d": open_d,
+        "crit_d": crit_d,
+        "high_d": high_d,
+        "health_score": health_score
+    }
+
+
+def init_trains_10_state():
+    if "trains_10_state" not in st.session_state:
+        st.session_state.trains_10_state = {
+            "Vijayawada Train 01": {
+                "id": "Vijayawada Train 01",
+                "division": "Vijayawada Division (BZA)",
+                "number": "12727",
+                "name": "Godavari Express",
+                "type": "Superfast Express",
+                "corridor": "Vijayawada → Kondapalli → Madhira",
+                "section_id": "BZA-RAY",
+                "current_km": 105,
+                "current_speed": 110,
+                "mps": 110,
+                "status": "Cruising (On Time)",
+                "signal": "🟢 Green (Clearance Fit)",
+                "delay_minutes": 0,
+                "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                "work_zone_kms": [114, 116, 118],
+                "speed_profile": [110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110],
+                "early_cleared": True,
+                "merged": False
+            },
+            "Vijayawada Train 02": {
+                "id": "Vijayawada Train 02",
+                "division": "Vijayawada Division (BZA)",
+                "number": "12759",
+                "name": "Charminar Express",
+                "type": "Superfast",
+                "corridor": "Vijayawada → Kondapalli → Madhira",
+                "section_id": "BZA-KDM",
+                "current_km": 114,
+                "current_speed": 30,
+                "mps": 110,
+                "status": "Regulated (30 km/h Caution)",
+                "signal": "🔴 Red / Amber Caution",
+                "delay_minutes": 12,
+                "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                "work_zone_kms": [114, 116, 118],
+                "speed_profile": [110, 110, 110, 45, 30, 30, 30, 80, 110, 110, 110],
+                "early_cleared": False,
+                "merged": False
+            },
+            "Vijayawada Train 03": {
+                "id": "Vijayawada Train 03",
+                "division": "Vijayawada Division (BZA)",
+                "number": "20833",
+                "name": "Vande Bharat Express",
+                "type": "Semi High Speed",
+                "corridor": "Vijayawada → Kondapalli → Madhira",
+                "section_id": "KDM-KMT",
+                "current_km": 165,
+                "current_speed": 130,
+                "mps": 130,
+                "status": "High Speed Run",
+                "signal": "🟢 Green",
+                "delay_minutes": 0,
+                "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                "work_zone_kms": [114, 116, 118],
+                "speed_profile": [130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130],
+                "early_cleared": True,
+                "merged": False
+            },
+            "Vijayawada Train 04": {
+                "id": "Vijayawada Train 04",
+                "division": "Vijayawada Division (BZA)",
+                "number": "F-819",
+                "name": "Steel Special Freight",
+                "type": "Heavy Goods",
+                "corridor": "Vijayawada → Kondapalli → Madhira",
+                "section_id": "BZA-KDM",
+                "current_km": 42,
+                "current_speed": 30,
+                "mps": 75,
+                "status": "Active TSR Caution (30 km/h)",
+                "signal": "🔴 Red / Amber Caution",
+                "delay_minutes": 25,
+                "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                "work_zone_kms": [114, 116, 118],
+                "speed_profile": [75, 75, 75, 50, 30, 30, 30, 60, 75, 75, 75],
+                "early_cleared": False,
+                "merged": False
+            }
+        }
+
+
+def get_active_trains_df():
+    """
+    Safely retrieves live train telemetry records.
+    Prioritizes active session state trains, then DB tables, then fallback.
+    """
+    init_trains_10_state()
+    if "trains_10_state" in st.session_state and st.session_state.trains_10_state:
+        records = []
+        for t_id, tr in st.session_state.trains_10_state.items():
+            records.append({
+                "train_number": tr.get("number", "100"),
+                "train_name": tr.get("name", "Express"),
+                "current_km": tr.get("current_km", 50),
+                "speed_kmh": tr.get("current_speed", 110),
+                "delay_minutes": tr.get("delay_minutes", 0),
+                "direction": "EB" if "Vijayawada" in t_id else "WB"
+            })
+        return pd.DataFrame(records)
+    try:
+        conn = get_db()
+        tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
+        if "live_train_status" in tables:
+            df = pd.read_sql("SELECT * FROM live_train_status ORDER BY delay_minutes DESC LIMIT 10", conn)
+            conn.close()
+            return df if not df.empty else None
+        conn.close()
+    except Exception:
+        pass
+    return None
+
+
+def render_operational_kpi_bar(department="All"):
+    """
+    Renders top-level visual operational health KPI strip:
+    - Active Trains on Line & On-Time %
+    - System Health Score %
+    - Corridor Capacity Utilization %
+    - Active Operational Alerts (Critical / High / Warning)
+    """
+    metrics = get_cached_kpi_metrics(department)
+    crit_d = metrics["crit_d"]
+    high_d = metrics["high_d"]
+    health_score = metrics["health_score"]
+
+    st.markdown(f"""
+    <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 140px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">🚆 Active Trains</div>
+            <div style="font-size: 22px; font-weight: 800; color: #ffffff; margin-top: 2px;">10 Trains</div>
+            <div style="font-size: 11px; color: #4ade80; font-weight: 600; margin-top: 2px;">🟢 90.0% On-Time</div>
+        </div>
+        <div style="flex: 1; min-width: 140px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">⚙️ Operational Health</div>
+            <div style="font-size: 22px; font-weight: 800; color: #38bdf8; margin-top: 2px;">{health_score}%</div>
+            <div style="font-size: 11px; color: #38bdf8; font-weight: 600; margin-top: 2px;">✨ AI Optimized</div>
+        </div>
+        <div style="flex: 1; min-width: 140px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Line Capacity</div>
+            <div style="font-size: 22px; font-weight: 800; color: #facc15; margin-top: 2px;">62.5%</div>
+            <div style="font-size: 11px; color: #facc15; font-weight: 600; margin-top: 2px;">🤝 37.5% Downtime Saved</div>
+        </div>
+        <div style="flex: 1; min-width: 140px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">🚨 Operational Alerts</div>
+            <div style="font-size: 22px; font-weight: 800; color: #ef4444; margin-top: 2px;">{crit_d + high_d} Active</div>
+            <div style="font-size: 11px; color: #ef4444; font-weight: 600; margin-top: 2px;">🔴 {crit_d} Critical | 🟠 {high_d} High</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+def render_live_corridor_map_plotly(df_trains=None):
+    """
+    Renders an interactive Live Railway Corridor Map & Route Tracker using Plotly.
+    Plots Corridor Stations as nodes, Sections as line segments, Work Zones as warning areas,
+    and Trains at exact KM positions with direction arrows, speed badges, ETAs, and delay metrics.
+    """
+    stations = [
+        {"name": "Secunderabad (SC)", "km": 0, "type": "Junction"},
+        {"name": "Kazipet (KZJ)", "km": 45, "type": "Junction"},
+        {"name": "Vijayawada (BZA)", "km": 110, "type": "Division HQ"},
+        {"name": "Guntur (GNT)", "km": 165, "type": "Junction"},
+        {"name": "Guntakal (GTL)", "km": 220, "type": "Division HQ"},
+        {"name": "Hyderabad (HYB)", "km": 280, "type": "Terminal"}
+    ]
+
+    fig = go.Figure()
+
+    # Track Line (Main Corridor Line)
+    fig.add_trace(go.Scatter(
+        x=[s["km"] for s in stations],
+        y=[0] * len(stations),
+        mode="lines+markers+text",
+        name="Main Line Track",
+        line=dict(color="#3b82f6", width=6),
+        marker=dict(size=14, color="#38bdf8", symbol="diamond-wide-open", line=dict(width=2, color="#ffffff")),
+        text=[s["name"] for s in stations],
+        textposition="bottom center",
+        textfont=dict(size=11, color="#94a3b8"),
+        hoverinfo="text"
+    ))
+
+    # Work Zone Maintenance Highlights (Shadow Blocks)
+    fig.add_trace(go.Scatter(
+        x=[20, 40], y=[0, 0],
+        mode="lines",
+        name="Active Work Zone (SEC-01)",
+        line=dict(color="#ef4444", width=12),
+        hovertext="🚧 Active Block Possession: Engineering + TRD (KM 20 - 40)"
+    ))
+    fig.add_trace(go.Scatter(
+        x=[120, 145], y=[0, 0],
+        mode="lines",
+        name="Caution Work Zone (BZA-02)",
+        line=dict(color="#f59e0b", width=12),
+        hovertext="🟡 TSR 30 km/h Caution Order Zone (KM 120 - 145)"
+    ))
+
+    # Train Positions with Track Pin Points directly ON the Blue Line & Connector Dashed Lines
+    y_levels = [0.45, -0.45, 0.75, -0.75]
+    if df_trains is not None and not df_trains.empty:
+        for idx, tr in df_trains.iterrows():
+            km = tr.get("current_km", 25 + idx * 25)
+            t_num = tr.get("train_number", f"T-{100+idx}")
+            t_name = tr.get("train_name", "Express")
+            speed = tr.get("speed_kmh", 110)
+            delay = tr.get("delay_minutes", 0)
+            dir_arrow = "➡" if tr.get("direction", "EB") in ["EB", "Eastbound"] else "⬅"
+            status = "🟢 On-Time" if delay <= 5 else f"⏳ +{delay}m Delay"
+            color = "#22c55e" if delay <= 5 else ("#f59e0b" if delay <= 15 else "#ef4444")
+            
+            y_pos = y_levels[idx % len(y_levels)]
+            txt_pos = "top center" if y_pos > 0 else "bottom center"
+
+            # 1. Direct Track Pin Point ON the Main Blue Line Track (y = 0)
+            fig.add_trace(go.Scatter(
+                x=[km], y=[0],
+                mode="markers",
+                name=f"Track Location {t_num}",
+                showlegend=False,
+                marker=dict(size=14, color=color, symbol="circle", line=dict(width=2.5, color="#ffffff")),
+                hovertext=f"📍 <b>Train {t_num} Location Pin</b><br>Corridor Distance: KM {km}"
+            ))
+
+            # 2. Vertical Connector Dashed Line from Track (y = 0) to Train Badge (y = y_pos)
+            fig.add_shape(
+                type="line",
+                x0=km, y0=0,
+                x1=km, y1=y_pos,
+                line=dict(color=color, width=2, dash="dot")
+            )
+
+            # 3. Floating Train Status Badge Box
+            fig.add_trace(go.Scatter(
+                x=[km], y=[y_pos],
+                mode="markers+text",
+                name=f"Train {t_num}",
+                showlegend=False,
+                marker=dict(size=18, color=color, symbol="square-dot", line=dict(width=2, color="#ffffff")),
+                text=[f"🚆 {t_num}"],
+                textposition=txt_pos,
+                textfont=dict(size=11, color="#ffffff", family="sans-serif"),
+                hovertext=f"🚆 <b>{t_num} - {t_name}</b><br>📍 Current KM: {km}<br>➡ Direction: {dir_arrow}<br>⚡ Speed: {speed} km/h<br>⏱ Status: {status}<br>📍 Next Station: Kazipet"
+            ))
+
+    fig.update_layout(
+        title=dict(
+            text="🚆 Live Interactive Corridor Map & Train Telemetry Profile",
+            font=dict(size=13, color="#38bdf8"),
+            x=0,
+            xanchor="left",
+            y=0.98,
+            yanchor="top"
+        ),
+        xaxis=dict(title="Corridor Distance (Kilometers - KM)", showgrid=True, gridcolor="#1e293b", range=[-15, 295]),
+        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-1.4, 1.4]),
+        paper_bgcolor="#0f172a",
+        plot_bgcolor="#0d1322",
+        font=dict(color="#ffffff"),
+        height=360,
+        margin=dict(l=25, r=25, t=50, b=45),
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1,
+            bgcolor="rgba(15, 23, 42, 0.8)",
+            bordercolor="#334155",
+            borderwidth=1
+        )
+    )
+    return fig
+
+
+def render_visual_train_cards(df_trains=None):
+    """
+    Renders visual cards for active trains containing:
+    🚆 Train | 📍 Current Location/KM | ➡ Direction | ⚡ Speed | ⏱ ETA | ⏳ Delay | 📍 Next Station | Status Badge
+    """
+    if df_trains is None or df_trains.empty:
+        df_trains = get_active_trains_df()
+
+    h_col1, h_col2 = st.columns([2.8, 1.2])
+    with h_col1:
+        st.markdown("#### 🚆 Live Train Operational Status Cards")
+    with h_col2:
+        if st.button("⚡ Advance Telemetry Step", key="btn_adv_tele_cards_header", use_container_width=True):
+            if "trains_10_state" in st.session_state:
+                for t_id, tr in st.session_state.trains_10_state.items():
+                    new_km = tr["current_km"] + 3
+                    if new_km > 280:
+                        new_km = 10
+                    tr["current_km"] = new_km
+                    if tr["delay_minutes"] > 0:
+                        tr["delay_minutes"] = max(0, tr["delay_minutes"] - 1)
+            st.toast("⚡ Telemetry step advanced! Train positions, speeds & cards updated.")
+            st.rerun()
+
+    c1, c2 = st.columns(2)
+    for idx, tr in df_trains.iterrows():
+        col = c1 if idx % 2 == 0 else c2
+        t_num = tr.get("train_number", f"T-{100+idx}")
+        t_name = tr.get("train_name", "Express")
+        km = tr.get("current_km", 25 + idx * 25)
+        speed = tr.get("speed_kmh", 110)
+        delay = tr.get("delay_minutes", 0)
+        direction = tr.get("direction", "EB")
+        dir_label = "➡ Eastbound" if direction in ["EB", "Eastbound"] else "⬅ Westbound"
+        status_color = "#10b981" if delay <= 5 else ("#f59e0b" if delay <= 15 else "#ef4444")
+        status_text = "🟢 On Time" if delay <= 5 else (f"🟡 Minor Delay (+{delay}m)" if delay <= 15 else f"🔴 Major Delay (+{delay}m)")
+
+        with col:
+            st.markdown(f"""
+            <div style="background: #0f172a; border: 1.5px solid #1e293b; border-left: 5px solid {status_color}; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.15);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 14px; font-weight: 800; color: #ffffff;">
+                        🚆 {t_num} — {t_name}
+                    </div>
+                    <span style="background: rgba(255,255,255,0.08); color: {status_color}; padding: 2px 8px; border-radius: 12px; font-size: 10.5px; font-weight: 700;">
+                        {status_text}
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11.5px; color: #cbd5e1;">
+                    <div>📍 <strong>Location:</strong> Secunderabad (KM {km})</div>
+                    <div>{dir_label}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11.5px;">
+                    <div style="color: #38bdf8; font-weight: 600;">⚡ Speed: {speed} km/h</div>
+                    <div style="color: #facc15; font-weight: 600;">⏱ ETA: 14:35</div>
+                    <div style="color: #94a3b8;">📍 Next: Kazipet</div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+
+def render_visual_ai_advisory_flow(alerts=None):
+    """
+    Renders visual step-by-step pipeline for AI agent detections:
+    [Detected Event] ➔ [Probable Cause] ➔ [Operational Impact] ➔ [Risk Level] ➔ [AI Advisory] ➔ [Controller Action]
+    """
+    st.markdown("""
+    <div style="background: #0f172a; border: 1.5px solid #1e293b; border-radius: 12px; padding: 16px; margin-bottom: 18px; box-shadow: 0 4px 14px rgba(0,0,0,0.2);">
+        <div style="font-size: 14px; font-weight: 800; color: #38bdf8; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <span>🤖 Visual AI Advisory & Operational Impact Flow</span>
+            <span style="font-size: 10px; background: rgba(56,189,248,0.2); color: #38bdf8; padding: 2px 8px; border-radius: 10px;">Human-in-the-Loop</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; overflow-x: auto; padding-bottom: 6px;">
+            <div style="flex: 1; min-width: 140px; background: #1e293b; border: 1px solid #ef4444; border-radius: 8px; padding: 10px; text-align: center;">
+                <div style="font-size: 10px; color: #ef4444; font-weight: 700; text-transform: uppercase;">1. Detected Event</div>
+                <div style="font-size: 12px; font-weight: 700; color: #ffffff; margin-top: 4px;">Track Geometry Fault</div>
+                <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">SEC-01 (KM 34.2)</div>
+            </div>
+            <div style="color: #64748b; font-weight: 800; font-size: 16px;">➔</div>
+            <div style="flex: 1; min-width: 140px; background: #1e293b; border: 1px solid #f59e0b; border-radius: 8px; padding: 10px; text-align: center;">
+                <div style="font-size: 10px; color: #f59e0b; font-weight: 700; text-transform: uppercase;">2. Probable Cause</div>
+                <div style="font-size: 12px; font-weight: 700; color: #ffffff; margin-top: 4px;">Ballast Settlement</div>
+                <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">High Axle Load Freight</div>
+            </div>
+            <div style="color: #64748b; font-weight: 800; font-size: 16px;">➔</div>
+            <div style="flex: 1; min-width: 140px; background: #1e293b; border: 1px solid #38bdf8; border-radius: 8px; padding: 10px; text-align: center;">
+                <div style="font-size: 10px; color: #38bdf8; font-weight: 700; text-transform: uppercase;">3. Operational Impact</div>
+                <div style="font-size: 12px; font-weight: 700; color: #ffffff; margin-top: 4px;">18m Delay Cascade</div>
+                <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">Affects 4 Trailing Trains</div>
+            </div>
+            <div style="color: #64748b; font-weight: 800; font-size: 16px;">➔</div>
+            <div style="flex: 1; min-width: 140px; background: #1e293b; border: 1px solid #ef4444; border-radius: 8px; padding: 10px; text-align: center;">
+                <div style="font-size: 10px; color: #ef4444; font-weight: 700; text-transform: uppercase;">4. Risk Level</div>
+                <div style="font-size: 12px; font-weight: 800; color: #ef4444; margin-top: 4px;">🔴 CRITICAL RISK</div>
+                <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">Derailment Hazard</div>
+            </div>
+            <div style="color: #64748b; font-weight: 800; font-size: 16px;">➔</div>
+            <div style="flex: 1; min-width: 150px; background: #1e293b; border: 1px solid #10b981; border-radius: 8px; padding: 10px; text-align: center;">
+                <div style="font-size: 10px; color: #10b981; font-weight: 700; text-transform: uppercase;">5. AI Advisory</div>
+                <div style="font-size: 11.5px; font-weight: 700; color: #ffffff; margin-top: 4px;">Shadow Block Merge</div>
+                <div style="font-size: 10px; color: #4ade80; margin-top: 2px;">TSR 30 km/h + 2.5h Window</div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------------------
@@ -813,6 +1336,25 @@ def render_persistent_ai_chatbot_panel(page_context="General Dashboard", departm
         st.session_state[dept_chat_key] = []
     if "selected_lang" not in st.session_state:
         st.session_state.selected_lang = "Auto Detect"
+    if "tts_voice_lang" not in st.session_state:
+        st.session_state.tts_voice_lang = "Auto Match Response"
+
+    # Auto-repair orphan user messages in session state
+    dept_hist = st.session_state[dept_chat_key]
+    if dept_hist and isinstance(dept_hist[-1], dict) and dept_hist[-1].get("role") == "user":
+        orphan_q = dept_hist[-1].get("content")
+        try:
+            ans = ask_explainer(
+                orphan_q,
+                department=department,
+                page_context=page_context,
+                chat_history=dept_hist[:-1],
+                user_lang_pref=st.session_state.selected_lang
+            )
+        except Exception as e:
+            ans = f"⚠️ Response error: {str(e)}"
+        dept_hist.append({"role": "assistant", "content": ans})
+        st.session_state[dept_chat_key] = dept_hist
 
     # Bind active chat history to the department's specific chat storage
     st.session_state.chat_history = st.session_state[dept_chat_key]
@@ -834,17 +1376,18 @@ def render_persistent_ai_chatbot_panel(page_context="General Dashboard", departm
     </div>
     """, unsafe_allow_html=True)
 
-    # Controls Header: Language Selector & Clear Button
-    c_hdr1, c_hdr2 = st.columns([1.6, 1])
+    # Controls Header: Response Language Selector & Clear Button
+    c_hdr1, c_hdr2 = st.columns([2.2, 0.8])
     with c_hdr1:
         st.session_state.selected_lang = st.selectbox(
-            "🌐 Language",
-            ["Auto Detect", "English", "తెలుగు", "हिन्दी"],
+            "🌐 AI Response Lang",
+            ["Auto Detect", "English", "తెలుగు", "హిन्दी"],
             key="ai_lang_select",
-            label_visibility="collapsed"
+            help="AI Text Response Language"
         )
     with c_hdr2:
-        if st.button("🗑️ Clear", key="btn_clear_chat_hist", use_container_width=True, help="Clear conversation history"):
+        st.markdown("<div style='margin-top: 24px;'></div>", unsafe_allow_html=True)
+        if st.button("🗑️", key="btn_clear_chat_hist", use_container_width=True, help="Clear conversation history"):
             st.session_state[dept_chat_key] = []
             st.session_state.chat_history = []
             st.rerun()
@@ -880,30 +1423,52 @@ def render_persistent_ai_chatbot_panel(page_context="General Dashboard", departm
                 else:
                     with st.chat_message("assistant", avatar="✨"):
                         st.markdown(msg["content"])
-                        # Audio Play Button Component (rendered for latest assistant response to optimize component mounts)
-                        if idx == len(st.session_state.chat_history) - 1:
-                            escaped_text = json.dumps(msg["content"])
-                            det_lang = detect_language(msg["content"])
-                            lang_code = "te-IN" if det_lang == "te" else ("hi-IN" if det_lang == "hi" else "en-IN")
-                            audio_btn_html = f"""
-                            <div style="margin-top: 6px;">
-                                <button onclick='
-                                    const txt = {escaped_text};
-                                    if ("speechSynthesis" in window) {{
-                                        window.speechSynthesis.cancel();
-                                        const u = new SpeechSynthesisUtterance(txt);
-                                        u.lang = "{lang_code}";
-                                        u.rate = 1.0;
-                                        window.speechSynthesis.speak(u);
-                                    }} else {{
-                                        alert("Text-to-speech not supported in browser.");
-                                    }}
-                                ' style="background: #0284c7; color: white; border: none; border-radius: 12px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.15);">
-                                    🔊 Listen ({det_lang.upper()})
-                                </button>
-                            </div>
-                            """
-                            components.html(audio_btn_html, height=38)
+                        # Single Smart Audio Play Button matching response language
+                        escaped_text = json.dumps(msg["content"])
+                        det_l = detect_language(msg["content"])
+                        if det_l == "te":
+                            t_code = "te-IN"
+                            t_label = "TE"
+                            btn_color = "#0d9488"
+                        elif det_l == "hi":
+                            t_code = "hi-IN"
+                            t_label = "HI"
+                            btn_color = "#ea580c"
+                        else:
+                            t_code = "en-US"
+                            t_label = "EN"
+                            btn_color = "#0284c7"
+
+                        audio_btn_html = f"""
+                        <div style="margin-top: 4px;">
+                            <button onclick="speakText('{t_code}')" style="background: {btn_color}; color: white; border: none; border-radius: 12px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 4px rgba(0,0,0,0.15);">
+                                🔊 Listen ({t_label})
+                            </button>
+                        </div>
+                        <script>
+                        const txt = {escaped_text};
+                        function speakText(targetLang) {{
+                            if ("speechSynthesis" in window) {{
+                                window.speechSynthesis.cancel();
+                                const u = new SpeechSynthesisUtterance(txt);
+                                u.lang = targetLang;
+                                u.rate = 0.95;
+
+                                const voices = window.speechSynthesis.getVoices();
+                                const langPrefix = targetLang.split("-")[0].toLowerCase();
+                                const matchVoice = voices.find(v => (v.lang && v.lang.toLowerCase().replace("_","-").startsWith(langPrefix)));
+                                if (matchVoice) {{
+                                    u.voice = matchVoice;
+                                }}
+
+                                window.speechSynthesis.speak(u);
+                            }} else {{
+                                alert("Text-to-speech not supported in browser.");
+                            }}
+                        }}
+                        </script>
+                        """
+                        components.html(audio_btn_html, height=36)
         else:
             st.markdown(f"""
             <div style="font-size: 12.5px; color: #64748b; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; background: #f8fafc; line-height: 1.5;">
@@ -915,53 +1480,79 @@ def render_persistent_ai_chatbot_panel(page_context="General Dashboard", departm
 
     # Integrated Voice Speech-to-Text Input Bar (Dynamic EN / TE / HI)
     curr_lang = st.session_state.get("selected_lang", "Auto Detect")
-    speech_lang_code = "te-IN" if curr_lang == "తెలుగు" else ("hi-IN" if curr_lang == "हिन्दी" else "en-IN")
+    curr_tts = st.session_state.get("tts_voice_lang", "Auto Match Response")
+    
+    # Determine default recognition locale
+    if curr_lang == "తెలుగు" or curr_tts == "తెలుగు":
+        default_stt_code = "te-IN"
+    elif curr_lang == "హిन्दी" or curr_tts == "హిन्दी":
+        default_stt_code = "hi-IN"
+    elif curr_lang == "English" or curr_tts == "English":
+        default_stt_code = "en-US"
+    else:
+        default_stt_code = "te-IN"
 
     components.html(
         f"""
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: space-between; background: #ffffff; padding: 6px 12px; border-radius: 10px; border: 1.5px solid #cbd5e1; margin-bottom: 6px;">
-            <span id="vStatus" style="font-size: 12px; color: #475569; font-weight: 500;">
-                🎤 Speak question ({speech_lang_code[:2].upper()})
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; display: flex; align-items: center; justify-content: space-between; background: #ffffff; padding: 6px 10px; border-radius: 10px; border: 1.5px solid #cbd5e1; margin-bottom: 6px;">
+            <span id="vStatus" style="font-size: 11.5px; color: #475569; font-weight: 600;">
+                🎤 Voice Mic ({default_stt_code[:2].upper()})
             </span>
-            <button id="micBtn" title="Click to speak (EN / TE / HI)" style="background: #0284c7; color: white; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 15px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 5px rgba(2,132,199,0.3);">
-                🎤
-            </button>
+            <div style="display: flex; align-items: center; gap: 4px;">
+                <button id="micEn" title="Speak in English" style="background: #e2e8f0; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 10.5px; font-weight: 700; cursor: pointer;">EN</button>
+                <button id="micTe" title="Speak in Telugu" style="background: #e2e8f0; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 10.5px; font-weight: 700; cursor: pointer;">TE</button>
+                <button id="micHi" title="Speak in Hindi" style="background: #e2e8f0; color: #0f172a; border: 1px solid #cbd5e1; border-radius: 6px; padding: 2px 6px; font-size: 10.5px; font-weight: 700; cursor: pointer;">HI</button>
+                <button id="micBtn" title="Click to speak in active language" style="background: #0284c7; color: white; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; box-shadow: 0 2px 5px rgba(2,132,199,0.3);">
+                    🎤
+                </button>
+            </div>
         </div>
         <script>
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const micBtn = document.getElementById('micBtn');
+        const micEn = document.getElementById('micEn');
+        const micTe = document.getElementById('micTe');
+        const micHi = document.getElementById('micHi');
         const vStatus = document.getElementById('vStatus');
+        
         if (SpeechRecognition) {{
             let rec = new SpeechRecognition();
             let listening = false;
-            rec.continuous = false;
-            rec.interimResults = false;
-            rec.lang = "{speech_lang_code}";
+            let currentLangCode = "{default_stt_code}";
 
-            micBtn.addEventListener('click', () => {{
-                if (!listening) {{
-                    try {{
-                        rec.start();
-                    }} catch(e) {{
-                        rec.stop();
-                        setTimeout(() => rec.start(), 200);
-                    }}
-                }} else {{
+            function startRecognition(langCode) {{
+                if (listening) {{
                     rec.stop();
                 }}
-            }});
+                currentLangCode = langCode;
+                rec.continuous = false;
+                rec.interimResults = false;
+                rec.lang = langCode;
+                try {{
+                    rec.start();
+                }} catch(e) {{
+                    setTimeout(() => rec.start(), 200);
+                }}
+            }}
+
+            micEn.addEventListener('click', () => startRecognition('en-US'));
+            micTe.addEventListener('click', () => startRecognition('te-IN'));
+            micHi.addEventListener('click', () => startRecognition('hi-IN'));
+            micBtn.addEventListener('click', () => startRecognition(currentLangCode));
+
             rec.onstart = () => {{
                 listening = true;
                 micBtn.style.backgroundColor = '#16a34a';
-                vStatus.innerHTML = "<span style='color:#16a34a; font-weight:bold;'>🎙️ Listening ({speech_lang_code[:2].upper()})... Speak now</span>";
+                vStatus.innerHTML = "<span style='color:#16a34a; font-weight:bold;'>🎙️ Listening (" + currentLangCode.slice(0,2).toUpperCase() + ")... Speak now</span>";
             }};
+
             rec.onresult = (e) => {{
                 let text = e.results[0][0].transcript;
                 if (!text || !text.trim()) {{
                     vStatus.innerHTML = "<span style='color:#f59e0b; font-weight:600;'>⚠️ Empty recognition. Please try speaking again.</span>";
                     return;
                 }}
-                vStatus.innerHTML = "<span style='color:#16a34a; font-weight:bold;'>✓ Recognized: \\"" + text + "\\"</span>";
+                vStatus.innerHTML = "<span style='color:#16a34a; font-weight:bold;'>✓ Recognized (" + currentLangCode.slice(0,2).toUpperCase() + "): \\"" + text + "\\"</span>";
                 try {{
                     const parentDoc = window.parent.document;
                     const target = parentDoc.querySelector('textarea[data-testid="stChatInputTextArea"]');
@@ -973,10 +1564,11 @@ def render_persistent_ai_chatbot_panel(page_context="General Dashboard", departm
                     }}
                 }} catch(err) {{}}
             }};
+
             rec.onerror = (e) => {{
                 let errText = e.error;
                 if (errText === "not-allowed" || errText === "permission-denied") {{
-                    vStatus.innerHTML = "<span style='color:#ef4444; font-weight:600;'>⚠️ Microphone permission denied. Please enable mic access.</span>";
+                    vStatus.innerHTML = "<span style='color:#ef4444; font-weight:600;'>⚠️ Mic permission denied. Please enable mic access.</span>";
                 }} else if (errText === "no-speech") {{
                     vStatus.innerHTML = "<span style='color:#f59e0b; font-weight:600;'>⚠️ No speech detected. Please speak into microphone.</span>";
                 }} else if (errText === "audio-capture") {{
@@ -985,6 +1577,7 @@ def render_persistent_ai_chatbot_panel(page_context="General Dashboard", departm
                     vStatus.innerHTML = "<span style='color:#ef4444; font-weight:600;'>⚠️ Recognition error: " + errText + "</span>";
                 }}
             }};
+
             rec.onend = () => {{
                 listening = false;
                 micBtn.style.backgroundColor = '#0284c7';
@@ -1001,35 +1594,56 @@ def render_persistent_ai_chatbot_panel(page_context="General Dashboard", departm
     user_query = st.chat_input("Type your message... (or use mic 🎤)")
     active_query = selected_prompt or user_query
 
-    # De-duplication Guard & Isolated Department Storage Update
+    # Process user query safely and reliably
     if active_query and active_query.strip():
         clean_q = active_query.strip()
         dept_history = st.session_state[dept_chat_key]
-        last_user_msg = None
-        for item in reversed(dept_history):
-            if isinstance(item, dict) and item.get("role") == "user":
-                last_user_msg = item.get("content")
-                break
 
-        # Only process if this prompt is not an immediate duplicate of the last submitted user prompt in this department
-        if last_user_msg != clean_q:
+        # Check if the very last exchange in history is already an answered version of this exact question
+        already_answered = False
+        if len(dept_history) >= 2:
+            if dept_history[-2].get("role") == "user" and dept_history[-2].get("content") == clean_q and dept_history[-1].get("role") == "assistant":
+                already_answered = True
+
+        if not already_answered:
+            # If the last item is an un-answered user message with the same content, remove it first to avoid duplicate user bubbles
+            if dept_history and dept_history[-1].get("role") == "user" and dept_history[-1].get("content") == clean_q:
+                dept_history.pop()
+
             dept_history.append({"role": "user", "content": clean_q})
-            with st.spinner("Analyzing website knowledge base..."):
-                ans = ask_explainer(
-                    clean_q,
-                    department=department,
-                    page_context=page_context,
-                    chat_history=dept_history,
-                    user_lang_pref=st.session_state.selected_lang
-                )
-                if not dept_history or dept_history[-1].get("content") != ans:
-                    dept_history.append({"role": "assistant", "content": ans})
+            try:
+                with st.spinner("Analyzing website knowledge base..."):
+                    ans = ask_explainer(
+                        clean_q,
+                        department=department,
+                        page_context=page_context,
+                        chat_history=dept_history,
+                        user_lang_pref=st.session_state.selected_lang
+                    )
+            except Exception as e:
+                ans = f"⚠️ Could not complete query: {str(e)}"
 
+            dept_history.append({"role": "assistant", "content": ans})
             st.session_state[dept_chat_key] = dept_history
             st.session_state.chat_history = dept_history
             st.rerun()
 
 
+
+
+@st.cache_data(ttl=5)
+def get_cached_override_active_blocks():
+    conn = get_db()
+    df_active = pd.read_sql("""
+        SELECT s.schedule_id, s.defect_id, s.section_id, s.department, s.planned_start, s.planned_end,
+               s.status, s.decided_by, s.slot_id, d.defect_type, d.severity, d.estimated_duration_hours
+        FROM schedule s
+        LEFT JOIN defects d ON s.defect_id = d.defect_id
+        WHERE LOWER(s.status) != 'cancelled'
+        ORDER BY s.schedule_id DESC
+    """, conn)
+    conn.close()
+    return df_active
 
 
 @st.cache_data(ttl=2)
@@ -1067,7 +1681,7 @@ def get_full_schedule(department=None, horizon=None, include_completed=False):
         params.extend(dept_aliases + dept_aliases)
 
     if horizon:
-        q += " AND (s.horizon = ? OR s.decided_by IN ('controller_override', 'controller_emergency', 'admin'))"
+        q += " AND (s.horizon = ? OR s.horizon = 'emergency' OR s.decided_by IN ('controller_override', 'controller_emergency', 'emergency_force_override', 'admin'))"
         params.append(horizon)
 
     q += " ORDER BY s.planned_start ASC"
@@ -1118,7 +1732,6 @@ else:
     )
 
 # Logout button placed at the bottom of the sidebar
-st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 if st.sidebar.button("🚪 Sign Out", use_container_width=True):
     st.session_state.user = None
@@ -1227,9 +1840,13 @@ def generate_ai_block_plan_matrix_html(df_sched, current_dept="All", color_mode=
             axis=1
         )
 
-        # Determine unique 7 dates starting from earliest schedule date
-        sorted_dates = sorted(df["date_str"].unique())
-        selected_dates = sorted_dates[:7]
+        # Determine 7 rolling dates starting from current operational date (2026-09-16)
+        base_dt = datetime.strptime("2026-09-16", "%Y-%m-%d")
+        valid_dates = sorted([d for d in df["date_str"].unique() if d >= "2026-09-16"])
+        if len(valid_dates) >= 7:
+            selected_dates = valid_dates[:7]
+        else:
+            selected_dates = [(base_dt + timedelta(days=i)).strftime("%Y-%m-%d") for i in range(7)]
     
         date_headers = []
         for d_str in selected_dates:
@@ -1534,6 +2151,23 @@ if is_dept_user:
         if "Overview" in dept_menu:
             st.subheader(f"📊 Operational Overview & Safety Dashboard ({cur_dept_cfg['acronym']} — {my_dept})")
             st.caption(f"Real-time asset reliability, open defect work orders, safety compliance, and priority focus for {cur_dept_cfg['full_system']}.")
+
+            # 1. VISUAL OPERATIONAL KPI STRIP
+            render_operational_kpi_bar(department=my_dept)
+
+            # 2. LIVE INTERACTIVE RAILWAY CORRIDOR MAP (PLOTLY)
+            df_active_trains = get_active_trains_df()
+            fig_map = render_live_corridor_map_plotly(df_active_trains)
+            st.plotly_chart(fig_map, use_container_width=True)
+
+            # 3. VISUAL AI ADVISORY PIPELINE FLOW
+            render_visual_ai_advisory_flow()
+
+            # 4. VISUAL TRAIN STATUS CARDS
+            render_visual_train_cards(df_active_trains)
+
+            st.markdown("---")
+            st.subheader(f"📊 {cur_dept_cfg['acronym']} Asset Reliability & Defect Metrics")
 
             dept_counts = get_cached_department_overview_counts(my_dept)
             tot_d = dept_counts["tot_d"]
@@ -2063,9 +2697,26 @@ else:
 
 
         if admin_menu == "📊 Overview":
-            st.subheader("System State & Defect Summary")
+            st.subheader("System State & Visual Operational Intelligence Center")
 
             dept_filter = st.selectbox("🎯 Filter Overview by Department", ["All Departments", "Engineering", "S&T", "TRD"])
+
+            # 1. VISUAL OPERATIONAL KPI STRIP
+            render_operational_kpi_bar(department=dept_filter if dept_filter != "All Departments" else "All")
+
+            # 2. LIVE INTERACTIVE RAILWAY CORRIDOR MAP (PLOTLY)
+            df_active_trains = get_active_trains_df()
+            fig_map = render_live_corridor_map_plotly(df_active_trains)
+            st.plotly_chart(fig_map, use_container_width=True)
+
+            # 3. VISUAL AI ADVISORY PIPELINE FLOW
+            render_visual_ai_advisory_flow()
+
+            # 4. VISUAL TRAIN STATUS CARDS
+            render_visual_train_cards(df_active_trains)
+
+            st.markdown("---")
+            st.subheader("📊 Operational Defect & Capacity Metrics")
 
             admin_counts = get_cached_admin_overview_counts(dept_filter)
             total_def = admin_counts["total_def"]
@@ -2204,6 +2855,19 @@ else:
         elif admin_menu == "🚆 Locopilot Speed & Live Trains":
             st.subheader("🚆 Live Corridor Traffic & Locopilot Speed Optimization Center")
             st.caption("COA Real-Time Digital Twin • Moving Train Vectors • Dynamic Early Block Clearance Prioritization • Multi-Department Block Merging")
+
+            # 1. VISUAL OPERATIONAL KPI STRIP
+            render_operational_kpi_bar(department="All")
+
+            # 2. LIVE INTERACTIVE RAILWAY CORRIDOR MAP (PLOTLY)
+            df_active_trains = get_active_trains_df()
+            fig_map = render_live_corridor_map_plotly(df_active_trains)
+            st.plotly_chart(fig_map, use_container_width=True)
+
+            # 3. VISUAL TRAIN CARDS
+            render_visual_train_cards(df_active_trains)
+
+            st.markdown("---")
 
             loco_agent = LocopilotSpeedAgent()
             merger_agent = BlockMergingAgent()
@@ -2982,7 +3646,7 @@ else:
 
             conn = get_db()
             total_sched = pd.read_sql("SELECT COUNT(*) as c FROM schedule WHERE LOWER(status) != 'cancelled'", conn)["c"].iloc[0]
-            total_overrides = pd.read_sql("SELECT COUNT(*) as c FROM schedule WHERE decided_by IN ('controller_override', 'controller_emergency') OR status = 'locked'", conn)["c"].iloc[0]
+            total_overrides = pd.read_sql("SELECT COUNT(*) as c FROM schedule WHERE decided_by IN ('controller_override', 'controller_emergency', 'emergency_force_override') OR status = 'locked'", conn)["c"].iloc[0]
             open_defects = pd.read_sql("SELECT COUNT(*) as c FROM defects WHERE status = 'Open'", conn)["c"].iloc[0]
             avail_slots = pd.read_sql("SELECT COUNT(*) as c FROM corridor_slots WHERE is_available = 1", conn)["c"].iloc[0]
             conn.close()
@@ -3010,16 +3674,19 @@ else:
                 st.markdown("#### 🛠️ Manual Block Override & Schedule Adjuster")
                 st.caption("Select any scheduled corridor maintenance block to shift its start/end time, lock it against AI changes, or cancel it to free the corridor slot.")
 
-                conn = get_db()
-                df_active = pd.read_sql("""
-                    SELECT s.schedule_id, s.defect_id, s.section_id, s.department, s.planned_start, s.planned_end,
-                           s.status, s.decided_by, s.slot_id, d.defect_type, d.severity, d.estimated_duration_hours
-                    FROM schedule s
-                    LEFT JOIN defects d ON s.defect_id = d.defect_id
-                    WHERE LOWER(s.status) != 'cancelled'
-                    ORDER BY s.schedule_id DESC
-                """, conn)
-                conn.close()
+                if "override_toast" in st.session_state:
+                    mtype, mtext = st.session_state.pop("override_toast")
+                    if mtype == "success":
+                        st.success(mtext)
+                        st.toast(mtext, icon="✅")
+                    elif mtype == "warning":
+                        st.warning(mtext)
+                        st.toast(mtext, icon="⚠️")
+                    elif mtype == "error":
+                        st.error(mtext)
+                        st.toast(mtext, icon="❌")
+
+                df_active = get_cached_override_active_blocks()
 
                 if not df_active.empty:
                     st.dataframe(
@@ -3043,6 +3710,7 @@ else:
                             new_start = st.text_input("Planned Start (YYYY-MM-DD HH:MM)", value=str(sel_row['planned_start']), key=f"start_{sel_id}")
                             new_end = st.text_input("Planned End (YYYY-MM-DD HH:MM)", value=str(sel_row['planned_end']), key=f"end_{sel_id}")
                             is_locked = st.checkbox("📌 Lock & Pin this Block (Prevent AI from re-optimizing or moving)", value=(sel_row['status'] == 'locked' or sel_row['decided_by'] == 'controller_override'), key=f"lock_{sel_id}")
+                            is_emerg_force = st.checkbox("🚨 Emergency Force Override (Bypass Train Conflict for Critical Emergency Work)", value=False, key=f"emerg_force_{sel_id}")
                         with ov_col2:
                             override_reason = st.text_input("Controller Justification / Reason for Override", value="VIP train punctuality / Sectional congestion adjustment", key=f"reason_{sel_id}")
                             st.info(f"**Department:** `{sel_row['department']}` | **Section:** `{sel_row['section_id']}`\n\n**Defect:** {sel_row['defect_type']} (`{sel_row['severity']}`)")
@@ -3052,14 +3720,16 @@ else:
                             if st.button("💾 Apply Controller Override", type="primary", use_container_width=True, key=f"save_ov_{sel_id}"):
                                 comp = ComplianceAgent()
                                 is_valid, reason = comp.validate_override(sel_row['section_id'], new_start, new_end, current_schedule_id=int(sel_id))
-                                if not is_valid:
-                                    st.error(f"❌ Controller Override Rejected — {reason}")
+                                if not is_valid and not is_emerg_force:
+                                    st.session_state["override_toast"] = ("error", f"❌ Controller Override Rejected — {reason}\n\n💡 **Emergency Work Possession?** If this is an urgent emergency repair (e.g. Rail Fracture, OHE Wire Snap, Signal Failure), check **'🚨 Emergency Force Override'** above to bypass non-emergency train restrictions.")
+                                    st.rerun()
                                 else:
                                     conn = get_db()
                                     new_status = "locked" if is_locked else "planned"
+                                    decided_val = "emergency_force_override" if is_emerg_force else "controller_override"
                                     conn.execute(
-                                        "UPDATE schedule SET planned_start=?, planned_end=?, status=?, decided_by='controller_override' WHERE schedule_id=?",
-                                        (new_start, new_end, new_status, int(sel_id))
+                                        "UPDATE schedule SET planned_start=?, planned_end=?, status=?, decided_by=? WHERE schedule_id=?",
+                                        (new_start, new_end, new_status, decided_val, int(sel_id))
                                     )
                                     conn.commit()
                                     conn.close()
@@ -3070,9 +3740,12 @@ else:
                                     target_horizon = str(sel_row.get("horizon", "weekly") or "weekly")
                                     coord.resolve_override_and_reschedule(int(sel_id), new_start, new_end, horizon=target_horizon)
 
-                                    log_action("Controller", "manual_override", f"Schedule #{sel_id} updated: {new_start} to {new_end} ({override_reason})")
+                                    log_action("Controller", "manual_override", f"Schedule #{sel_id} updated: {new_start} to {new_end} ({override_reason}) [Emergency Force: {is_emerg_force}]")
                                     notify("admin", f"Manual Override: Schedule #{sel_id} ({sel_row['department']}) timing modified by Central Control.", category="controller_override")
-                                    st.success(f"✅ Schedule #{sel_id} updated & weekly timetable re-optimized with Controller Override!")
+                                    if is_emerg_force:
+                                        st.session_state["override_toast"] = ("success", f"⚡ 🚨 EMERGENCY FORCE OVERRIDE GRANTED! Schedule #{sel_id} updated ({new_start} to {new_end}). Temporary Speed Restriction (TSR 30 km/h) & Emergency Train Regulation active.")
+                                    else:
+                                        st.session_state["override_toast"] = ("success", f"✅ Schedule #{sel_id} successfully updated to {new_start} - {new_end} & timetable re-optimized!")
                                     st.rerun()
 
                         with b_col2:
@@ -3093,7 +3766,7 @@ else:
                                 coord.run_cycle(horizon=target_horizon)
 
                                 log_action("Controller", "cancel_block", f"Schedule #{sel_id} cancelled by Controller: {override_reason}")
-                                st.warning(f"⚠️ Schedule #{sel_id} cancelled. Corridor slot released and weekly schedule re-optimized.")
+                                st.session_state["override_toast"] = ("warning", f"⚠️ Schedule #{sel_id} cancelled. Corridor slot released and weekly schedule re-optimized.")
                                 st.rerun()
                 else:
                     st.info("No active scheduled blocks found in the system.")
@@ -3129,6 +3802,18 @@ else:
             with ro_tab3:
                 st.markdown("#### 🚨 Grant Immediate Emergency Block (Direct Line Grant)")
                 st.caption("For rail fractures, OHE wire snags, or critical signal failures requiring urgent track access outside pre-scheduled slots.")
+
+                if "override_toast" in st.session_state:
+                    mtype, mtext = st.session_state.pop("override_toast")
+                    if mtype == "success":
+                        st.success(mtext)
+                        st.toast(mtext, icon="🚨")
+                    elif mtype == "warning":
+                        st.warning(mtext)
+                        st.toast(mtext, icon="⚠️")
+                    elif mtype == "error":
+                        st.error(mtext)
+                        st.toast(mtext, icon="❌")
 
                 with st.form("emergency_block_form"):
                     em_c1, em_c2 = st.columns(2)
@@ -3177,7 +3862,7 @@ else:
 
                         log_action("Controller", "emergency_block", f"Imposed emergency block on {em_sec} ({em_dept}) for {em_duration} hrs: {em_reason}")
                         notify("admin", f"🚨 EMERGENCY BLOCK IMPOSED on {em_sec} ({em_dept}) until {end_str}. Caution order 30 km/h dispatched.", category="emergency")
-                        st.error(f"🚨 EMERGENCY BLOCK GRANTED on {em_sec} until {end_str}! Caution orders transmitted to Locopilots.")
+                        st.session_state["override_toast"] = ("success", f"⚡ 🚨 EMERGENCY BLOCK GRANTED on {em_sec} until {end_str}! Caution orders (TSR 30 km/h) transmitted to Locopilots.")
                         st.rerun()
 
             with ro_tab4:

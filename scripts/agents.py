@@ -22,8 +22,18 @@ from scoring_models import compute_priority_scores, detect_anomalies
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "railway.db")
 
 
+def get_agent_db(timeout=30.0):
+    conn = sqlite3.connect(DB_PATH, timeout=timeout)
+    try:
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA busy_timeout=30000;")
+    except Exception:
+        pass
+    return conn
+
+
 def log_action(actor, action, details=""):
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_agent_db()
     conn.execute(
         "INSERT INTO audit_log (actor, action, details, timestamp) VALUES (?, ?, ?, ?)",
         (actor, action, details, datetime.now().isoformat())
@@ -35,7 +45,7 @@ def log_action(actor, action, details=""):
 def notify(recipient_role, message, category="general", audience="internal", conn=None):
     close_after = False
     if conn is None:
-        conn = sqlite3.connect(DB_PATH, timeout=10.0)
+        conn = get_agent_db()
         close_after = True
     conn.execute(
         "INSERT INTO notifications (recipient_role, message, created_at, category, audience) "
@@ -58,7 +68,7 @@ class DepartmentAgent:
         self.department = department
 
     def propose_tasks(self, top_n=50):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         df = pd.read_sql(
             "SELECT * FROM defects WHERE department=? AND status='Open' "
             "ORDER BY priority_score DESC LIMIT ?",
@@ -76,7 +86,7 @@ class TrafficAgent:
     """Protects train timetable & goods traffic windows from being overbooked."""
 
     def get_protected_sections(self, min_rakes=8):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         df = pd.read_sql(
             "SELECT DISTINCT section_id FROM goods_forecast WHERE expected_rakes >= ?",
             conn, params=(min_rakes,)
@@ -106,7 +116,7 @@ class CoordinatorAgent:
         2. Unschedules conflicting non-locked tasks (resets defect status to 'Open').
         3. Re-runs CP-SAT optimizer pass to calculate and persist fresh non-conflicting slots.
         """
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         cur = conn.cursor()
         
         row = cur.execute("SELECT section_id FROM schedule WHERE schedule_id=?", (schedule_id,)).fetchone()
@@ -171,7 +181,7 @@ class ReplanningAgent:
     """Watches for new defects / freed slots and triggers re-optimization."""
 
     def check_and_replan(self):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         new_open = pd.read_sql(
             "SELECT COUNT(*) as c FROM defects WHERE status='Open'", conn
         )["c"].iloc[0]
@@ -188,7 +198,7 @@ class ReplanningAgent:
 
     def fill_gap(self, freed_slot_id):
         """Called when a task finishes early and frees up a slot."""
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         slot = pd.read_sql("SELECT * FROM corridor_slots WHERE slot_id=?",
                             conn, params=(freed_slot_id,))
         if slot.empty:
@@ -238,7 +248,7 @@ class ReplanningAgent:
             notif_msg = f"✅ Tier 1 Routine Gap-fill: {d['defect_id']} auto-approved immediately into freed {freed_slot_id}."
             log_desc = f"{d['defect_id']} -> {freed_slot_id} (Tier 1: routine auto-approved)"
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         conn.execute(
             "INSERT INTO schedule (defect_id, slot_id, section_id, department, "
             "planned_start, planned_end, horizon, status, decided_by) "
@@ -263,7 +273,7 @@ class ReplanningAgent:
 
 class DeadlineAlertAgent:
     def check_deadlines(self, hours_threshold=24, max_alerts=20):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         df = pd.read_sql(
             "SELECT * FROM defects WHERE status='Open' ORDER BY due_date ASC LIMIT ?",
             conn, params=(max_alerts * 5,))
@@ -313,7 +323,7 @@ class ComplianceAgent:
     """Blocks approval if SLA, safety-gap rules, or timetable constraints are violated."""
 
     def check_schedule(self, schedule_df=None):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         if schedule_df is None:
             schedule_df = pd.read_sql(
                 "SELECT s.*, d.severity, d.due_date FROM schedule s "
@@ -353,7 +363,7 @@ class ComplianceAgent:
         if dt_end <= dt_start:
             return False, "Planned end time must be strictly after planned start time."
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
 
         # 1. Check clash with locked / emergency schedules on same section
         q = """
@@ -411,7 +421,7 @@ class ComplianceAgent:
         3. If successful: persists new schedule, logs audit, and sends detailed Controller bulletin.
         4. If failed: marks task awaiting manual Controller intervention and alerts Controller.
         """
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         df_sched = pd.read_sql("""
             SELECT s.schedule_id, s.defect_id, s.section_id, s.department, s.planned_start, s.planned_end, s.status, s.decided_by, d.defect_type, d.severity
             FROM schedule s
@@ -469,7 +479,7 @@ class ComplianceAgent:
                             notify("admin", msg, category="auto_rescheduled")
                             log_action("ComplianceAgent", "auto_reschedule_success", f"Resolved anomaly on {sec_id} between #{r1['schedule_id']} and #{r2['schedule_id']}")
                         else:
-                            conn = sqlite3.connect(DB_PATH)
+                            conn = get_agent_db()
                             conn.execute("UPDATE schedule SET status='pending_approval', decided_by='auto_reschedule_failed' WHERE schedule_id=?", (target_r["schedule_id"],))
                             conn.commit()
                             conn.close()
@@ -493,7 +503,7 @@ class ComplianceAgent:
 
 class CrewAvailabilityAgent:
     def find_crew(self, department, section_id, shift="Night"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         crew = pd.read_sql(
             "SELECT * FROM crew_roster WHERE department=? AND section_id=? "
             "AND shift=? AND is_available=1 LIMIT 1",
@@ -514,7 +524,7 @@ class CostOptimizationAgent:
     BASE_HOURLY_COST = 1500  # INR, illustrative
 
     def estimate_schedule_cost(self):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         df = pd.read_sql(
             "SELECT s.*, d.estimated_duration_hours FROM schedule s "
             "JOIN defects d ON s.defect_id = d.defect_id", conn)
@@ -548,7 +558,7 @@ class FeedbackLoopAgent:
     """Compares planned vs actual duration and logs a running adjustment factor."""
 
     def record_completion(self, defect_id, actual_minutes):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         row = pd.read_sql(
             "SELECT * FROM schedule WHERE defect_id=? ORDER BY schedule_id DESC LIMIT 1",
@@ -611,7 +621,7 @@ class SimulationAgent:
     """Estimates downtime avoided by comparing AI-planned vs naive-sequential scheduling."""
 
     def simulate_downtime_avoided(self):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         scheduled = pd.read_sql("SELECT * FROM schedule", conn)
         conn.close()
 
@@ -647,7 +657,7 @@ class PassengerAdvisoryAgent:
     """
 
     def _affected_trains(self, section_id, planned_start, planned_end):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         trains = pd.read_sql(
             "SELECT * FROM train_timetable WHERE section_id=?", conn, params=(section_id,))
         conn.close()
@@ -717,7 +727,7 @@ class PassengerAdvisoryAgent:
 
     def generate_for_all_planned(self):
         """Run advisories for every currently-planned schedule entry (e.g. after a Coordinator cycle)."""
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         planned = pd.read_sql("SELECT * FROM schedule WHERE status IN ('planned','approved')", conn)
         conn.close()
 
@@ -750,7 +760,7 @@ class DataManagementAgent:
         if severity not in self.VALID_SEVERITIES:
             raise ValueError(f"severity must be one of {self.VALID_SEVERITIES}")
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         cur = conn.cursor()
         cur.execute("SELECT COUNT(*) FROM defects WHERE created_via='admin_manual'")
         count = cur.fetchone()[0]
@@ -789,7 +799,7 @@ class DataManagementAgent:
         return defect_id
 
     def delete_defect(self, defect_id, deleted_by="admin"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         cur = conn.cursor()
         cur.execute("SELECT * FROM defects WHERE defect_id=?", (defect_id,))
         row = cur.fetchone()
@@ -808,7 +818,7 @@ class DataManagementAgent:
         return True
 
     def list_manual_defects(self):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         df = pd.read_sql("SELECT * FROM defects WHERE created_via='admin_manual' "
                           "ORDER BY reported_date DESC", conn)
         conn.close()
@@ -831,7 +841,7 @@ class DataManagementAgent:
         if missing:
             return 0, [f"Missing required column(s): {', '.join(missing)}"]
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         cur = conn.cursor()
         cur.execute("SELECT COUNT(*) FROM defects WHERE created_via='bulk_upload'")
         start_count = cur.fetchone()[0]
@@ -901,7 +911,7 @@ class DataManagementAgent:
         if table_name not in valid_tables:
             return 0, [f"table_name must be one of {valid_tables}"]
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         if mode == "replace":
             conn.execute(f"DELETE FROM {table_name}")
             conn.commit()
@@ -931,7 +941,7 @@ class SlotRequestAgent:
     """
 
     def create_request(self, department, section_id, requested_date, defect_type, severity, justification, duration_hours=2.0, requested_start_time="02:00", requested_end_time="04:30"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         cur = conn.cursor()
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cur.execute("""
@@ -949,7 +959,7 @@ class SlotRequestAgent:
         return req_id
 
     def accept_request(self, request_id, admin_user="admin"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         req = cur.execute("SELECT * FROM slot_requests WHERE request_id=?", (request_id,)).fetchone()
@@ -1011,7 +1021,7 @@ class SlotRequestAgent:
         return True, ai_report
 
     def decline_request(self, request_id, admin_reason=None, admin_user="admin"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
         req = cur.execute("SELECT * FROM slot_requests WHERE request_id=?", (request_id,)).fetchone()
@@ -1066,7 +1076,7 @@ class SlotRequestAgent:
         if table_name not in valid_tables:
             raise ValueError(f"table_name must be one of {valid_tables}")
 
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         if_exists = "replace" if mode == "replace" else "append"
         df.to_sql(table_name, conn, if_exists=if_exists, index=False)
         conn.close()
@@ -1083,7 +1093,7 @@ class SlotRequestAgent:
         actual completion happened more than `days` ago. Keeps the database from
         growing unbounded with old, no-longer-actionable records.
         """
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         cur = conn.cursor()
 
         cutoff = (datetime.now() - timedelta(days=days)).isoformat()
@@ -1121,7 +1131,7 @@ class LocopilotSpeedAgent:
     """
 
     def generate_speed_advisory(self, section_id, freed_minutes=45.0, freed_slot_id=None, department_source="Engineering"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # 1. Check delayed trains on this section
@@ -1197,7 +1207,7 @@ class LocopilotSpeedAgent:
         return advisories_created
 
     def get_active_advisories(self):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         df = pd.read_sql(
             "SELECT * FROM locopilot_speed_advisories ORDER BY advisory_id DESC LIMIT 50", conn
         )
@@ -1205,7 +1215,7 @@ class LocopilotSpeedAgent:
         return df
 
     def get_live_trains(self):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         df = pd.read_sql(
             "SELECT * FROM live_train_status ORDER BY delay_minutes DESC", conn
         )
@@ -1213,7 +1223,7 @@ class LocopilotSpeedAgent:
         return df
 
     def dispatch_advisories(self):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         conn.execute("UPDATE locopilot_speed_advisories SET status='Dispatched & Transmitted to Locopilots'")
         conn.commit()
         conn.close()
@@ -1226,7 +1236,7 @@ class LocopilotSpeedAgent:
         Calculates Instant Prioritization Score S_instant = w1*P + w2*Delay + w3*Cost + w4*Safety
         when a maintenance block finishes ahead of schedule.
         """
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status WHERE section_id=?", conn, params=(section_id,))
         if live_trains.empty:
             live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 6", conn)
@@ -1286,7 +1296,7 @@ class LocopilotSpeedAgent:
         return candidates
 
     def compute_green_wave_speed(self, train_id="Vijayawada Train 01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         tr = pd.read_sql("SELECT * FROM live_train_status WHERE train_id=?", conn, params=(train_id,))
         if tr.empty:
             tr = pd.read_sql("SELECT * FROM live_train_status LIMIT 1", conn)
@@ -1330,7 +1340,7 @@ class BlockMergingAgent:
     4. Computes total corridor hours and train delays saved.
     """
     def find_merge_opportunities(self):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         df = pd.read_sql("""
             SELECT s.schedule_id, s.defect_id, s.section_id, s.department, s.planned_start, s.planned_end,
                    d.defect_type, d.severity, d.estimated_duration_hours, d.trains_affected_per_day
@@ -1370,7 +1380,7 @@ class BlockMergingAgent:
         return merge_candidates
 
     def execute_merge(self, section_id):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         msg = f"🤝 Coordinated Mega-Block activated on {section_id}: Multi-department requests merged into single window. Approaching trains regulated to 30 km/h."
         notify("admin", msg, category="auto_approval", conn=conn)
         log_action("BlockMergingAgent", "execute_merge", msg)
@@ -1390,7 +1400,7 @@ class DelayPropagationAgent:
     """
 
     def predict_delay_cascade(self, section_id="Vijayawada-SEC-01", disruption_hours=2.0):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status WHERE section_id=?", conn, params=(section_id,))
         if live_trains.empty:
             live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 10", conn)
@@ -1460,7 +1470,7 @@ class TelemetrySimulatorAgent:
     """
 
     def advance_stream(self, delta_km=1.5):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status", conn)
         if live_trains.empty:
             conn.close()
@@ -1522,7 +1532,7 @@ class ETAPredictionAgent:
     """
 
     def predict_etas(self, train_id="Vijayawada Train 01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_tr = pd.read_sql("SELECT * FROM live_train_status WHERE train_id=?", conn, params=(train_id,))
         if live_tr.empty:
             live_tr = pd.read_sql("SELECT * FROM live_train_status LIMIT 1", conn)
@@ -1579,7 +1589,7 @@ class ConflictPredictionAgent:
     """
 
     def predict_conflicts(self, section_id="Vijayawada-SEC-01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status WHERE section_id=?", conn, params=(section_id,))
         if live_trains.empty:
             live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 6", conn)
@@ -1641,7 +1651,7 @@ class DynamicHeadwayAgent:
     """
 
     def analyze_headway(self, section_id="Vijayawada-SEC-01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status WHERE section_id=?", conn, params=(section_id,))
         if live_trains.empty:
             live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 6", conn)
@@ -1679,7 +1689,7 @@ class OperationalRiskAgent:
     """
 
     def compute_risk_score(self, train_id="Vijayawada Train 01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         tr = pd.read_sql("SELECT * FROM live_train_status WHERE train_id=?", conn, params=(train_id,))
         defects_cnt = pd.read_sql("SELECT COUNT(*) as c FROM defects WHERE status='Open'", conn)["c"].iloc[0]
         conn.close()
@@ -1717,7 +1727,7 @@ class OperationalRiskAgent:
         }
 
     def compute_green_wave_speed(self, train_id="Vijayawada Train 01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         tr = pd.read_sql("SELECT * FROM live_train_status WHERE train_id=?", conn, params=(train_id,))
         conn.close()
 
@@ -1753,7 +1763,7 @@ class FreightInsertionAgent:
     """
 
     def calculate_freight_insertions(self, section_id="Vijayawada-SEC-01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         goods = pd.read_sql("SELECT * FROM goods_forecast WHERE section_id=? ORDER BY expected_rakes DESC", conn, params=(section_id,))
         if goods.empty:
             goods = pd.read_sql("SELECT * FROM goods_forecast ORDER BY expected_rakes DESC LIMIT 5", conn)
@@ -1799,7 +1809,7 @@ class SingleLineWorkingAgent:
     """
 
     def authorize_single_line_working(self, section_id="Vijayawada-SEC-01", blocked_track="Up Line"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status WHERE section_id=?", conn, params=(section_id,))
         if live_trains.empty:
             live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 4", conn)
@@ -1843,7 +1853,7 @@ class SafetyClearanceAgent:
     """
 
     def generate_gsr_certificate(self, schedule_id=1, section_id="Vijayawada-SEC-01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         sched = pd.read_sql("SELECT * FROM schedule WHERE schedule_id=?", conn, params=(schedule_id,))
         conn.close()
 
@@ -1885,7 +1895,7 @@ class TrackMachinePackerAgent:
     """
 
     def optimize_machine_blocks(self, section_id="Vijayawada-SEC-01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         defects = pd.read_sql("SELECT * FROM defects WHERE section_id=? AND status='Open' ORDER BY priority_score DESC", conn, params=(section_id,))
         if defects.empty:
             defects = pd.read_sql("SELECT * FROM defects WHERE status='Open' ORDER BY priority_score DESC LIMIT 10", conn)
@@ -1940,7 +1950,7 @@ class CrewHOERAgent:
     """
 
     def check_hoer_crew_expiry(self, section_id="Vijayawada-SEC-01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status WHERE section_id=?", conn, params=(section_id,))
         if live_trains.empty:
             live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 6", conn)
@@ -1987,7 +1997,7 @@ class TSRLifecycleAgent:
     """
 
     def calculate_tsr_delay_padding(self, section_id="Vijayawada-SEC-01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status WHERE section_id=?", conn, params=(section_id,))
         if live_trains.empty:
             live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 6", conn)
@@ -2029,7 +2039,7 @@ class TractionAwareRouterAgent:
     """
 
     def route_traffic_under_ptw(self, section_id="Vijayawada-SEC-01", ohe_isolated=True):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status WHERE section_id=?", conn, params=(section_id,))
         if live_trains.empty:
             live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 6", conn)
@@ -2077,7 +2087,7 @@ class InterDivisionalHandoverAgent:
     """
 
     def generate_boundary_handover_bulletin(self, from_division="Vijayawada (BZA)", to_division="Secunderabad (SC)"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 5", conn)
         conn.close()
 
@@ -2121,7 +2131,7 @@ class FOISDemurrageAgent:
     """
 
     def prioritize_commodity_release(self, section_id="Vijayawada-SEC-01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         goods = pd.read_sql("SELECT * FROM goods_forecast WHERE section_id=? ORDER BY expected_rakes DESC", conn, params=(section_id,))
         if goods.empty:
             goods = pd.read_sql("SELECT * FROM goods_forecast ORDER BY expected_rakes DESC LIMIT 6", conn)
@@ -2175,7 +2185,7 @@ class DeBunchingMeteringAgent:
     """
 
     def calculate_debunching_sequence(self, section_id="Vijayawada-SEC-01"):
-        conn = sqlite3.connect(DB_PATH)
+        conn = get_agent_db()
         live_trains = pd.read_sql("SELECT * FROM live_train_status WHERE section_id=?", conn, params=(section_id,))
         if live_trains.empty:
             live_trains = pd.read_sql("SELECT * FROM live_train_status LIMIT 6", conn)

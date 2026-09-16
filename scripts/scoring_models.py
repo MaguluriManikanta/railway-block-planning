@@ -22,8 +22,14 @@ def compute_priority_scores():
       - trains affected per day
     Score range roughly 0-100. Higher = more urgent.
     """
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=30.0)
+    try:
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA busy_timeout=30000;")
+    except Exception:
+        pass
     df = pd.read_sql("SELECT * FROM defects", conn)
+    conn.close()
 
     df["severity_component"] = df["severity"].map(SEVERITY_WEIGHT).fillna(5)
     df["overdue_component"] = df["overdue_days"].clip(lower=0, upper=90) / 90 * 30
@@ -56,12 +62,17 @@ def compute_priority_scores():
     # Blend priority + risk for final ranking (60% explicit priority, 40% predicted risk)
     df["final_priority"] = (0.6 * df["priority_score"] + 0.4 * df["risk_score"]).round(2)
 
-    cur = conn.cursor()
+    conn_write = sqlite3.connect(DB_PATH, timeout=30.0)
+    try:
+        conn_write.execute("PRAGMA journal_mode=WAL;")
+        conn_write.execute("PRAGMA busy_timeout=30000;")
+    except Exception:
+        pass
+    cur = conn_write.cursor()
     records = [(float(row["final_priority"]), float(row["risk_score"]), row["defect_id"]) for _, row in df.iterrows()]
-    conn.execute("BEGIN TRANSACTION")
     cur.executemany("UPDATE defects SET priority_score=?, risk_score=? WHERE defect_id=?", records)
-    conn.commit()
-    conn.close()
+    conn_write.commit()
+    conn_write.close()
 
     print(f"Priority scores computed for {len(df)} defects.")
     return df
@@ -72,7 +83,12 @@ def detect_anomalies():
     Anomaly Detection Agent: flags sections with unusually high defect clustering
     using IsolationForest on defect counts per section.
     """
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=30.0)
+    try:
+        conn.execute("PRAGMA journal_mode=WAL;")
+        conn.execute("PRAGMA busy_timeout=30000;")
+    except Exception:
+        pass
     df = pd.read_sql("SELECT section_id, COUNT(*) as defect_count, "
                       "AVG(overdue_days) as avg_overdue FROM defects "
                       "WHERE status != 'Completed' GROUP BY section_id", conn)
