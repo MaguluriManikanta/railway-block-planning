@@ -2306,130 +2306,182 @@ if is_dept_user:
             render_visual_train_cards(df_active_trains)
 
             st.markdown("---")
-            st.subheader(f"📊 {cur_dept_cfg['acronym']} Asset Reliability & Defect Metrics")
+            dept_options = ["All Departments", "Engineering", "S&T", "TRD"]
+            default_idx = dept_options.index(my_dept) if my_dept in dept_options else 1
+            dept_filter = st.selectbox("🎯 Filter Overview by Department", dept_options, index=default_idx, key="dept_portal_overview_filter")
 
-            dept_counts = get_cached_department_overview_counts(my_dept)
-            tot_d = dept_counts["tot_d"]
-            open_d = dept_counts["open_d"]
-            sched_d = dept_counts["sched_d"]
-            comp_d = dept_counts["comp_d"]
-            sched_blocks = dept_counts["sched_blocks"]
-            crit_d = dept_counts["crit_d"]
+            target_dept = dept_filter if dept_filter != "All Departments" else None
+            filter_cfg = DEPARTMENT_CONFIGS.get(target_dept, cur_dept_cfg) if target_dept else None
 
-            comp_rate = (comp_d / tot_d * 100) if tot_d > 0 else 0.0
-            open_pct = (open_d / tot_d * 100) if tot_d > 0 else 0.0
+            if target_dept:
+                st.subheader(f"📊 {filter_cfg['acronym']} Asset Reliability & Defect Metrics")
 
-            m1, m2, m3, m4, m5 = st.columns(5)
-            m1.metric(f"Total {cur_dept_cfg['acronym']} Defects", f"{tot_d:,}", help="Total defects logged in system")
-            m2.metric("Active Open Backlog", f"{open_d:,}", delta=f"{open_pct:.1f}% of total", delta_color="inverse")
-            m3.metric("Critical Safety Faults", f"{crit_d:,}", delta="Urgent Priority", delta_color="inverse")
-            m4.metric("Approved Block Windows", f"{sched_blocks:,}", delta="Coordinated Plan")
-            m5.metric("Compliance Rate", f"{comp_rate:.1f}%", delta=f"{comp_d:,} Certified Fit")
+                dept_counts = get_cached_department_overview_counts(target_dept)
+                tot_d = dept_counts["tot_d"]
+                open_d = dept_counts["open_d"]
+                sched_d = dept_counts["sched_d"]
+                comp_d = dept_counts["comp_d"]
+                sched_blocks = dept_counts["sched_blocks"]
+                crit_d = dept_counts["crit_d"]
 
-            st.markdown("---")
+                comp_rate = (comp_d / tot_d * 100) if tot_d > 0 else 0.0
+                open_pct = (open_d / tot_d * 100) if tot_d > 0 else 0.0
 
-            c_ov1, c_ov2 = st.columns(2)
-            with c_ov1:
-                st.markdown(f"#### ⚠️ Defect Severity Distribution ({cur_dept_cfg['acronym']})")
+                m1, m2, m3, m4, m5 = st.columns(5)
+                m1.metric(f"Total {filter_cfg['acronym']} Defects", f"{tot_d:,}", help="Total defects logged in system")
+                m2.metric("Active Open Backlog", f"{open_d:,}", delta=f"{open_pct:.1f}% of total", delta_color="inverse")
+                m3.metric("Critical Safety Faults", f"{crit_d:,}", delta="Urgent Priority", delta_color="inverse")
+                m4.metric("Approved Block Windows", f"{sched_blocks:,}", delta="Coordinated Plan")
+                m5.metric("Compliance Rate", f"{comp_rate:.1f}%", delta=f"{comp_d:,} Certified Fit")
+
+                st.markdown("---")
+
+                c_ov1, c_ov2 = st.columns(2)
+                with c_ov1:
+                    st.markdown(f"#### ⚠️ Defect Severity Distribution ({filter_cfg['acronym']})")
+                    conn = get_db()
+                    df_sev = pd.read_sql("SELECT severity, COUNT(*) as count FROM defects WHERE department=? GROUP BY severity", conn, params=(target_dept,))
+                    conn.close()
+                    if not df_sev.empty:
+                        fig_sev = px.pie(
+                            df_sev, names="severity", values="count",
+                            title=f"{filter_cfg['acronym']} Defects by Severity Level",
+                            color="severity",
+                            color_discrete_map={"Critical": "#ef4444", "High": "#f97316", "Medium": "#3b82f6", "Low": "#10b981"},
+                            hole=0.4
+                        )
+                        fig_sev.update_layout(margin=dict(t=40, b=20, l=20, r=20))
+                        st.plotly_chart(fig_sev, use_container_width=True)
+                    else:
+                        st.info("No defect data available.")
+
+                with c_ov2:
+                    st.markdown(f"#### 📌 Work Order Execution Status ({filter_cfg['acronym']})")
+                    conn = get_db()
+                    df_st = pd.read_sql("SELECT status, COUNT(*) as count FROM defects WHERE department=? GROUP BY status", conn, params=(target_dept,))
+                    conn.close()
+                    if not df_st.empty:
+                        fig_st = px.bar(
+                            df_st, x="status", y="count", color="status",
+                            title=f"{filter_cfg['acronym']} Tasks by Lifecycle Status",
+                            color_discrete_map={"Open": "#ef4444", "Scheduled": "#3b82f6", "Completed": "#10b981"}
+                        )
+                        fig_st.update_layout(margin=dict(t=40, b=20, l=20, r=20), xaxis_title="Status", yaxis_title="Number of Work Orders")
+                        st.plotly_chart(fig_st, use_container_width=True)
+                    else:
+                        st.info("No status data available.")
+
+                st.markdown("---")
+
+                c_ov3, c_ov4 = st.columns(2)
+                with c_ov3:
+                    st.markdown(f"#### 📍 Top Priority Railway Sections ({filter_cfg['acronym']})")
+                    conn = get_db()
+                    df_sec = pd.read_sql("""
+                        SELECT section_id, COUNT(*) as defect_count, AVG(priority_score) as avg_priority 
+                        FROM defects 
+                        WHERE department=? AND LOWER(status)!='completed'
+                        GROUP BY section_id 
+                        ORDER BY avg_priority DESC 
+                        LIMIT 8
+                    """, conn, params=(target_dept,))
+                    conn.close()
+                    if not df_sec.empty:
+                        fig_sec = px.bar(
+                            df_sec, x="section_id", y="avg_priority", color="defect_count",
+                            title=f"High-Priority Maintenance Sections ({filter_cfg['acronym']})",
+                            labels={"avg_priority": "Avg Priority (0-100)", "section_id": "Railway Section", "defect_count": "Open Defect Count"},
+                            color_continuous_scale="Blues"
+                        )
+                        fig_sec.update_layout(margin=dict(t=40, b=20, l=20, r=20))
+                        st.plotly_chart(fig_sec, use_container_width=True)
+                    else:
+                        st.info("No section defect data available.")
+
+                with c_ov4:
+                    theme_c = filter_cfg["theme_color"] if filter_cfg else "#1f77b4"
+                    st.markdown(f"#### 🔧 Defect Category Frequency ({filter_cfg['acronym']})")
+                    conn = get_db()
+                    df_type = pd.read_sql("""
+                        SELECT defect_type, COUNT(*) as count 
+                        FROM defects 
+                        WHERE department=? 
+                        GROUP BY defect_type 
+                        ORDER BY count DESC 
+                        LIMIT 8
+                    """, conn, params=(target_dept,))
+                    conn.close()
+                    if not df_type.empty:
+                        fig_type = px.bar(
+                            df_type, y="defect_type", x="count", orientation="h",
+                            title=f"Common Maintenance Work Types ({filter_cfg['acronym']})",
+                            labels={"defect_type": "Work Category", "count": "Registered Incidents"},
+                            color_discrete_sequence=[theme_c]
+                        )
+                        fig_type.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(t=40, b=20, l=20, r=20))
+                        st.plotly_chart(fig_type, use_container_width=True)
+                    else:
+                        st.info("No defect category data available.")
+
+                st.markdown("---")
+                st.markdown(f"#### 🚨 Critical & High-Priority Safety Focus ({filter_cfg['acronym']})")
                 conn = get_db()
-                df_sev = pd.read_sql("SELECT severity, COUNT(*) as count FROM defects WHERE department=? GROUP BY severity", conn, params=(my_dept,))
-                conn.close()
-                if not df_sev.empty:
-                    fig_sev = px.pie(
-                        df_sev, names="severity", values="count",
-                        title=f"{cur_dept_cfg['acronym']} Defects by Severity Level",
-                        color="severity",
-                        color_discrete_map={"Critical": "#ef4444", "High": "#f97316", "Medium": "#3b82f6", "Low": "#10b981"},
-                        hole=0.4
-                    )
-                    fig_sev.update_layout(margin=dict(t=40, b=20, l=20, r=20))
-                    st.plotly_chart(fig_sev, use_container_width=True)
-                else:
-                    st.info("No defect data available.")
-
-            with c_ov2:
-                st.markdown(f"#### 📌 Work Order Execution Status ({cur_dept_cfg['acronym']})")
-                conn = get_db()
-                df_st = pd.read_sql("SELECT status, COUNT(*) as count FROM defects WHERE department=? GROUP BY status", conn, params=(my_dept,))
-                conn.close()
-                if not df_st.empty:
-                    fig_st = px.bar(
-                        df_st, x="status", y="count", color="status",
-                        title=f"{cur_dept_cfg['acronym']} Tasks by Lifecycle Status",
-                        color_discrete_map={"Open": "#ef4444", "Scheduled": "#3b82f6", "Completed": "#10b981"}
-                    )
-                    fig_st.update_layout(margin=dict(t=40, b=20, l=20, r=20), xaxis_title="Status", yaxis_title="Number of Work Orders")
-                    st.plotly_chart(fig_st, use_container_width=True)
-                else:
-                    st.info("No status data available.")
-
-            st.markdown("---")
-
-            c_ov3, c_ov4 = st.columns(2)
-            with c_ov3:
-                st.markdown(f"#### 📍 Top Priority Railway Sections ({cur_dept_cfg['acronym']})")
-                conn = get_db()
-                df_sec = pd.read_sql("""
-                    SELECT section_id, COUNT(*) as defect_count, AVG(priority_score) as avg_priority 
-                    FROM defects 
+                df_focus = pd.read_sql("""
+                    SELECT defect_id, section_id, defect_type, severity, priority_score, estimated_duration_hours, trains_affected_per_day, due_date, status
+                    FROM defects
                     WHERE department=? AND LOWER(status)!='completed'
-                    GROUP BY section_id 
-                    ORDER BY avg_priority DESC 
-                    LIMIT 8
-                """, conn, params=(my_dept,))
+                    ORDER BY priority_score DESC
+                    LIMIT 10
+                """, conn, params=(target_dept,))
                 conn.close()
-                if not df_sec.empty:
-                    fig_sec = px.bar(
-                        df_sec, x="section_id", y="avg_priority", color="defect_count",
-                        title=f"High-Priority Maintenance Sections ({cur_dept_cfg['acronym']})",
-                        labels={"avg_priority": "Avg Priority (0-100)", "section_id": "Railway Section", "defect_count": "Open Defect Count"},
-                        color_continuous_scale="Blues"
-                    )
-                    fig_sec.update_layout(margin=dict(t=40, b=20, l=20, r=20))
-                    st.plotly_chart(fig_sec, use_container_width=True)
+                if not df_focus.empty:
+                    st.dataframe(df_focus, use_container_width=True, hide_index=True)
+                    display_overall_statistics(df_focus, context_title=f"{filter_cfg['acronym']} Critical Tasks")
                 else:
-                    st.info("No section defect data available.")
-
-            with c_ov4:
-                st.markdown(f"#### 🔧 Defect Category Frequency ({cur_dept_cfg['acronym']})")
-                conn = get_db()
-                df_type = pd.read_sql("""
-                    SELECT defect_type, COUNT(*) as count 
-                    FROM defects 
-                    WHERE department=? 
-                    GROUP BY defect_type 
-                    ORDER BY count DESC 
-                    LIMIT 8
-                """, conn, params=(my_dept,))
-                conn.close()
-                if not df_type.empty:
-                    fig_type = px.bar(
-                        df_type, y="defect_type", x="count", orientation="h",
-                        title=f"Common Maintenance Work Types ({cur_dept_cfg['acronym']})",
-                        labels={"defect_type": "Work Category", "count": "Registered Incidents"},
-                        color_discrete_sequence=[cur_dept_cfg["theme_color"]]
-                    )
-                    fig_type.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(t=40, b=20, l=20, r=20))
-                    st.plotly_chart(fig_type, use_container_width=True)
-                else:
-                    st.info("No defect category data available.")
-
-            st.markdown("---")
-            st.markdown(f"#### 🚨 Critical & High-Priority Safety Focus ({cur_dept_cfg['acronym']})")
-            conn = get_db()
-            df_focus = pd.read_sql("""
-                SELECT defect_id, section_id, defect_type, severity, priority_score, estimated_duration_hours, trains_affected_per_day, due_date, status
-                FROM defects
-                WHERE department=? AND LOWER(status)!='completed'
-                ORDER BY priority_score DESC
-                LIMIT 10
-            """, conn, params=(my_dept,))
-            conn.close()
-            if not df_focus.empty:
-                st.dataframe(df_focus, use_container_width=True, hide_index=True)
-                display_overall_statistics(df_focus, context_title=f"{cur_dept_cfg['acronym']} Critical Tasks")
+                    st.success("✅ No critical safety backlog currently pending.")
             else:
-                st.success("✅ No critical safety backlog currently pending.")
+                st.subheader("📊 Operational Defect & Capacity Metrics")
+                admin_counts = get_cached_admin_overview_counts("All Departments")
+                total_def = admin_counts["total_def"]
+                open_def = admin_counts["open_def"]
+                sched_def = admin_counts["sched_def"]
+                comp_def = admin_counts["comp_def"]
+                sched_blocks = admin_counts["sched_blocks"]
+                
+                conn = get_db()
+                cur = conn.cursor()
+                total_slots = cur.execute("SELECT COUNT(*) FROM corridor_slots").fetchone()[0]
+                avail_slots = cur.execute("SELECT COUNT(*) FROM corridor_slots WHERE is_available=1").fetchone()[0]
+                conn.close()
+
+                open_pct = (open_def / total_def * 100) if total_def > 0 else 0.0
+
+                m1, m2, m3, m4, m5 = st.columns(5)
+                m1.metric("Total Ingested Defects", f"{total_def:,}")
+                m2.metric("Open Backlog", f"{open_def:,}", delta=f"{open_pct:.1f}%", delta_color="inverse")
+                m3.metric("Scheduled Blocks", f"{sched_blocks:,}", delta="Coordinated")
+                m4.metric("Completed Tasks", f"{comp_def:,}")
+                m5.metric("Available Corridor Slots", f"{avail_slots:,}", delta=f"of {total_slots:,}")
+
+                st.markdown("---")
+                col_ch1, col_ch2 = st.columns(2)
+                with col_ch1:
+                    st.markdown("#### Defect Distribution by Department & Status")
+                    conn = get_db()
+                    dept_stat = pd.read_sql("SELECT department, status, COUNT(*) as count FROM defects GROUP BY department, status", conn)
+                    conn.close()
+                    fig_bar = px.bar(dept_stat, x="department", y="count", color="status", barmode="group",
+                                     title="Defects by Department & Status", color_discrete_sequence=px.colors.qualitative.Safe)
+                    st.plotly_chart(fig_bar, use_container_width=True)
+
+                with col_ch2:
+                    st.markdown("#### Scheduled Blocks by Department")
+                    conn = get_db()
+                    sched_dept = pd.read_sql("SELECT department, COUNT(*) as count FROM schedule GROUP BY department", conn)
+                    conn.close()
+                    fig_pie = px.pie(sched_dept, names="department", values="count", title="Scheduled Maintenance Allocation",
+                                     color="department", color_discrete_map={"Engineering": "#1f77b4", "S&T": "#2ca02c", "TRD": "#ff7f0e"})
+                    st.plotly_chart(fig_pie, use_container_width=True)
 
         # =======================================================================
         # SEGMENT 2: MAINTENANCE BLOCK SCHEDULE
@@ -2838,10 +2890,8 @@ else:
         if admin_menu == "📊 Overview":
             st.subheader("System State & Visual Operational Intelligence Center")
 
-            dept_filter = st.selectbox("🎯 Filter Overview by Department", ["All Departments", "Engineering", "S&T", "TRD"])
-
             # 1. VISUAL OPERATIONAL KPI STRIP
-            render_operational_kpi_bar(department=dept_filter if dept_filter != "All Departments" else "All")
+            render_operational_kpi_bar(department="All")
 
             # 2. LIVE INTERACTIVE RAILWAY CORRIDOR MAP (PLOTLY)
             df_active_trains = get_active_trains_df()
@@ -2855,6 +2905,7 @@ else:
             render_visual_train_cards(df_active_trains)
 
             st.markdown("---")
+            dept_filter = st.selectbox("🎯 Filter Overview by Department", ["All Departments", "Engineering", "S&T", "TRD"], key="admin_overview_dept_filter")
             st.subheader("📊 Operational Defect & Capacity Metrics")
 
             admin_counts = get_cached_admin_overview_counts(dept_filter)
