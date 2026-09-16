@@ -390,6 +390,12 @@ def _ensure_db_schema():
         if defects_cols and "actual_completion_time" not in defects_cols:
             conn.execute("ALTER TABLE defects ADD COLUMN actual_completion_time TEXT")
             conn.commit()
+
+        notif_cols = [col[1] for col in conn.execute("PRAGMA table_info(notifications)").fetchall()]
+        if notif_cols and "is_read" not in notif_cols:
+            conn.execute("ALTER TABLE notifications ADD COLUMN is_read INTEGER DEFAULT 0")
+            conn.commit()
+
         sync_schedule_to_current_date(conn)
         conn.close()
     except Exception:
@@ -1748,18 +1754,18 @@ if st.sidebar.button("🚪 Sign Out", use_container_width=True):
 
 conn = get_db()
 cur = conn.cursor()
-notif_query = "SELECT notif_id, recipient_role, category, audience, message, created_at FROM notifications "
-
+where_conds = ["(is_read = 0 OR is_read IS NULL)"]
 if is_dept_user:
-    notif_query += f"WHERE (recipient_role = '{user['role']}' OR recipient_role = 'admin' OR audience = 'public') "
-notif_query += "ORDER BY notif_id DESC LIMIT 25"
+    where_conds.append(f"(recipient_role = '{user['role']}' OR recipient_role = 'admin' OR audience = 'public')")
+notif_where = " WHERE " + " AND ".join(where_conds)
+notif_query = f"SELECT notif_id, recipient_role, category, audience, message, created_at, COALESCE(is_read, 0) as is_read FROM notifications {notif_where} ORDER BY notif_id DESC LIMIT 25"
 cur.execute(notif_query)
 notif_rows = [dict(r) for r in cur.fetchall()]
 conn.close()
 
 notif_count = len(notif_rows)
 
-top_col1, top_col2 = st.columns([5, 1.6])
+top_col1, top_col2 = st.columns([5, 1.8])
 with top_col1:
     if is_dept_user:
         st.markdown(f"""
@@ -1791,19 +1797,48 @@ with top_col1:
         """, unsafe_allow_html=True)
 
 with top_col2:
-    with st.popover(f"🔔 Alerts & Notifications ({notif_count})", use_container_width=True):
-        st.markdown("### 🔔 Live Alerts & Bulletins")
+    badge_label = f"🔔 Alerts ({notif_count})" if notif_count > 0 else "🔔 Alerts (0)"
+    with st.popover(badge_label, use_container_width=True):
+        st.markdown("### 🔔 Unread Live Alerts & Bulletins")
         if notif_rows:
-            for n in notif_rows[:8]:
-                badge = "📢 [PUBLIC]" if n["audience"] == "public" else "🔒 [STAFF]"
-                if n["category"] == "deadline":
-                    st.error(f"**{badge}** {n['message']}\n\n*{n['created_at']}*")
-                elif n["category"] == "anomaly":
-                    st.warning(f"**{badge}** {n['message']}\n\n*{n['created_at']}*")
+            if st.button("✓ Mark All as Read", key="clear_all_notifs_btn", use_container_width=True):
+                conn = get_db()
+                all_ids = tuple(n["notif_id"] for n in notif_rows)
+                if len(all_ids) == 1:
+                    conn.execute("UPDATE notifications SET is_read = 1 WHERE notif_id = ?", (all_ids[0],))
                 else:
-                    st.info(f"**{badge}** {n['message']}\n\n*{n['created_at']}*")
+                    conn.execute(f"UPDATE notifications SET is_read = 1 WHERE notif_id IN {all_ids}")
+                conn.commit()
+                conn.close()
+                st.cache_data.clear()
+                st.toast("All notifications marked as read!", icon="✓")
+                st.rerun()
+
+            st.markdown("---")
+
+            for n in notif_rows[:8]:
+                n_id = n["notif_id"]
+                badge = "📢 [PUBLIC]" if n["audience"] == "public" else "🔒 [STAFF]"
+                
+                n_c1, n_c2 = st.columns([3.5, 1])
+                with n_c1:
+                    if n["category"] in ["deadline", "emergency", "conflict"]:
+                        st.error(f"**{badge}** {n['message']}\n\n*{n['created_at']}*")
+                    elif n["category"] == "anomaly":
+                        st.warning(f"**{badge}** {n['message']}\n\n*{n['created_at']}*")
+                    else:
+                        st.info(f"**{badge}** {n['message']}\n\n*{n['created_at']}*")
+                with n_c2:
+                    if st.button("✓ Read", key=f"read_notif_{n_id}", use_container_width=True):
+                        conn = get_db()
+                        conn.execute("UPDATE notifications SET is_read = 1 WHERE notif_id = ?", (n_id,))
+                        conn.commit()
+                        conn.close()
+                        st.cache_data.clear()
+                        st.toast("Notification marked as read!", icon="✓")
+                        st.rerun()
         else:
-            st.write("No active notifications.")
+            st.success("🎉 All notifications read! Zero pending alerts.")
 
 st.markdown("---")
 
