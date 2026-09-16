@@ -26,8 +26,8 @@ export interface ScheduleItem {
   schedule_id: number;
   defect_id: string;
   slot_id: string;
-  section_id: str;
-  department: str;
+  section_id: string;
+  department: string;
   planned_start: string;
   planned_end: string;
   horizon: string;
