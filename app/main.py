@@ -19,6 +19,7 @@ import sys
 import sqlite3
 import json
 import re
+import time
 from datetime import datetime, timedelta
 import pandas as pd
 import streamlit as st
@@ -413,6 +414,32 @@ def get_db():
     except Exception:
         pass
     return conn
+
+
+def get_system_setting(key_name, default_val="0"):
+    """Retrieves a persistent system setting from railway.db across refreshes/reboots."""
+    try:
+        conn = get_db()
+        conn.execute("CREATE TABLE IF NOT EXISTS system_settings (key TEXT PRIMARY KEY, value TEXT)")
+        row = conn.execute("SELECT value FROM system_settings WHERE key=?", (key_name,)).fetchone()
+        conn.close()
+        if row and row[0] is not None:
+            return row[0]
+    except Exception:
+        pass
+    return default_val
+
+
+def set_system_setting(key_name, val):
+    """Persists a system setting into railway.db across refreshes/reboots."""
+    try:
+        conn = get_db()
+        conn.execute("CREATE TABLE IF NOT EXISTS system_settings (key TEXT PRIMARY KEY, value TEXT)")
+        conn.execute("INSERT OR REPLACE INTO system_settings (key, value) VALUES (?, ?)", (key_name, str(val)))
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass
 
 
 @st.cache_data(ttl=5)
@@ -819,6 +846,45 @@ def render_live_corridor_map_plotly(df_trains=None):
     return fig
 
 
+def advance_telemetry_step():
+    """
+    Advances train KM positions, updates speed profiles, signal aspects, and delay minutes,
+    and syncs live telemetry to railway.db.
+    """
+    init_trains_10_state()
+    if "trains_10_state" in st.session_state:
+        for t_id, tr in st.session_state.trains_10_state.items():
+            new_km = tr["current_km"] + 3
+            if new_km > 280:
+                new_km = 10
+            tr["current_km"] = new_km
+
+            w_kms = tr.get("work_zone_kms", [114, 116, 118])
+            if any(abs(new_km - wk) <= 2 for wk in w_kms) and not tr.get("early_cleared", False):
+                tr["current_speed"] = 30
+                tr["status"] = "Regulated (30 km/h Caution)"
+                tr["signal"] = "🔴 Red / Amber Caution"
+                tr["delay_minutes"] = min(45, tr["delay_minutes"] + 2)
+            else:
+                tr["current_speed"] = tr.get("mps", 110)
+                tr["status"] = "Cruising (On Time)" if tr["delay_minutes"] == 0 else f"Running (+{tr['delay_minutes']}m Delay)"
+                tr["signal"] = "🟢 Green (Clearance Fit)"
+                if tr["delay_minutes"] > 0:
+                    tr["delay_minutes"] = max(0, tr["delay_minutes"] - 1)
+
+    try:
+        conn = get_db()
+        for t_id, tr in st.session_state.trains_10_state.items():
+            conn.execute("""
+                INSERT OR REPLACE INTO live_train_status (train_id, train_number, train_name, current_km, speed_kmh, delay_minutes, status, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (t_id, tr.get("number", "100"), tr.get("name", "Express"), tr["current_km"], tr["current_speed"], tr["delay_minutes"], tr["status"], datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass
+
+
 def render_visual_train_cards(df_trains=None):
     """
     Renders visual cards for active trains containing:
@@ -827,21 +893,28 @@ def render_visual_train_cards(df_trains=None):
     if df_trains is None or df_trains.empty:
         df_trains = get_active_trains_df()
 
-    h_col1, h_col2 = st.columns([2.8, 1.2])
+    if "auto_stream_active" not in st.session_state:
+        st.session_state.auto_stream_active = (get_system_setting("auto_live_stream", "0") == "1")
+
+    h_col1, h_col2, h_col3 = st.columns([2.0, 1.4, 1.2])
     with h_col1:
         st.markdown("#### 🚆 Live Train Operational Status Cards")
     with h_col2:
-        if st.button("⚡ Advance Telemetry Step", key="btn_adv_tele_cards_header", use_container_width=True):
-            if "trains_10_state" in st.session_state:
-                for t_id, tr in st.session_state.trains_10_state.items():
-                    new_km = tr["current_km"] + 3
-                    if new_km > 280:
-                        new_km = 10
-                    tr["current_km"] = new_km
-                    if tr["delay_minutes"] > 0:
-                        tr["delay_minutes"] = max(0, tr["delay_minutes"] - 1)
-            st.toast("⚡ Telemetry step advanced! Train positions, speeds & cards updated.")
+        auto_stream = st.toggle("🔴 Live Auto-Feed (3s)", value=st.session_state.auto_stream_active, key="toggle_auto_live_stream")
+        if auto_stream != st.session_state.auto_stream_active:
+            st.session_state.auto_stream_active = auto_stream
+            set_system_setting("auto_live_stream", "1" if auto_stream else "0")
             st.rerun()
+    with h_col3:
+        if st.button("⚡ Advance Step", key="btn_adv_tele_cards_header", use_container_width=True):
+            advance_telemetry_step()
+            st.toast("⚡ Telemetry step advanced! Train positions & speeds updated.", icon="✅")
+            st.rerun()
+
+    if st.session_state.auto_stream_active:
+        advance_telemetry_step()
+        time.sleep(3)
+        st.rerun()
 
     c1, c2 = st.columns(2)
     for idx, tr in df_trains.iterrows():
@@ -1754,16 +1827,16 @@ if st.sidebar.button("🚪 Sign Out", use_container_width=True):
 
 conn = get_db()
 cur = conn.cursor()
-where_conds = ["(is_read = 0 OR is_read IS NULL)"]
+where_conds = []
 if is_dept_user:
     where_conds.append(f"(recipient_role = '{user['role']}' OR recipient_role = 'admin' OR audience = 'public')")
-notif_where = " WHERE " + " AND ".join(where_conds)
-notif_query = f"SELECT notif_id, recipient_role, category, audience, message, created_at, COALESCE(is_read, 0) as is_read FROM notifications {notif_where} ORDER BY notif_id DESC LIMIT 25"
+notif_where = " WHERE " + " AND ".join(where_conds) if where_conds else ""
+notif_query = f"SELECT notif_id, recipient_role, category, audience, message, created_at, COALESCE(is_read, 0) as is_read FROM notifications {notif_where} ORDER BY notif_id DESC LIMIT 20"
 cur.execute(notif_query)
 notif_rows = [dict(r) for r in cur.fetchall()]
 conn.close()
 
-notif_count = len(notif_rows)
+unread_count = sum(1 for n in notif_rows if n["is_read"] == 0)
 
 top_col1, top_col2 = st.columns([5, 1.8])
 with top_col1:
@@ -1797,48 +1870,79 @@ with top_col1:
         """, unsafe_allow_html=True)
 
 with top_col2:
-    badge_label = f"🔔 Alerts ({notif_count})" if notif_count > 0 else "🔔 Alerts (0)"
+    badge_label = f"🔔 Alerts ({unread_count})" if unread_count > 0 else "🔔 Alerts (0)"
     with st.popover(badge_label, use_container_width=True):
-        st.markdown("### 🔔 Unread Live Alerts & Bulletins")
+        st.markdown("### 🔔 Live Alerts & Bulletins")
         if notif_rows:
-            if st.button("✓ Mark All as Read", key="clear_all_notifs_btn", use_container_width=True):
-                conn = get_db()
-                all_ids = tuple(n["notif_id"] for n in notif_rows)
-                if len(all_ids) == 1:
-                    conn.execute("UPDATE notifications SET is_read = 1 WHERE notif_id = ?", (all_ids[0],))
-                else:
-                    conn.execute(f"UPDATE notifications SET is_read = 1 WHERE notif_id IN {all_ids}")
-                conn.commit()
-                conn.close()
-                st.cache_data.clear()
-                st.toast("All notifications marked as read!", icon="✓")
-                st.rerun()
+            if unread_count > 0:
+                if st.button("✓ Mark All as Read", key="clear_all_notifs_btn", use_container_width=True):
+                    conn = get_db()
+                    unread_ids = tuple(n["notif_id"] for n in notif_rows if n["is_read"] == 0)
+                    if unread_ids:
+                        if len(unread_ids) == 1:
+                            conn.execute("UPDATE notifications SET is_read = 1 WHERE notif_id = ?", (unread_ids[0],))
+                        else:
+                            conn.execute(f"UPDATE notifications SET is_read = 1 WHERE notif_id IN {unread_ids}")
+                        conn.commit()
+                    conn.close()
+                    st.cache_data.clear()
+                    st.toast("All notifications marked as read!", icon="✅")
+                    st.rerun()
 
             st.markdown("---")
 
-            for n in notif_rows[:8]:
+            for n in notif_rows[:10]:
                 n_id = n["notif_id"]
+                is_r = (n["is_read"] == 1)
                 badge = "📢 [PUBLIC]" if n["audience"] == "public" else "🔒 [STAFF]"
-                
-                n_c1, n_c2 = st.columns([3.5, 1])
-                with n_c1:
-                    if n["category"] in ["deadline", "emergency", "conflict"]:
-                        st.error(f"**{badge}** {n['message']}\n\n*{n['created_at']}*")
-                    elif n["category"] == "anomaly":
-                        st.warning(f"**{badge}** {n['message']}\n\n*{n['created_at']}*")
-                    else:
-                        st.info(f"**{badge}** {n['message']}\n\n*{n['created_at']}*")
-                with n_c2:
-                    if st.button("✓ Read", key=f"read_notif_{n_id}", use_container_width=True):
-                        conn = get_db()
-                        conn.execute("UPDATE notifications SET is_read = 1 WHERE notif_id = ?", (n_id,))
-                        conn.commit()
-                        conn.close()
-                        st.cache_data.clear()
-                        st.toast("Notification marked as read!", icon="✓")
-                        st.rerun()
+
+                if not is_r:
+                    # UNREAD: Vivid alert boxes with active Mark Read button
+                    n_c1, n_c2 = st.columns([3.5, 1])
+                    with n_c1:
+                        if n["category"] in ["deadline", "emergency", "conflict"]:
+                            st.error(f"**🟡 UNREAD** | **{badge}** {n['message']}\n\n*{n['created_at']}*")
+                        elif n["category"] == "anomaly":
+                            st.warning(f"**🟡 UNREAD** | **{badge}** {n['message']}\n\n*{n['created_at']}*")
+                        else:
+                            st.info(f"**🟡 UNREAD** | **{badge}** {n['message']}\n\n*{n['created_at']}*")
+                    with n_c2:
+                        if st.button("✓ Read", key=f"read_notif_{n_id}", use_container_width=True):
+                            conn = get_db()
+                            conn.execute("UPDATE notifications SET is_read = 1 WHERE notif_id = ?", (n_id,))
+                            conn.commit()
+                            conn.close()
+                            st.cache_data.clear()
+                            st.toast("Notification marked as read!", icon="✅")
+                            st.rerun()
+                else:
+                    # READ: Distinct Muted Slate/Gray Card
+                    n_c1, n_c2 = st.columns([3.5, 1])
+                    with n_c1:
+                        st.markdown(f"""
+                        <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 8px 12px; margin-bottom: 6px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span style="font-size: 0.72rem; background-color: #334155; color: #94a3b8; padding: 2px 6px; border-radius: 4px; font-weight: 600;">
+                                    {badge} &nbsp;•&nbsp; ✅ READ
+                                </span>
+                                <span style="font-size: 0.70rem; color: #64748b;">{n['created_at']}</span>
+                            </div>
+                            <div style="font-size: 0.84rem; color: #cbd5e1; line-height: 1.3;">
+                                {n['message']}
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    with n_c2:
+                        if st.button("↩ Unread", key=f"unread_notif_{n_id}", use_container_width=True):
+                            conn = get_db()
+                            conn.execute("UPDATE notifications SET is_read = 0 WHERE notif_id = ?", (n_id,))
+                            conn.commit()
+                            conn.close()
+                            st.cache_data.clear()
+                            st.toast("Notification marked as unread!", icon="ℹ️")
+                            st.rerun()
         else:
-            st.success("🎉 All notifications read! Zero pending alerts.")
+            st.success("🎉 No notifications found.")
 
 st.markdown("---")
 
@@ -2909,9 +3013,16 @@ else:
 
             # --- FEATURE 1: LIVE AUTO-ADVANCING TELEMETRY STREAM CONTROLS ---
             with st.expander("⚡ Live Telemetry Stream & Dynamic Digital Twin Simulator", expanded=True):
+                if "live_telemetry_active" not in st.session_state:
+                    st.session_state.live_telemetry_active = (get_system_setting("live_telemetry_stream", "0") == "1")
+
                 col_tel1, col_tel2, col_tel3 = st.columns([2, 1, 1])
                 with col_tel1:
-                    is_live_stream = st.toggle("📡 Activate Live Auto-Advancing Telemetry Stream", key="toggle_live_telemetry")
+                    is_live_stream = st.toggle("📡 Activate Live Auto-Advancing Telemetry Stream", value=st.session_state.live_telemetry_active, key="toggle_live_telemetry")
+                    if is_live_stream != st.session_state.live_telemetry_active:
+                        st.session_state.live_telemetry_active = is_live_stream
+                        set_system_setting("live_telemetry_stream", "1" if is_live_stream else "0")
+                        st.rerun()
                 with col_tel2:
                     delta_km_step = st.slider("Step Distance (KM)", 0.5, 3.0, 1.5, step=0.5, key="slider_tele_step")
                 with col_tel3:
@@ -2921,7 +3032,7 @@ else:
                         st.toast(f"⚡ Telemetry Stream advanced {count_adv} active digital twin train positions!")
                         st.rerun()
 
-                if is_live_stream:
+                if st.session_state.live_telemetry_active:
                     tele_agent = TelemetrySimulatorAgent()
                     tele_agent.advance_stream(delta_km=delta_km_step)
                     st.caption("🟢 Live Telemetry Stream ACTIVE — positions auto-advancing on refresh.")
