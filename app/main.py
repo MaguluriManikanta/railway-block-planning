@@ -883,7 +883,11 @@ def render_railflow_geographic_corridor_view(division="Khurda Road Division (KUR
     - Top-right overlay card: Live Train Count (Running, Reduced Speed, Stopped, Total Trains).
     - Expanded map size towards right with side-by-side Timeline & Control Room Panel.
     """
-    import folium
+    try:
+        import folium
+    except ImportError:
+        st.error("⚠️ The `folium` library is required for the Geographic Corridor Map. Please ensure `folium` is listed in requirements.txt and installed.")
+        return
     import plotly.express as px
     import re
     from datetime import datetime
