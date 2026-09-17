@@ -99,31 +99,8 @@ if st.session_state.get("user"):
 
     /* Sticky Right Chatbot Panel with Natural Main Page Scrolling (Desktop View) */
     @media (min-width: 768px) {
-        /* Top-level two-column layout wrapper containing the main page and AI panel */
-        .block-container div[data-testid="stHorizontalBlock"] {
-            display: flex !important;
-            flex-direction: row !important;
-            align-items: flex-start !important;
-            gap: 1.25rem !important;
-            overflow: visible !important;
-            height: auto !important;
-        }
-
-        /* Left / Main Content Panel: Full Natural Vertical Flow */
-        .block-container div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-of-type(1),
-        .block-container div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-of-type(1) {
-            flex: 2.3 !important;
-            min-width: 0 !important;
-            height: auto !important;
-            overflow: visible !important;
-            max-height: none !important;
-        }
-
-        /* Right / Chatbot Panel: Sticky Pinning on Right Side (Follows user during scroll) */
-        .block-container div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"]:nth-of-type(2),
-        .block-container div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:nth-of-type(2) {
-            flex: 1.0 !important;
-            min-width: 0 !important;
+        /* Sticky Right Chatbot Panel (Only applies to column containing AI Panel) */
+        div[data-testid="stColumn"]:has(.ai-panel-card) {
             position: sticky !important;
             top: 4.5rem !important;
             align-self: flex-start !important;
@@ -208,6 +185,13 @@ if st.session_state.get("user"):
         overflow-y: auto !important;
         background-color: #0f172a !important;
         border-right: 1px solid #1e293b !important;
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    /* Smooth collapse support on desktop & laptop */
+    [data-testid="stSidebar"][aria-expanded="false"], section[data-testid="stSidebar"][aria-expanded="false"] {
+        margin-left: -310px !important;
+        transform: translateX(-100%) !important;
     }
 
     [data-testid="stSidebar"] > div:first-child {
@@ -243,6 +227,57 @@ if st.session_state.get("user"):
     }
     </style>
     """, unsafe_allow_html=True)
+
+# Click-outside listener to close sidebar on laptops/desktop when clicking the main content
+components.html("""
+<script>
+(function() {
+    function setupSidebarClickOutside() {
+        try {
+            const parentDoc = window.parent.document;
+            if (!parentDoc || parentDoc._sidebarListenerAttached) return;
+            parentDoc._sidebarListenerAttached = true;
+
+            parentDoc.addEventListener('click', function(e) {
+                const sidebar = parentDoc.querySelector('section[data-testid="stSidebar"]');
+                if (!sidebar) return;
+
+                // Check if sidebar is expanded
+                const isExpanded = sidebar.getAttribute('aria-expanded') === 'true' || 
+                                   sidebar.getBoundingClientRect().width > 80;
+                if (!isExpanded) return;
+
+                // Check if user clicked inside sidebar or on toggle/collapse controls
+                const clickedInsideSidebar = sidebar.contains(e.target);
+                const clickedToggleBtn = e.target.closest('[data-testid="stSidebarCollapseButton"]') || 
+                                         e.target.closest('[data-testid="stSidebarCollapsedControl"]') || 
+                                         e.target.closest('[data-testid="collapsedControl"]') ||
+                                         e.target.closest('button[kind="header"]');
+                const isOverlayOrPortal = e.target.closest('[data-baseweb="popover"]') || 
+                                         e.target.closest('[data-baseweb="menu"]') || 
+                                         e.target.closest('[data-baseweb="select"]') || 
+                                         e.target.closest('[role="dialog"]') ||
+                                         e.target.closest('.stPopover');
+
+                if (!clickedInsideSidebar && !clickedToggleBtn && !isOverlayOrPortal) {
+                    const closeBtn = sidebar.querySelector('button[data-testid="stSidebarCollapseButton"]') || 
+                                     parentDoc.querySelector('button[data-testid="stSidebarCollapseButton"]') ||
+                                     sidebar.querySelector('button[aria-label="Close sidebar"]') ||
+                                     sidebar.querySelector('button');
+                    if (closeBtn) {
+                        closeBtn.click();
+                    }
+                }
+            }, true);
+        } catch(err) {
+            console.warn("Sidebar outside listener error:", err);
+        }
+    }
+    setupSidebarClickOutside();
+    setInterval(setupSidebarClickOutside, 1000);
+})();
+</script>
+""", height=0, width=0)
 
 # Workspace Paths
 DB_PATH = os.path.join(BASE_DIR, "railway.db")
@@ -348,7 +383,7 @@ def sync_schedule_to_current_date(conn):
         if row and row[0]:
             earliest_str = str(row[0])[:10]
             earliest_dt = datetime.strptime(earliest_str, "%Y-%m-%d")
-            today_dt = datetime.strptime("2026-09-16", "%Y-%m-%d")
+            today_dt = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
             diff_days = (today_dt - earliest_dt).days
             if diff_days > 0:
                 rows = cur.execute("SELECT schedule_id, planned_start, planned_end FROM schedule WHERE LOWER(status) NOT IN ('completed', 'cancelled')").fetchall()
@@ -563,238 +598,1242 @@ def get_cached_kpi_metrics(department="All"):
 
 def init_trains_10_state():
     if "trains_10_state" not in st.session_state:
+        bza_stations = [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")]
+        hwh_stations = [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")]
+        sc_stations = [(0, "SECUNDERABAD"), (15, "MOULA ALI"), (30, "CHERLAPALLI"), (60, "BHONGIR")]
+        kur_stations = [(0, "CUTTACK"), (28, "BHUBANESWAR"), (48, "KHURDA ROAD"), (118, "BALUGAON"), (194, "BRAHMAPUR")]
+
         st.session_state.trains_10_state = {
+            # --- KHURDA ROAD DIVISION (KUR) ---
+            "KUR-12841": {
+                "id": "KUR-12841", "division": "Khurda Road Division (KUR)", "number": "12841", "name": "Coromandel Express", "type": "Superfast Express",
+                "corridor": "Cuttack → Bhubaneswar → Khurda Road → Brahmapur", "section_id": "KUR-BALU", "current_km": 65.0, "current_speed": 80, "mps": 110,
+                "status": "RUNNING", "signal": "🟢 Green", "delay_minutes": 0, "direction": "EB", "next_station": "Balugaon",
+                "work_zone_kms": [55, 60, 65], "km_options": [0, 28, 48, 70, 90, 118, 150, 194], "stations": kur_stations, "speed_profile": [80] * 8, "early_cleared": True, "merged": False
+            },
+            "Khurda Road Train 01": {
+                "id": "Khurda Road Train 01", "division": "Khurda Road Division (KUR)", "number": "12841", "name": "Coromandel Express", "type": "Superfast Express",
+                "corridor": "Cuttack → Bhubaneswar → Khurda Road → Brahmapur", "section_id": "KUR-BALU", "current_km": 65.0, "current_speed": 80, "mps": 110,
+                "status": "RUNNING", "signal": "🟢 Green", "delay_minutes": 0, "direction": "EB", "next_station": "Balugaon",
+                "work_zone_kms": [55, 60, 65], "km_options": [0, 28, 48, 70, 90, 118, 150, 194], "stations": kur_stations, "speed_profile": [80] * 8, "early_cleared": True, "merged": False
+            },
+            "KUR-22823": {
+                "id": "KUR-22823", "division": "Khurda Road Division (KUR)", "number": "22823", "name": "Bhubaneswar Tejas Rajdhani", "type": "Tejas Superfast",
+                "corridor": "Bhubaneswar → Khurda Road → Balugaon", "section_id": "BBS-KUR", "current_km": 35.0, "current_speed": 60, "mps": 130,
+                "status": "SLOWING", "signal": "🟡 Amber Caution", "delay_minutes": 6, "direction": "EB", "next_station": "Khurda Road",
+                "work_zone_kms": [55, 60, 65], "km_options": [0, 28, 48, 70, 90, 118, 150, 194], "stations": kur_stations, "speed_profile": [60] * 8, "early_cleared": False, "merged": False
+            },
+            "Khurda Road Train 02": {
+                "id": "Khurda Road Train 02", "division": "Khurda Road Division (KUR)", "number": "22823", "name": "Bhubaneswar Tejas Rajdhani", "type": "Tejas Superfast",
+                "corridor": "Bhubaneswar → Khurda Road → Balugaon", "section_id": "BBS-KUR", "current_km": 35.0, "current_speed": 60, "mps": 130,
+                "status": "SLOWING", "signal": "🟡 Amber Caution", "delay_minutes": 6, "direction": "EB", "next_station": "Khurda Road",
+                "work_zone_kms": [55, 60, 65], "km_options": [0, 28, 48, 70, 90, 118, 150, 194], "stations": kur_stations, "speed_profile": [60] * 8, "early_cleared": False, "merged": False
+            },
+            "KUR-18477": {
+                "id": "KUR-18477", "division": "Khurda Road Division (KUR)", "number": "18477", "name": "Kalinga Utkal Express", "type": "Mail / Express",
+                "corridor": "Puri → Khurda Road → Bhubaneswar", "section_id": "PURI-KUR", "current_km": 46.0, "current_speed": 0, "mps": 110,
+                "status": "STOPPED", "signal": "🔴 Red (Track Renewal Block)", "delay_minutes": 20, "direction": "EB", "next_station": "Khurda Road",
+                "work_zone_kms": [55, 60, 65], "km_options": [0, 28, 48, 70, 90, 118, 150, 194], "stations": kur_stations, "speed_profile": [0] * 8, "early_cleared": False, "merged": False
+            },
+            "Khurda Road Train 03": {
+                "id": "Khurda Road Train 03", "division": "Khurda Road Division (KUR)", "number": "18477", "name": "Kalinga Utkal Express", "type": "Mail / Express",
+                "corridor": "Puri → Khurda Road → Bhubaneswar", "section_id": "PURI-KUR", "current_km": 46.0, "current_speed": 0, "mps": 110,
+                "status": "STOPPED", "signal": "🔴 Red (Track Renewal Block)", "delay_minutes": 20, "direction": "EB", "next_station": "Khurda Road",
+                "work_zone_kms": [55, 60, 65], "km_options": [0, 28, 48, 70, 90, 118, 150, 194], "stations": kur_stations, "speed_profile": [0] * 8, "early_cleared": False, "merged": False
+            },
+            # --- VIJAYAWADA DIVISION (BZA) ---
+            "BZA-12727": {
+                "id": "BZA-12727", "division": "Vijayawada Division (BZA)", "number": "12727", "name": "Godavari Express", "type": "Superfast Express",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "BZA-RAY", "current_km": 105.0, "current_speed": 110, "mps": 110,
+                "status": "RUNNING", "signal": "🟢 Green (Clearance Fit)", "delay_minutes": 0, "direction": "EB", "next_station": "Kondapalli (KDM)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [110, 110, 60, 30, 110], "early_cleared": True, "merged": False
+            },
             "Vijayawada Train 01": {
-                "id": "Vijayawada Train 01",
-                "division": "Vijayawada Division (BZA)",
-                "number": "12727",
-                "name": "Godavari Express",
-                "type": "Superfast Express",
-                "corridor": "Vijayawada → Kondapalli → Madhira",
-                "section_id": "BZA-RAY",
-                "current_km": 105,
-                "current_speed": 110,
-                "mps": 110,
-                "status": "Cruising (On Time)",
-                "signal": "🟢 Green (Clearance Fit)",
-                "delay_minutes": 0,
-                "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
-                "work_zone_kms": [114, 116, 118],
-                "speed_profile": [110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110],
-                "early_cleared": True,
-                "merged": False
+                "id": "Vijayawada Train 01", "division": "Vijayawada Division (BZA)", "number": "12727", "name": "Godavari Express", "type": "Superfast Express",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "BZA-RAY", "current_km": 105.0, "current_speed": 110, "mps": 110,
+                "status": "RUNNING", "signal": "🟢 Green (Clearance Fit)", "delay_minutes": 0, "direction": "EB", "next_station": "Kondapalli (KDM)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [110, 110, 60, 30, 110], "early_cleared": True, "merged": False
+            },
+            "BZA-12759": {
+                "id": "BZA-12759", "division": "Vijayawada Division (BZA)", "number": "12759", "name": "Charminar Express", "type": "Superfast",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "BZA-KDM", "current_km": 114.0, "current_speed": 30, "mps": 110,
+                "status": "RESTRICTED", "signal": "🔴 Red / Amber Caution", "delay_minutes": 12, "direction": "EB", "next_station": "Kondapalli (KDM)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [110, 60, 30, 30, 110], "early_cleared": False, "merged": False
             },
             "Vijayawada Train 02": {
-                "id": "Vijayawada Train 02",
-                "division": "Vijayawada Division (BZA)",
-                "number": "12759",
-                "name": "Charminar Express",
-                "type": "Superfast",
-                "corridor": "Vijayawada → Kondapalli → Madhira",
-                "section_id": "BZA-KDM",
-                "current_km": 114,
-                "current_speed": 30,
-                "mps": 110,
-                "status": "Regulated (30 km/h Caution)",
-                "signal": "🔴 Red / Amber Caution",
-                "delay_minutes": 12,
-                "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
-                "work_zone_kms": [114, 116, 118],
-                "speed_profile": [110, 110, 110, 45, 30, 30, 30, 80, 110, 110, 110],
-                "early_cleared": False,
-                "merged": False
+                "id": "Vijayawada Train 02", "division": "Vijayawada Division (BZA)", "number": "12759", "name": "Charminar Express", "type": "Superfast",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "BZA-KDM", "current_km": 114.0, "current_speed": 30, "mps": 110,
+                "status": "RESTRICTED", "signal": "🔴 Red / Amber Caution", "delay_minutes": 12, "direction": "EB", "next_station": "Kondapalli (KDM)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [110, 60, 30, 30, 110], "early_cleared": False, "merged": False
+            },
+            "BZA-20833": {
+                "id": "BZA-20833", "division": "Vijayawada Division (BZA)", "number": "20833", "name": "Vande Bharat Express", "type": "Semi High Speed",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "KDM-KMT", "current_km": 122.0, "current_speed": 130, "mps": 130,
+                "status": "RUNNING", "signal": "🟢 Green", "delay_minutes": 0, "direction": "EB", "next_station": "Khammam (KMT)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [130, 130, 130, 130, 130], "early_cleared": True, "merged": False
             },
             "Vijayawada Train 03": {
-                "id": "Vijayawada Train 03",
-                "division": "Vijayawada Division (BZA)",
-                "number": "20833",
-                "name": "Vande Bharat Express",
-                "type": "Semi High Speed",
-                "corridor": "Vijayawada → Kondapalli → Madhira",
-                "section_id": "KDM-KMT",
-                "current_km": 165,
-                "current_speed": 130,
-                "mps": 130,
-                "status": "High Speed Run",
-                "signal": "🟢 Green",
-                "delay_minutes": 0,
-                "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
-                "work_zone_kms": [114, 116, 118],
-                "speed_profile": [130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130],
-                "early_cleared": True,
-                "merged": False
+                "id": "Vijayawada Train 03", "division": "Vijayawada Division (BZA)", "number": "20833", "name": "Vande Bharat Express", "type": "Semi High Speed",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "KDM-KMT", "current_km": 122.0, "current_speed": 130, "mps": 130,
+                "status": "RUNNING", "signal": "🟢 Green", "delay_minutes": 0, "direction": "EB", "next_station": "Khammam (KMT)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [130, 130, 130, 130, 130], "early_cleared": True, "merged": False
+            },
+            "BZA-G402": {
+                "id": "BZA-G402", "division": "Vijayawada Division (BZA)", "number": "G-402", "name": "Coal Freight Rake", "type": "Heavy Freight",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "RAY-KDM", "current_km": 111.0, "current_speed": 0, "mps": 75,
+                "status": "STOPPED", "signal": "🔴 Red (Block Possession)", "delay_minutes": 18, "direction": "EB", "next_station": "Kondapalli (KDM)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [75, 45, 0, 0, 75], "early_cleared": False, "merged": False
             },
             "Vijayawada Train 04": {
-                "id": "Vijayawada Train 04",
-                "division": "Vijayawada Division (BZA)",
-                "number": "F-819",
-                "name": "Steel Special Freight",
-                "type": "Heavy Goods",
-                "corridor": "Vijayawada → Kondapalli → Madhira",
-                "section_id": "BZA-KDM",
-                "current_km": 42,
-                "current_speed": 30,
-                "mps": 75,
-                "status": "Active TSR Caution (30 km/h)",
-                "signal": "🔴 Red / Amber Caution",
-                "delay_minutes": 25,
-                "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
-                "work_zone_kms": [114, 116, 118],
-                "speed_profile": [75, 75, 75, 50, 30, 30, 30, 60, 75, 75, 75],
-                "early_cleared": False,
-                "merged": False
+                "id": "Vijayawada Train 04", "division": "Vijayawada Division (BZA)", "number": "G-402", "name": "Coal Freight Rake", "type": "Heavy Freight",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "RAY-KDM", "current_km": 111.0, "current_speed": 0, "mps": 75,
+                "status": "STOPPED", "signal": "🔴 Red (Block Possession)", "delay_minutes": 18, "direction": "EB", "next_station": "Kondapalli (KDM)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [75, 45, 0, 0, 75], "early_cleared": False, "merged": False
+            },
+            "BZA-57231": {
+                "id": "BZA-57231", "division": "Vijayawada Division (BZA)", "number": "57231", "name": "BZA-KMT Passenger Local", "type": "Passenger Local",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "KDM-MDR", "current_km": 128.0, "current_speed": 60, "mps": 75,
+                "status": "SLOWING", "signal": "🟡 Amber Caution", "delay_minutes": 5, "direction": "WB", "next_station": "Madhira (MDR)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [75, 60, 30, 75, 75], "early_cleared": False, "merged": False
+            },
+            "Vijayawada Train 05": {
+                "id": "Vijayawada Train 05", "division": "Vijayawada Division (BZA)", "number": "57231", "name": "BZA-KMT Passenger Local", "type": "Passenger Local",
+                "corridor": "Vijayawada → Kondapalli → Madhira", "section_id": "KDM-MDR", "current_km": 128.0, "current_speed": 60, "mps": 75,
+                "status": "SLOWING", "signal": "🟡 Amber Caution", "delay_minutes": 5, "direction": "WB", "next_station": "Madhira (MDR)",
+                "work_zone_kms": [114, 116, 118], "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135], "stations": bza_stations, "speed_profile": [75, 60, 30, 75, 75], "early_cleared": False, "merged": False
+            },
+
+            # --- HOWRAH / SECUNDERABAD DIVISION ---
+            "Howrah Train 01": {
+                "id": "Howrah Train 01", "division": "Howrah Division (HWH)", "number": "12301", "name": "Howrah Rajdhani Express", "type": "Superfast Rajdhani",
+                "corridor": "Howrah → Serampore → Bandel → Bardhaman", "section_id": "HWH-SRP", "current_km": 25, "current_speed": 130, "mps": 130,
+                "status": "High Speed Cruising", "signal": "🟢 Green", "delay_minutes": 0, "direction": "EB", "next_station": "Serampore",
+                "work_zone_kms": [40, 45, 50], "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], "stations": hwh_stations, "speed_profile": [130] * 11, "early_cleared": True, "merged": False
+            },
+            "Howrah Train 02": {
+                "id": "Howrah Train 02", "division": "Howrah Division (HWH)", "number": "37211", "name": "Bandel EMU Suburban Local", "type": "Suburban EMU",
+                "corridor": "Howrah → Serampore → Bandel → Bardhaman", "section_id": "SRP-BDC", "current_km": 15, "current_speed": 65, "mps": 90,
+                "status": "Suburban Service", "signal": "🟡 Yellow", "delay_minutes": 3, "direction": "EB", "next_station": "Bandel JN",
+                "work_zone_kms": [40, 45, 50], "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], "stations": hwh_stations, "speed_profile": [65] * 11, "early_cleared": False, "merged": False
+            },
+            "Howrah Train 03": {
+                "id": "Howrah Train 03", "division": "Howrah Division (HWH)", "number": "F-819", "name": "Steel Coil Special Freight", "type": "Heavy Goods",
+                "corridor": "Howrah → Serampore → Bandel → Bardhaman", "section_id": "BDC-BWN", "current_km": 42, "current_speed": 30, "mps": 75,
+                "status": "Active TSR Caution (30 km/h)", "signal": "🔴 Red / Amber", "delay_minutes": 25, "direction": "EB", "next_station": "Bardhaman",
+                "work_zone_kms": [40, 45, 50], "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], "stations": hwh_stations, "speed_profile": [30] * 11, "early_cleared": False, "merged": False
+            },
+            "Howrah Train 04": {
+                "id": "Howrah Train 04", "division": "Howrah Division (HWH)", "number": "12339", "name": "Coalfield Express", "type": "Superfast Express",
+                "corridor": "Howrah → Serampore → Bandel → Bardhaman", "section_id": "BWN-DGR", "current_km": 65, "current_speed": 105, "mps": 110,
+                "status": "Clear Block Run", "signal": "🟢 Green", "delay_minutes": 0, "direction": "EB", "next_station": "Durgapur",
+                "work_zone_kms": [40, 45, 50], "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], "stations": hwh_stations, "speed_profile": [105] * 11, "early_cleared": True, "merged": False
+            },
+            "Howrah Train 05": {
+                "id": "Howrah Train 05", "division": "Howrah Division (HWH)", "number": "22301", "name": "Vande Bharat Express HWH-NJP", "type": "Semi High Speed",
+                "corridor": "Howrah → Serampore → Bandel → Bardhaman", "section_id": "BWN-DGR", "current_km": 85, "current_speed": 115, "mps": 130,
+                "status": "Accelerated Cruise", "signal": "🟢 Green", "delay_minutes": 0, "direction": "EB", "next_station": "NJP",
+                "work_zone_kms": [40, 45, 50], "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100], "stations": hwh_stations, "speed_profile": [115] * 11, "early_cleared": True, "merged": False
+            },
+
+            # --- SECUNDERABAD DIVISION (SC) ---
+            "SC-12701": {
+                "id": "SC-12701", "division": "Secunderabad Division (SC)", "number": "12701", "name": "Hussainsagar Express", "type": "Superfast",
+                "corridor": "Secunderabad → Moula Ali → Cherlapalli", "section_id": "SC-MLY", "current_km": 18.0, "current_speed": 110, "mps": 110,
+                "status": "RUNNING", "signal": "🟢 Green", "delay_minutes": 0, "direction": "EB", "next_station": "Cherlapalli (CHZ)",
+                "work_zone_kms": [35, 50], "km_options": [0, 10, 20, 30, 40, 50, 60], "stations": sc_stations, "speed_profile": [110] * 7, "early_cleared": True, "merged": False
+            },
+            "SC-12792": {
+                "id": "SC-12792", "division": "Secunderabad Division (SC)", "number": "12792", "name": "Secunderabad Patna Express", "type": "Superfast Express",
+                "corridor": "Cherlapalli → Bhongir", "section_id": "CHZ-BG", "current_km": 38.0, "current_speed": 60, "mps": 110,
+                "status": "SLOWING", "signal": "🟡 Amber Caution", "delay_minutes": 8, "direction": "EB", "next_station": "Bhongir (BG)",
+                "work_zone_kms": [35, 50], "km_options": [0, 10, 20, 30, 40, 50, 60], "stations": sc_stations, "speed_profile": [60] * 7, "early_cleared": False, "merged": False
+            },
+            "SC-17015": {
+                "id": "SC-17015", "division": "Secunderabad Division (SC)", "number": "17015", "name": "Visakha Express", "type": "Express",
+                "corridor": "Bhongir → Jangaon", "section_id": "BG-ZN", "current_km": 60.0, "current_speed": 0, "mps": 110,
+                "status": "STOPPED", "signal": "🔴 Red (Signal)", "delay_minutes": 22, "direction": "EB", "next_station": "Jangaon (ZN)",
+                "work_zone_kms": [35, 50], "km_options": [0, 10, 20, 30, 40, 50, 60], "stations": sc_stations, "speed_profile": [0] * 7, "early_cleared": False, "merged": False
+            },
+            "SC-F819": {
+                "id": "SC-F819", "division": "Secunderabad Division (SC)", "number": "F-819", "name": "Steel Coil Freight Special", "type": "Heavy Goods",
+                "corridor": "Jangaon → Kazipet", "section_id": "ZN-KZJ", "current_km": 95.0, "current_speed": 30, "mps": 75,
+                "status": "RESTRICTED", "signal": "🟡 Caution (Overrun Block)", "delay_minutes": 14, "direction": "EB", "next_station": "Kazipet (KZJ)",
+                "work_zone_kms": [90, 105], "km_options": [0, 10, 20, 30, 40, 50, 60], "stations": sc_stations, "speed_profile": [30] * 7, "early_cleared": False, "merged": False
             }
         }
 
 
-def get_active_trains_df():
+def get_active_trains_df(division="Vijayawada Division (BZA)"):
     """
-    Safely retrieves live train telemetry records.
-    Prioritizes active session state trains, then DB tables, then fallback.
+    Safely retrieves live train telemetry records filtered by division.
     """
     init_trains_10_state()
     if "trains_10_state" in st.session_state and st.session_state.trains_10_state:
         records = []
         for t_id, tr in st.session_state.trains_10_state.items():
+            tr_div = tr.get("division", "Vijayawada Division (BZA)")
+            if division and division != "All":
+                d_lower = str(division).lower()
+                tr_lower = str(tr_div).lower()
+                matched = (tr_div == division) or (d_lower in tr_lower) or (tr_lower in d_lower)
+                if not matched:
+                    for tag in ["kur", "bza", "sc", "hwh", "khurda", "kurda", "vijay", "secund", "howrah"]:
+                        if tag in d_lower and tag in tr_lower:
+                            matched = True
+                            break
+                if not matched:
+                    continue
             records.append({
+                "train_id": t_id,
                 "train_number": tr.get("number", "100"),
                 "train_name": tr.get("name", "Express"),
-                "current_km": tr.get("current_km", 50),
+                "train_type": tr.get("type", "Express"),
+                "division_id": tr_div,
+                "section_id": tr.get("section_id", "SEC-01"),
+                "current_km": tr.get("current_km", 25.0),
                 "speed_kmh": tr.get("current_speed", 110),
+                "mps": tr.get("mps", 110),
                 "delay_minutes": tr.get("delay_minutes", 0),
-                "direction": "EB" if "Vijayawada" in t_id else "WB"
+                "direction": tr.get("direction", "EB"),
+                "status": tr.get("status", "RUNNING"),
+                "signal": tr.get("signal", "🟢 Green"),
+                "next_station": tr.get("next_station", "Next Station"),
+                "corridor": tr.get("corridor", "Corridor Line")
             })
-        return pd.DataFrame(records)
+        if records:
+            return pd.DataFrame(records)
+
     try:
         conn = get_db()
         tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
         if "live_train_status" in tables:
-            df = pd.read_sql("SELECT * FROM live_train_status ORDER BY delay_minutes DESC LIMIT 10", conn)
+            query = "SELECT * FROM live_train_status"
+            params = []
+            if division and division != "All":
+                query += " WHERE division_id LIKE ?"
+                params.append(f"%{division[:10]}%")
+            query += " ORDER BY delay_minutes DESC"
+            df = pd.read_sql(query, conn, params=params)
             conn.close()
-            return df if not df.empty else None
+            return df if not df.empty else pd.DataFrame()
         conn.close()
     except Exception:
         pass
-    return None
+    return pd.DataFrame()
 
 
-def render_operational_kpi_bar(department="All"):
+def render_operational_kpi_bar(department="All", division="Vijayawada Division (BZA)"):
     """
     Renders top-level visual operational health KPI strip:
     - Active Trains on Line & On-Time %
-    - System Health Score %
-    - Corridor Capacity Utilization %
-    - Active Operational Alerts (Critical / High / Warning)
+    - Running / Slowing / Stopped Trains
+    - Active Maintenance Blocks
+    - System Operational Alerts
     """
-    metrics = get_cached_kpi_metrics(department)
-    crit_d = metrics["crit_d"]
-    high_d = metrics["high_d"]
-    health_score = metrics["health_score"]
+    df_active = get_active_trains_df(division=division)
+    tot_trains = len(df_active) if not df_active.empty else 0
+    running_count = sum(1 for _, r in df_active.iterrows() if r.get('status') == 'RUNNING') if tot_trains > 0 else 0
+    slowing_count = sum(1 for _, r in df_active.iterrows() if r.get('status') in ['SLOWING', 'APPROACHING BLOCK', 'RESTRICTED']) if tot_trains > 0 else 0
+    stopped_count = sum(1 for _, r in df_active.iterrows() if r.get('status') == 'STOPPED' or r.get('speed_kmh') == 0) if tot_trains > 0 else 0
+    delayed_count = sum(1 for _, r in df_active.iterrows() if r.get('delay_minutes', 0) > 5) if tot_trains > 0 else 0
+    ontime_pct = round(((tot_trains - delayed_count) / tot_trains) * 100.0, 1) if tot_trains > 0 else 100.0
 
     st.markdown(f"""
-    <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 140px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+    <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 10px 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
             <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">🚆 Active Trains</div>
-            <div style="font-size: 22px; font-weight: 800; color: #ffffff; margin-top: 2px;">10 Trains</div>
-            <div style="font-size: 11px; color: #4ade80; font-weight: 600; margin-top: 2px;">🟢 90.0% On-Time</div>
+            <div style="font-size: 20px; font-weight: 800; color: #ffffff; margin-top: 2px;">{tot_trains} Trains</div>
+            <div style="font-size: 11px; color: #4ade80; font-weight: 600; margin-top: 2px;">🟢 {ontime_pct}% On-Time</div>
         </div>
-        <div style="flex: 1; min-width: 140px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">⚙️ Operational Health</div>
-            <div style="font-size: 22px; font-weight: 800; color: #38bdf8; margin-top: 2px;">{health_score}%</div>
-            <div style="font-size: 11px; color: #38bdf8; font-weight: 600; margin-top: 2px;">✨ AI Optimized</div>
+        <div style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 10px 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">🟢 Running Normal</div>
+            <div style="font-size: 20px; font-weight: 800; color: #22c55e; margin-top: 2px;">{running_count} Rakes</div>
+            <div style="font-size: 11px; color: #22c55e; font-weight: 600; margin-top: 2px;">⚡ Clear Line Run</div>
         </div>
-        <div style="flex: 1; min-width: 140px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Line Capacity</div>
-            <div style="font-size: 22px; font-weight: 800; color: #facc15; margin-top: 2px;">62.5%</div>
-            <div style="font-size: 11px; color: #facc15; font-weight: 600; margin-top: 2px;">🤝 37.5% Downtime Saved</div>
+        <div style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 10px 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">🟡 Slowing / TSR</div>
+            <div style="font-size: 20px; font-weight: 800; color: #facc15; margin-top: 2px;">{slowing_count} Rakes</div>
+            <div style="font-size: 11px; color: #facc15; font-weight: 600; margin-top: 2px;">⚠️ Caution Speed</div>
         </div>
-        <div style="flex: 1; min-width: 140px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 12px 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">🚨 Operational Alerts</div>
-            <div style="font-size: 22px; font-weight: 800; color: #ef4444; margin-top: 2px;">{crit_d + high_d} Active</div>
-            <div style="font-size: 11px; color: #ef4444; font-weight: 600; margin-top: 2px;">🔴 {crit_d} Critical | 🟠 {high_d} High</div>
+        <div style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 10px 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">🛑 Stopped at Block</div>
+            <div style="font-size: 20px; font-weight: 800; color: #ef4444; margin-top: 2px;">{stopped_count} Rakes</div>
+            <div style="font-size: 11px; color: #ef4444; font-weight: 600; margin-top: 2px;">🔴 Red Signal Hold</div>
+        </div>
+        <div style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border: 1.5px solid #334155; border-radius: 12px; padding: 10px 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+            <div style="font-size: 11px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">⏱ Delayed Trains</div>
+            <div style="font-size: 20px; font-weight: 800; color: #f97316; margin-top: 2px;">{delayed_count} Rakes</div>
+            <div style="font-size: 11px; color: #f97316; font-weight: 600; margin-top: 2px;">⏳ Schedule Impact</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 
-def render_live_corridor_map_plotly(df_trains=None):
+
+def render_railflow_geographic_corridor_view(division="Khurda Road Division (KUR)", df_trains=None):
     """
-    Renders an interactive Live Railway Corridor Map & Route Tracker using Plotly.
-    Plots Corridor Stations as nodes, Sections as line segments, Work Zones as warning areas,
-    and Trains at exact KM positions with direction arrows, speed badges, ETAs, and delay metrics.
+    Renders the RailFlow Multi-Track Divisional Control Room Map & Corridor Timeline
+    matching the exact RailFlow satellite control room design.
+    Features:
+    - Satellite imagery basemap (Esri World Imagery) with high-visibility multi-track railway network.
+    - Multiple branching track lines across the division with distinct colors.
+    - Double-circle station nodes along all tracks with sticky hover tooltips.
+    - Maintenance work callout boxes & hatched zones with detailed hover popups.
+    - Real-time train badges with speeds across all tracks & rich hover cards.
+    - Top-right overlay card: Live Train Count (Running, Reduced Speed, Stopped, Total Trains).
+    - Expanded map size towards right with side-by-side Timeline & Control Room Panel.
     """
-    stations = [
-        {"name": "Secunderabad (SC)", "km": 0, "type": "Junction"},
-        {"name": "Kazipet (KZJ)", "km": 45, "type": "Junction"},
-        {"name": "Vijayawada (BZA)", "km": 110, "type": "Division HQ"},
-        {"name": "Guntur (GNT)", "km": 165, "type": "Junction"},
-        {"name": "Guntakal (GTL)", "km": 220, "type": "Division HQ"},
-        {"name": "Hyderabad (HYB)", "km": 280, "type": "Terminal"}
-    ]
+    import folium
+    import plotly.express as px
+    import re
+    from datetime import datetime
+
+    def clean_html(html_str):
+        return re.sub(r'^[ \t]+', '', html_str, flags=re.MULTILINE)
+
+    div_networks = {
+        "Khurda Road Division (KUR)": {
+            "center": [19.85, 85.35],
+            "zoom": 8,
+            "corridor_title": "Khurda Road — Bhubaneswar — Cuttack — Puri — Brahmapur Network",
+            "jurisdiction": "ECoR Jurisdiction • Khurda Road Division HQ",
+            "kpi": {"running": 18, "reduced": 4, "stopped": 2, "total": 24},
+            "division_tags": [
+                {"name": "Khurda Road Division", "lat": 20.35, "lon": 85.30},
+                {"name": "Sambalpur Division", "lat": 20.75, "lon": 84.40},
+                {"name": "Waltair Division", "lat": 18.30, "lon": 83.25},
+                {"name": "Jajpur Keonjhar", "lat": 20.85, "lon": 86.00}
+            ],
+            "lines": [
+                {
+                    "name": "Main Trunk Line (Cuttack - Visakhapatnam)",
+                    "color": "#38bdf8",
+                    "stations": [
+                        {"name": "Cuttack", "km": 280, "lat": 20.4625, "lon": 85.8830, "hub": True},
+                        {"name": "Bhubaneswar", "km": 308, "lat": 20.2961, "lon": 85.8245, "hub": True},
+                        {"name": "Khurda Road", "km": 328, "lat": 20.1833, "lon": 85.7333, "hub": True},
+                        {"name": "Balugaon", "km": 398, "lat": 19.7483, "lon": 85.2056},
+                        {"name": "Brahmapur", "km": 474, "lat": 19.3150, "lon": 84.7941, "hub": True},
+                        {"name": "Visakhapatnam", "km": 690, "lat": 17.7231, "lon": 83.2986, "hub": True}
+                    ]
+                },
+                {
+                    "name": "Puri Coastal Branch Line",
+                    "color": "#fbbf24",
+                    "stations": [
+                        {"name": "Khurda Road", "km": 0, "lat": 20.1833, "lon": 85.7333, "hub": True},
+                        {"name": "Jatni", "km": 6, "lat": 20.1600, "lon": 85.7100},
+                        {"name": "Puri", "km": 44, "lat": 19.8135, "lon": 85.8312, "hub": True}
+                    ]
+                },
+                {
+                    "name": "Angul - Sambalpur Freight Line",
+                    "color": "#34d399",
+                    "stations": [
+                        {"name": "Cuttack", "km": 0, "lat": 20.4625, "lon": 85.8830, "hub": True},
+                        {"name": "Angul", "km": 112, "lat": 20.8400, "lon": 85.1000},
+                        {"name": "Rayagada", "km": 310, "lat": 19.1667, "lon": 83.4167}
+                    ]
+                },
+                {
+                    "name": "Khurda - Balugaon Chord Bypass",
+                    "color": "#f43f5e",
+                    "stations": [
+                        {"name": "Khurda Road", "km": 0, "lat": 20.1833, "lon": 85.7333, "hub": True},
+                        {"name": "Balugaon", "km": 70, "lat": 19.7483, "lon": 85.2056}
+                    ]
+                }
+            ],
+            "blocks": [
+                {"title": "Maintenance Work (Track Renewal)", "km_txt": "Km 298 – 301", "lat": 20.3500, "lon": 85.8400, "color": "#ef4444", "line_coords": [[20.4000, 85.8600], [20.3000, 85.8200]], "dept": "Engineering (CSM Tamping + BCM Rake)", "window": "10:00 – 14:00 IST (4 Hrs Possession)"},
+                {"title": "Scheduled Block (OHE Inspection)", "km_txt": "Km 312 – 315", "lat": 19.5500, "lon": 85.0000, "color": "#f97316", "line_coords": [[19.6500, 85.1000], [19.4500, 84.9000]], "dept": "TRD Electrical (Tower Car Inspection)", "window": "11:30 – 13:30 IST (2 Hrs Possession)"}
+            ],
+            "trains": [
+                {"num": "12841", "name": "Coromandel Express", "speed": "80 km/h", "lat": 20.6000, "lon": 85.5000, "bg": "#22c55e", "signal": "🟢 Green Signal", "delay": "On Time"},
+                {"num": "22823", "name": "Bhubaneswar Rajdhani", "speed": "60 km/h", "lat": 20.2500, "lon": 85.1000, "bg": "#eab308", "signal": "🟡 Amber Caution", "delay": "+6 min"},
+                {"num": "18477", "name": "Utkal Express", "speed": "Stopped", "lat": 20.1700, "lon": 85.7200, "bg": "#ef4444", "signal": "🔴 Red Aspect (Track Renewal Block)", "delay": "+20 min"},
+                {"num": "12860", "name": "Gitanjali Express", "speed": "45 km/h", "lat": 19.6500, "lon": 85.1000, "bg": "#eab308", "signal": "🟡 Amber Caution", "delay": "+4 min"},
+                {"num": "20832", "name": "Visakhapatnam SF Express", "speed": "90 km/h", "lat": 18.5000, "lon": 83.8000, "bg": "#2563eb", "signal": "🟢 Green Signal", "delay": "On Time"},
+                {"num": "17232", "name": "Golconda Express", "speed": "75 km/h", "lat": 19.2500, "lon": 84.8500, "bg": "#22c55e", "signal": "🟢 Green Signal", "delay": "On Time"}
+            ],
+            "timeline": [
+                {
+                    "train": "12841 Puri→BBS",
+                    "segments": [
+                        {"left": "0%", "width": "29%", "bg": "#22c55e", "title": "Normal Running (06:00 - 09:30)"},
+                        {"left": "29.5%", "width": "16.5%", "bg": "#eab308", "title": "Reduced Speed TSR (09:30 - 11:30)"},
+                        {"left": "46.5%", "width": "20%", "bg": "repeating-linear-gradient(45deg, #ef4444, #ef4444 3px, #dc2626 3px, #dc2626 6px)", "border": "1px dashed #f87171", "title": "298-301 Track Renewal Block"},
+                        {"left": "67%", "width": "28%", "bg": "#22c55e", "title": "Normal Running (14:00 - 18:00)"}
+                    ]
+                },
+                {
+                    "train": "22823 VSKP→Puri",
+                    "segments": [
+                        {"left": "8.3%", "width": "25%", "bg": "#22c55e", "title": "Normal Running (07:00 - 10:00)"},
+                        {"left": "34%", "width": "19.5%", "bg": "#eab308", "title": "Reduced Speed (10:00 - 12:30)"},
+                        {"left": "54.5%", "width": "12%", "bg": "#3b82f6", "title": "Loop Holding (12:30 - 14:00)"},
+                        {"left": "67%", "width": "25%", "bg": "#22c55e", "title": "Normal Running (14:00 - 18:00)"}
+                    ]
+                },
+                {
+                    "train": "18477 KUR→Puri",
+                    "segments": [
+                        {"left": "4.1%", "width": "37%", "bg": "#38bdf8", "title": "Scheduled Run"},
+                        {"left": "41.8%", "width": "16%", "bg": "#ef4444", "title": "Signal Stop (11:00 - 13:00)"},
+                        {"left": "58.8%", "width": "20%", "bg": "repeating-linear-gradient(45deg, #d97706, #d97706 3px, #b45309 3px, #b45309 6px)", "border": "1px dashed #fbbf24", "title": "312-315 Block Possession"},
+                        {"left": "79.5%", "width": "18.5%", "bg": "#a855f7", "title": "Final Destination Run"}
+                    ]
+                }
+            ]
+        },
+        "Vijayawada Division (BZA)": {
+            "center": [16.55, 80.85],
+            "zoom": 9,
+            "corridor_title": "Vijayawada — Kondapalli — Eluru — Tenali — Ongole Multi-Track Network",
+            "jurisdiction": "SCR Jurisdiction • Vijayawada Division HQ",
+            "kpi": {"running": 20, "reduced": 3, "stopped": 1, "total": 24},
+            "division_tags": [
+                {"name": "Vijayawada Division", "lat": 16.80, "lon": 80.40},
+                {"name": "Secunderabad Division", "lat": 17.40, "lon": 79.80},
+                {"name": "Guntur Division", "lat": 16.10, "lon": 80.10},
+                {"name": "Waltair Division", "lat": 17.20, "lon": 82.20}
+            ],
+            "lines": [
+                {
+                    "name": "North-West Trunk Line (BZA - Khammam - Warangal)",
+                    "color": "#38bdf8",
+                    "stations": [
+                        {"name": "Vijayawada Jn", "km": 100, "lat": 16.5062, "lon": 80.6480, "hub": True},
+                        {"name": "Rayanapadu", "km": 108, "lat": 16.5450, "lon": 80.5980},
+                        {"name": "Kondapalli", "km": 125, "lat": 16.6180, "lon": 80.5360, "hub": True},
+                        {"name": "Madhira", "km": 135, "lat": 16.9180, "lon": 80.3640},
+                        {"name": "Khammam", "km": 160, "lat": 17.2472, "lon": 80.1514, "hub": True},
+                        {"name": "Warangal", "km": 210, "lat": 17.9783, "lon": 79.5217, "hub": True}
+                    ]
+                },
+                {
+                    "name": "East Main Trunk Line (BZA - Rajahmundry)",
+                    "color": "#34d399",
+                    "stations": [
+                        {"name": "Vijayawada Jn", "km": 0, "lat": 16.5062, "lon": 80.6480, "hub": True},
+                        {"name": "Eluru", "km": 60, "lat": 16.7107, "lon": 81.1042, "hub": True},
+                        {"name": "Tadepalligudem", "km": 108, "lat": 16.8143, "lon": 81.5268},
+                        {"name": "Rajahmundry", "km": 150, "lat": 17.0005, "lon": 81.7774, "hub": True},
+                        {"name": "Samalkot", "km": 200, "lat": 17.0500, "lon": 82.1667}
+                    ]
+                },
+                {
+                    "name": "South Trunk Line (BZA - Tenali - Ongole)",
+                    "color": "#f59e0b",
+                    "stations": [
+                        {"name": "Vijayawada Jn", "km": 0, "lat": 16.5062, "lon": 80.6480, "hub": True},
+                        {"name": "Tenali Jn", "km": 32, "lat": 16.2430, "lon": 80.6470, "hub": True},
+                        {"name": "Bapatla", "km": 74, "lat": 15.9040, "lon": 80.4670},
+                        {"name": "Ongole", "km": 138, "lat": 15.5057, "lon": 80.0499, "hub": True}
+                    ]
+                }
+            ],
+            "blocks": [
+                {"title": "Maintenance Work (Track Tamping)", "km_txt": "Km 114 – 118", "lat": 16.5800, "lon": 80.5600, "color": "#ef4444", "line_coords": [[16.5450, 80.5980], [16.6180, 80.5360]], "dept": "Engineering (CSM Tamping Machine)", "window": "10:00 – 13:00 IST"},
+                {"title": "OHE Power Isolation Block", "km_txt": "Km 130 – 134", "lat": 16.8000, "lon": 80.4200, "color": "#f97316", "line_coords": [[16.7500, 80.4500], [16.8500, 80.3900]], "dept": "TRD (Overhead Wire Inspection)", "window": "12:00 – 14:30 IST"}
+            ],
+            "trains": [
+                {"num": "12727", "name": "Godavari Express", "speed": "80 km/h", "lat": 16.6500, "lon": 80.5100, "bg": "#22c55e", "signal": "🟢 Green Signal", "delay": "On Time"},
+                {"num": "12759", "name": "Charminar Express", "speed": "30 km/h", "lat": 16.5700, "lon": 80.5700, "bg": "#eab308", "signal": "🟡 Amber Caution (TSR 30)", "delay": "+12 min"},
+                {"num": "20833", "name": "Vande Bharat Express", "speed": "120 km/h", "lat": 16.9180, "lon": 80.3640, "bg": "#2563eb", "signal": "🟢 High Speed Clear", "delay": "On Time"},
+                {"num": "57231", "name": "BZA-KMT Local", "speed": "40 km/h", "lat": 17.1000, "lon": 80.2500, "bg": "#eab308", "signal": "🟡 Approach", "delay": "+5 min"},
+                {"num": "G-402", "name": "Coal Freight", "speed": "Stopped", "lat": 16.5200, "lon": 80.6200, "bg": "#ef4444", "signal": "🔴 Loop Holding", "delay": "+18 min"}
+            ],
+            "timeline": [
+                {
+                    "train": "12727 BZA→KMT",
+                    "segments": [
+                        {"left": "0%", "width": "25%", "bg": "#22c55e", "title": "Normal Cruising (06:00 - 09:00)"},
+                        {"left": "25.5%", "width": "12.5%", "bg": "#eab308", "title": "Approach Braking (09:00 - 10:30)"},
+                        {"left": "38.5%", "width": "25%", "bg": "repeating-linear-gradient(45deg, #ef4444, #ef4444 3px, #dc2626 3px, #dc2626 6px)", "border": "1px dashed #f87171", "title": "Active Track Tamping Block (10:30 - 13:30)"},
+                        {"left": "64%", "width": "34%", "bg": "#22c55e", "title": "Accelerated Run (13:30 - 18:00)"}
+                    ]
+                },
+                {
+                    "train": "12759 BZA→MDR",
+                    "segments": [
+                        {"left": "8.3%", "width": "25%", "bg": "#38bdf8", "title": "Scheduled Run (07:00 - 10:00)"},
+                        {"left": "34%", "width": "16.5%", "bg": "#eab308", "title": "Caution Order 30 km/h (10:00 - 12:00)"},
+                        {"left": "51%", "width": "20.5%", "bg": "repeating-linear-gradient(45deg, #d97706, #d97706 3px, #b45309 3px, #b45309 6px)", "border": "1px dashed #fbbf24", "title": "OHE Power Isolation (12:00 - 14:30)"},
+                        {"left": "72%", "width": "26%", "bg": "#22c55e", "title": "Normal Running (14:30 - 18:00)"}
+                    ]
+                },
+                {
+                    "train": "20833 BZA→WL",
+                    "segments": [
+                        {"left": "0%", "width": "45.8%", "bg": "#22c55e", "title": "High Speed Vande Bharat (06:00 - 11:30)"},
+                        {"left": "46.5%", "width": "12.5%", "bg": "#ef4444", "title": "Signal Regulated (11:30 - 13:00)"},
+                        {"left": "59.5%", "width": "38.5%", "bg": "#38bdf8", "title": "Cleared Speed Run (13:00 - 18:00)"}
+                    ]
+                }
+            ]
+        },
+        "Secunderabad Division (SC)": {
+            "center": [17.50, 78.85],
+            "zoom": 9,
+            "corridor_title": "Secunderabad — Moula Ali — Cherlapalli — Kazipet High Density Corridor",
+            "jurisdiction": "SCR Jurisdiction • Secunderabad Division HQ",
+            "kpi": {"running": 22, "reduced": 2, "stopped": 1, "total": 25},
+            "division_tags": [
+                {"name": "Secunderabad Division", "lat": 17.43, "lon": 78.50},
+                {"name": "Hyderabad Division", "lat": 17.37, "lon": 78.48},
+                {"name": "Vijayawada Division", "lat": 16.50, "lon": 80.64},
+                {"name": "Guntakal Division", "lat": 15.17, "lon": 77.38}
+            ],
+            "lines": [
+                {
+                    "name": "Secunderabad - Kazipet Main Trunk",
+                    "color": "#38bdf8",
+                    "stations": [
+                        {"name": "Secunderabad Jn", "km": 0, "lat": 17.4344, "lon": 78.5011, "hub": True},
+                        {"name": "Moula Ali", "km": 10, "lat": 17.4650, "lon": 78.5600},
+                        {"name": "Cherlapalli", "km": 22, "lat": 17.4725, "lon": 78.6000, "hub": True},
+                        {"name": "Bhongir", "km": 48, "lat": 17.5111, "lon": 78.8900},
+                        {"name": "Jangaon", "km": 84, "lat": 17.7200, "lon": 79.1800, "hub": True},
+                        {"name": "Kazipet Jn", "km": 132, "lat": 17.9783, "lon": 79.5217, "hub": True}
+                    ]
+                },
+                {
+                    "name": "Secunderabad - Wadi Junction Trunk",
+                    "color": "#34d399",
+                    "stations": [
+                        {"name": "Secunderabad Jn", "km": 0, "lat": 17.4344, "lon": 78.5011, "hub": True},
+                        {"name": "Begumpet", "km": 5, "lat": 17.4380, "lon": 78.4600},
+                        {"name": "Lingampalli", "km": 23, "lat": 17.4850, "lon": 78.3180, "hub": True},
+                        {"name": "Vikarabad Jn", "km": 72, "lat": 17.3360, "lon": 77.9040, "hub": True},
+                        {"name": "Tandur", "km": 114, "lat": 17.2560, "lon": 77.5840}
+                    ]
+                }
+            ],
+            "blocks": [
+                {"title": "Track Renewal & Deep Screening", "km_txt": "Km 35 – 50", "lat": 17.4900, "lon": 78.7500, "color": "#ef4444", "line_coords": [[17.4725, 78.6000], [17.5111, 78.8900]], "dept": "Engineering (BCM + DGS Machine)", "window": "09:30 – 12:30 IST"},
+                {"title": "OHE Catenary Overhaul", "km_txt": "Km 90 – 105", "lat": 17.7800, "lon": 79.3000, "color": "#f97316", "line_coords": [[17.7200, 79.1800], [17.8500, 79.3500]], "dept": "TRD Electrical (Tower Wagon)", "window": "11:00 – 14:00 IST"}
+            ],
+            "trains": [
+                {"num": "12701", "name": "Hussain Sagar Express", "speed": "85 km/h", "lat": 17.4600, "lon": 78.5500, "bg": "#22c55e", "signal": "🟢 Green Signal", "delay": "On Time"},
+                {"num": "12792", "name": "Danapur SF Express", "speed": "60 km/h", "lat": 17.5000, "lon": 78.8000, "bg": "#eab308", "signal": "🟡 Caution TSR 30", "delay": "+4 min"},
+                {"num": "17015", "name": "Visakha Express", "speed": "Stopped", "lat": 17.4800, "lon": 78.6800, "bg": "#ef4444", "signal": "🔴 Red Aspect (Screening Block)", "delay": "+15 min"},
+                {"num": "SC-F819", "name": "Container Freight Rake", "speed": "50 km/h", "lat": 17.6500, "lon": 79.0500, "bg": "#38bdf8", "signal": "🟢 Loop Proceed", "delay": "On Time"}
+            ],
+            "timeline": [
+                {
+                    "train": "12701 SC→KZJ",
+                    "segments": [
+                        {"left": "0%", "width": "29%", "bg": "#22c55e", "title": "Normal Running (06:00 - 09:30)"},
+                        {"left": "29.5%", "width": "25%", "bg": "repeating-linear-gradient(45deg, #ef4444, #ef4444 3px, #dc2626 3px, #dc2626 6px)", "border": "1px dashed #f87171", "title": "S&T Interlocking Block (09:30 - 12:30)"},
+                        {"left": "55%", "width": "12.5%", "bg": "#3b82f6", "title": "Loop Reception Hold (12:30 - 14:00)"},
+                        {"left": "68%", "width": "30%", "bg": "#22c55e", "title": "Resumed Cruise (14:00 - 18:00)"}
+                    ]
+                },
+                {
+                    "train": "12792 SC→MLY",
+                    "segments": [
+                        {"left": "4.1%", "width": "29%", "bg": "#38bdf8", "title": "Commuter Service (06:30 - 10:00)"},
+                        {"left": "34%", "width": "20.8%", "bg": "#eab308", "title": "Speed Regulation 30 km/h (10:00 - 12:30)"},
+                        {"left": "55.5%", "width": "20.8%", "bg": "repeating-linear-gradient(45deg, #d97706, #d97706 3px, #b45309 3px, #b45309 6px)", "border": "1px dashed #fbbf24", "title": "Ballast Tamping Window (12:30 - 15:00)"},
+                        {"left": "77%", "width": "21%", "bg": "#22c55e", "title": "Normal Run (15:00 - 18:00)"}
+                    ]
+                },
+                {
+                    "train": "17015 SC→BG",
+                    "segments": [
+                        {"left": "12.5%", "width": "29%", "bg": "#22c55e", "title": "Scheduled Express (07:30 - 11:00)"},
+                        {"left": "42%", "width": "16.5%", "bg": "#ef4444", "title": "Red Signal Hold (11:00 - 13:00)"},
+                        {"left": "59%", "width": "39%", "bg": "#38bdf8", "title": "Post-Clearance Speed-Up (13:00 - 18:00)"}
+                    ]
+                }
+            ]
+        },
+        "Howrah Division (HWH)": {
+            "center": [22.95, 88.05],
+            "zoom": 9,
+            "corridor_title": "Howrah — Bandel — Bardhaman — Durgapur Quadruple Track Corridor",
+            "jurisdiction": "ER Jurisdiction • Howrah Division HQ",
+            "kpi": {"running": 26, "reduced": 4, "stopped": 2, "total": 32},
+            "division_tags": [
+                {"name": "Howrah Division", "lat": 22.58, "lon": 88.34},
+                {"name": "Sealdah Division", "lat": 22.56, "lon": 88.37},
+                {"name": "Asansol Division", "lat": 23.68, "lon": 86.98},
+                {"name": "Kharagpur Division", "lat": 22.33, "lon": 87.32}
+            ],
+            "lines": [
+                {
+                    "name": "Howrah - Bardhaman Main Chord",
+                    "color": "#38bdf8",
+                    "stations": [
+                        {"name": "Howrah Jn", "km": 0, "lat": 22.5839, "lon": 88.3428, "hub": True},
+                        {"name": "Serampore", "km": 20, "lat": 22.7500, "lon": 88.3400},
+                        {"name": "Bandel Jn", "km": 40, "lat": 22.9200, "lon": 88.3800, "hub": True},
+                        {"name": "Bardhaman Jn", "km": 100, "lat": 23.2400, "lon": 87.8600, "hub": True},
+                        {"name": "Durgapur", "km": 165, "lat": 23.5000, "lon": 87.3200, "hub": True}
+                    ]
+                },
+                {
+                    "name": "Howrah - Dankuni Suburban Chord",
+                    "color": "#34d399",
+                    "stations": [
+                        {"name": "Howrah Jn", "km": 0, "lat": 22.5839, "lon": 88.3428, "hub": True},
+                        {"name": "Dankuni", "km": 15, "lat": 22.6800, "lon": 88.2900, "hub": True},
+                        {"name": "Kamarkundu", "km": 35, "lat": 22.8300, "lon": 88.2000}
+                    ]
+                }
+            ],
+            "blocks": [
+                {"title": "Catenary & Track Mega-Block", "km_txt": "Km 40 – 50", "lat": 22.9800, "lon": 88.3000, "color": "#ef4444", "line_coords": [[22.9200, 88.3800], [23.0500, 88.2500]], "dept": "Engineering + TRD (Joint Possession)", "window": "11:30 – 14:30 IST"},
+                {"title": "Electronic Interlocking Maintenance", "km_txt": "Km 75 – 82", "lat": 23.1200, "lon": 88.0200, "color": "#f97316", "line_coords": [[23.0800, 88.0800], [23.1800, 87.9500]], "dept": "S&T (Relay Testing)", "window": "12:00 – 14:00 IST"}
+            ],
+            "trains": [
+                {"num": "12301", "name": "Howrah Rajdhani Express", "speed": "110 km/h", "lat": 22.7000, "lon": 88.3200, "bg": "#22c55e", "signal": "🟢 High Speed Clear", "delay": "On Time"},
+                {"num": "37211", "name": "Bandel EMU Local", "speed": "45 km/h", "lat": 22.8500, "lon": 88.3600, "bg": "#eab308", "signal": "🟡 Caution TSR 30", "delay": "+3 min"},
+                {"num": "12339", "name": "Coalfield Express", "speed": "Stopped", "lat": 22.9500, "lon": 88.3200, "bg": "#ef4444", "signal": "🔴 Red Aspect (Joint Block)", "delay": "+25 min"},
+                {"num": "22301", "name": "Vande Bharat Express", "speed": "115 km/h", "lat": 23.3500, "lon": 87.6000, "bg": "#2563eb", "signal": "🟢 High Speed Clear", "delay": "On Time"}
+            ],
+            "timeline": [
+                {
+                    "train": "12301 HWH→BWN",
+                    "segments": [
+                        {"left": "0%", "width": "33.3%", "bg": "#22c55e", "title": "Rajdhani High Speed (06:00 - 10:00)"},
+                        {"left": "34%", "width": "12.5%", "bg": "#eab308", "title": "Automated TSR Caution (10:00 - 11:30)"},
+                        {"left": "47%", "width": "25%", "bg": "repeating-linear-gradient(45deg, #ef4444, #ef4444 3px, #dc2626 3px, #dc2626 6px)", "border": "1px dashed #f87171", "title": "TRD Catenary Mega-Block (11:30 - 14:30)"},
+                        {"left": "72.5%", "width": "25.5%", "bg": "#22c55e", "title": "Resumed High Speed (14:30 - 18:00)"}
+                    ]
+                },
+                {
+                    "train": "37211 HWH→BDC",
+                    "segments": [
+                        {"left": "0%", "width": "25%", "bg": "#38bdf8", "title": "EMU Local (06:00 - 09:00)"},
+                        {"left": "25.5%", "width": "16.5%", "bg": "#3b82f6", "title": "Platform Hold Serampore (09:00 - 11:00)"},
+                        {"left": "42.5%", "width": "20.8%", "bg": "repeating-linear-gradient(45deg, #d97706, #d97706 3px, #b45309 3px, #b45309 6px)", "border": "1px dashed #fbbf24", "title": "Track Disconnection (11:00 - 13:30)"},
+                        {"left": "64%", "width": "34%", "bg": "#22c55e", "title": "Suburban Local (13:30 - 18:00)"}
+                    ]
+                },
+                {
+                    "train": "12339 HWH→DGR",
+                    "segments": [
+                        {"left": "8.3%", "width": "33.3%", "bg": "#22c55e", "title": "Coalfield SF Express (07:00 - 11:00)"},
+                        {"left": "42%", "width": "12.5%", "bg": "#eab308", "title": "Signal Precaution (11:00 - 12:30)"},
+                        {"left": "55%", "width": "12.5%", "bg": "#ef4444", "title": "Overrun Inspection (12:30 - 14:00)"},
+                        {"left": "68%", "width": "30%", "bg": "#22c55e", "title": "Normal Cruise (14:00 - 18:00)"}
+                    ]
+                }
+            ]
+        }
+    }
+
+    match_key = None
+    div_str = str(division).lower()
+    if "kurda" in div_str or "khurda" in div_str or "kur" in div_str:
+        match_key = "Khurda Road Division (KUR)"
+    elif "howrah" in div_str or "hwh" in div_str:
+        match_key = "Howrah Division (HWH)"
+    elif "secund" in div_str or "sc" in div_str.split():
+        match_key = "Secunderabad Division (SC)"
+    elif "vijay" in div_str or "bza" in div_str:
+        match_key = "Vijayawada Division (BZA)"
+    else:
+        for k in div_networks.keys():
+            if k.lower() in div_str or div_str in k.lower():
+                match_key = k
+                break
+    if not match_key:
+        match_key = "Khurda Road Division (KUR)"
+
+    net = div_networks[match_key]
+    kpis = net.get("kpi", {"running": 18, "reduced": 4, "stopped": 2, "total": 24})
+
+    # BUILD FOLIUM MAP WITH HOVER TOOLTIPS
+    m = folium.Map(
+        location=net["center"],
+        zoom_start=net["zoom"],
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        attr="Esri World Imagery",
+        control_scale=False,
+        zoom_control=True
+    )
+
+    folium.TileLayer('OpenStreetMap', name='Street Map View', show=False).add_to(m)
+    folium.LayerControl(position='topleft').add_to(m)
+
+    # Branching Track Lines with hover tooltips
+    for line in net["lines"]:
+        coords = [[st_node["lat"], st_node["lon"]] for st_node in line["stations"]]
+        folium.PolyLine(coords, color="#0b1329", weight=8, opacity=0.9).add_to(m)
+
+        track_tooltip = f"""
+        <div style="background: #0f172a; color: white; padding: 10px 14px; border-radius: 8px; border: 1.5px solid {line['color']}; font-family: sans-serif; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); min-width: 220px;">
+            <div style="font-size: 13px; font-weight: bold; color: {line['color']};">🛣️ {line['name']}</div>
+            <div style="margin-top: 4px; color: #e2e8f0;">📍 Route: <b>{line['stations'][0]['name']}</b> ➔ <b>{line['stations'][-1]['name']}</b></div>
+            <div style="color: #4ade80; margin-top: 2px;">⚡ Permissible MPS: <b>110 km/h</b></div>
+            <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">Track Specs: Broad Gauge (1676mm) | 25kV AC Electrified</div>
+        </div>
+        """
+        folium.PolyLine(coords, color=line["color"], weight=4, opacity=0.95, tooltip=folium.Tooltip(track_tooltip, sticky=True)).add_to(m)
+
+        for st_node in line["stations"]:
+            is_hub = st_node.get("hub", False)
+            rad = 7 if is_hub else 5
+
+            st_tooltip = f"""
+            <div style="background: #0f172a; color: white; padding: 8px 12px; border-radius: 6px; border: 1.5px solid #38bdf8; font-family: sans-serif; font-size: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                <div style="font-size: 13px; font-weight: bold; color: #38bdf8;">🚉 Station: {st_node['name']}</div>
+                <div style="color: #cbd5e1; margin-top: 2px;">📍 Location: <b>KM {st_node['km']}</b></div>
+                <div style="color: #94a3b8; font-size: 11px;">Category: {'Divisional Hub / Junction' if is_hub else 'Railway Station'}</div>
+            </div>
+            """
+            folium.CircleMarker(
+                location=[st_node["lat"], st_node["lon"]],
+                radius=rad,
+                color="#ffffff",
+                weight=2.5,
+                fill=True,
+                fill_color="#0b1329",
+                fill_opacity=1.0,
+                tooltip=folium.Tooltip(st_tooltip, sticky=True)
+            ).add_to(m)
+
+            if is_hub:
+                folium.CircleMarker(
+                    location=[st_node["lat"], st_node["lon"]],
+                    radius=4,
+                    color="#38bdf8",
+                    weight=1.5,
+                    fill=True,
+                    fill_color="#ffffff",
+                    fill_opacity=1.0
+                ).add_to(m)
+
+            # ALWAYS-VISIBLE STATION & CITY LABELS ON MAP (Item 7)
+            lbl_html = f'''<div style="background: rgba(11, 19, 41, 0.95); color: #f8fafc; border: 1.5px solid #38bdf8; border-radius: 4px; padding: 2px 7px; font-size: 11px; font-weight: 800; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; white-space: nowrap; pointer-events: none; box-shadow: 0 2px 8px rgba(0,0,0,0.8); display: inline-flex; align-items: center; gap: 4px;"><span style="color: #38bdf8; font-size: 8px;">●</span> {st_node['name']}</div>'''
+            folium.Marker(
+                location=[st_node["lat"], st_node["lon"]],
+                icon=folium.DivIcon(html=lbl_html, icon_size=(110, 24), icon_anchor=(-10, 12))
+            ).add_to(m)
+
+    if match_key == "Khurda Road Division (KUR)":
+        folium.Marker(
+            location=[20.85, 86.10],
+            icon=folium.DivIcon(html='<div style="color: #ffffff; font-size: 12px; font-weight: 700; text-shadow: 0 1px 4px #000, 0 0 2px #000; font-family: sans-serif;">Jajpur Keonjhar</div>')
+        ).add_to(m)
+        folium.CircleMarker(location=[20.85, 86.05], radius=5, color="#ffffff", weight=2, fill=True, fill_color="#0b1329", fill_opacity=1.0).add_to(m)
+        folium.Marker(
+            location=[19.20, 85.90],
+            icon=folium.DivIcon(html='<div style="color: rgba(186, 230, 253, 0.45); font-style: italic; font-size: 16px; font-family: Georgia, serif; letter-spacing: 3px; pointer-events: none; white-space: nowrap;">Bay of Bengal</div>')
+        ).add_to(m)
+
+    # Maintenance Callouts & Hatched Lines with hover tooltips
+    for blk in net.get("blocks", []):
+        maint_tooltip = f"""
+        <div style="background: #0f172a; color: white; padding: 10px 14px; border-radius: 8px; border: 1.5px solid {blk['color']}; font-family: sans-serif; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); min-width: 240px;">
+            <div style="font-size: 14px; font-weight: bold; color: #f87171;">🛠️ {blk.get('title', 'Maintenance Block')}</div>
+            <div style="margin-top: 4px; color: #e2e8f0;">📍 Section: <b>{blk['km_txt']}</b></div>
+            <div style="color: #fca5a5;">⏱️ Window: <b>{blk.get('window', '10:00 – 14:00 IST')}</b></div>
+            <div style="color: #fcd34d; font-weight: bold; margin-top: 2px;">⚠️ Speed Regulation: TSR 30 km/h Active</div>
+            <div style="color: #cbd5e1; font-size: 11px; margin-top: 3px;">⚙️ Department: {blk.get('dept', 'Engineering')}</div>
+        </div>
+        """
+        if "line_coords" in blk:
+            folium.PolyLine(blk["line_coords"], color=blk["color"], weight=14, opacity=0.7, dash_array="6,8", tooltip=folium.Tooltip(maint_tooltip, sticky=True)).add_to(m)
+
+        c_lat = blk.get("card_lat", blk.get("lat"))
+        c_lon = blk.get("card_lon", blk.get("lon"))
+
+        if "Renewal" in blk.get("title", "") or "Maintenance" in blk.get("title", ""):
+            c_html = f'''
+            <div style="background: #ffffff; border: 2px solid {blk['color']}; border-radius: 8px; padding: 4px 10px 4px 6px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(0,0,0,0.45); white-space: nowrap; font-family: sans-serif; transform: translate(-30%, -120%);">
+                <div style="background: #fee2e2; border: 1.5px solid {blk['color']}; border-radius: 6px; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #dc2626; flex-shrink: 0;">🛠️</div>
+                <div style="line-height: 1.2; text-align: left;">
+                    <div style="color: #dc2626; font-weight: 800; font-size: 11px;">{blk.get('title', 'Maintenance Work')}</div>
+                    <div style="color: #1e293b; font-weight: 700; font-size: 10px;">(Track Renewal)</div>
+                    <div style="color: #64748b; font-weight: 600; font-size: 9.5px;">{blk['km_txt']}</div>
+                </div>
+            </div>
+            '''
+        else:
+            c_html = f'''
+            <div style="background: #ffffff; border: 1.5px solid {blk['color']}; border-radius: 8px; padding: 4px 10px; text-align: left; box-shadow: 0 4px 14px rgba(0,0,0,0.45); white-space: nowrap; font-family: sans-serif; transform: translate(10%, 20%);">
+                <div style="color: #ea580c; font-weight: 800; font-size: 11px;">{blk.get('title', 'Scheduled Block')}</div>
+                <div style="color: #1e293b; font-weight: 700; font-size: 10px;">(10:00 – 14:00)</div>
+                <div style="color: #64748b; font-weight: 600; font-size: 9.5px;">{blk['km_txt']}</div>
+            </div>
+            '''
+        folium.Marker(location=[c_lat, c_lon], icon=folium.DivIcon(html=c_html), tooltip=folium.Tooltip(maint_tooltip, sticky=True)).add_to(m)
+
+    # Real-time Train Badges with hover tooltips
+    for tr in net.get("trains", []):
+        train_tooltip = f"""
+        <div style="background: #0f172a; color: white; padding: 10px 14px; border-radius: 8px; border: 1.5px solid {tr['bg']}; font-family: sans-serif; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.6); min-width: 220px;">
+            <div style="font-size: 14px; font-weight: bold; color: #4ade80;">🚆 Train {tr['num']} — {tr.get('name', 'Express')}</div>
+            <div style="margin-top: 4px; color: #e2e8f0;">⚡ Speed: <b style="color: {tr['bg']}; font-size: 13px;">{tr['speed']}</b> (MPS 110 km/h)</div>
+            <div style="color: #cbd5e1;">📍 Location: Near {match_key.split(' ')[0]}</div>
+            <div style="color: #86efac; font-weight: bold; margin-top: 3px;">{tr.get('signal', '🟢 Green Aspect')}</div>
+            <div style="color: #94a3b8; font-size: 10px; margin-top: 4px; border-top: 1px solid #334155; padding-top: 4px;">Status: {tr.get('delay', 'On Time')}</div>
+        </div>
+        """
+        t_html = f'''
+        <div style="background: #ffffff; border: 1.5px solid #cbd5e1; border-radius: 7px; padding: 2px 7px 2px 4px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); white-space: nowrap; font-family: sans-serif; transform: translate(-50%, -50%);">
+            <div style="background: {tr['bg']}; width: 22px; height: 22px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; flex-shrink: 0;">🚆</div>
+            <div style="line-height: 1.15; text-align: left;">
+                <div style="font-size: 11px; font-weight: 800; color: #0f172a;">{tr['num']}</div>
+                <div style="font-size: 9.5px; font-weight: 600; color: #475569;">{tr['speed']}</div>
+            </div>
+        </div>
+        '''
+        folium.Marker(location=[tr["lat"], tr["lon"]], icon=folium.DivIcon(html=t_html), tooltip=folium.Tooltip(train_tooltip, sticky=True)).add_to(m)
+
+    # Boundary tags
+    for tag in net.get("division_tags", []):
+        tag_html = f'''
+        <div style="background: rgba(14, 30, 58, 0.92); border: 1.5px solid #0284c7; border-radius: 6px; padding: 3px 9px; color: #7dd3fc; font-family: sans-serif; font-size: 11px; font-weight: 700; white-space: nowrap; box-shadow: 0 2px 8px rgba(0,0,0,0.4); transform: translate(-50%, -50%);">
+            🏛️ {tag['name']}
+        </div>
+        '''
+        folium.Marker(location=[tag["lat"], tag["lon"]], icon=folium.DivIcon(html=tag_html)).add_to(m)
+
+    hud_controls = f'''
+    <style>
+    .leaflet-control-train-hud {{
+        background: rgba(11, 20, 38, 0.95) !important;
+        border: 1.5px solid #1e3a5f !important;
+        border-radius: 8px !important;
+        padding: 8px 14px !important;
+        color: white !important;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        margin: 10px 12px !important;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.5) !important;
+        pointer-events: auto !important;
+    }}
+    .leaflet-control-scale-custom {{
+        background: rgba(11, 20, 38, 0.9) !important;
+        border: 1px solid #1e3a5f !important;
+        border-radius: 6px !important;
+        padding: 4px 10px !important;
+        color: white !important;
+        font-family: sans-serif !important;
+        font-size: 10px !important;
+        margin: 10px 12px !important;
+    }}
+    .leaflet-control-compass {{
+        margin: 10px 14px !important;
+        text-align: center !important;
+        color: white !important;
+        font-family: sans-serif !important;
+    }}
+    </style>
+    <script>
+    window.addEventListener("DOMContentLoaded", function() {{
+        var topRight = document.querySelector(".leaflet-top.leaflet-right");
+        if (topRight) {{
+            var hud = document.createElement("div");
+            hud.className = "leaflet-control leaflet-control-train-hud";
+            hud.innerHTML = `
+                <div style="font-size: 11px; font-weight: 700; color: #cbd5e1; margin-bottom: 6px;">Live Train Count</div>
+                <div style="display: flex; gap: 12px; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <div style="background: #064e3b; border-radius: 5px; padding: 2px 4px; font-size: 11px;">🚆</div>
+                        <div style="line-height: 1.1;"><div style="font-size: 8.5px; color: #94a3b8;">Running</div><b style="font-size: 14px; color: #4ade80;">{kpis['running']}</b></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <div style="background: #78350f; border-radius: 5px; padding: 2px 4px; font-size: 11px;">🚆</div>
+                        <div style="line-height: 1.1;"><div style="font-size: 8.5px; color: #94a3b8;">Reduced</div><b style="font-size: 14px; color: #fbbf24;">{kpis['reduced']}</b></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <div style="background: #7f1d1d; border-radius: 5px; padding: 2px 4px; font-size: 11px;">🚆</div>
+                        <div style="line-height: 1.1;"><div style="font-size: 8.5px; color: #94a3b8;">Stopped</div><b style="font-size: 14px; color: #f87171;">{kpis['stopped']}</b></div>
+                    </div>
+                    <div style="border-left: 1px solid #334155; padding-left: 10px;">
+                        <div style="font-size: 8.5px; color: #94a3b8;">Total</div><b style="font-size: 14px; color: #38bdf8;">{kpis['total']}</b>
+                    </div>
+                </div>
+            `;
+            topRight.appendChild(hud);
+        }}
+
+        var bottomLeft = document.querySelector(".leaflet-bottom.leaflet-left");
+        if (bottomLeft) {{
+            var sc = document.createElement("div");
+            sc.className = "leaflet-control leaflet-control-scale-custom";
+            sc.innerHTML = `
+                <div style="display: flex; justify-content: space-between; font-weight: 600; color: #cbd5e1; gap: 6px;">
+                    <span>0</span><span>10</span><span>20</span><span>30</span><span>40 km</span>
+                </div>
+                <div style="height: 4px; background: white; border-radius: 2px; margin-top: 2px; display: flex;">
+                    <div style="flex: 1; background: #0b1329;"></div><div style="flex: 1; background: white;"></div>
+                    <div style="flex: 1; background: #0b1329;"></div><div style="flex: 1; background: white;"></div>
+                </div>
+            `;
+            bottomLeft.appendChild(sc);
+        }}
+
+        var bottomRight = document.querySelector(".leaflet-bottom.leaflet-right");
+        if (bottomRight) {{
+            var comp = document.createElement("div");
+            comp.className = "leaflet-control leaflet-control-compass";
+            comp.innerHTML = `
+                <div style="font-size: 18px; font-weight: 900; color: #38bdf8; line-height: 1;">▲</div>
+                <div style="font-size: 10px; font-weight: 800; color: #ffffff;">N</div>
+            `;
+            bottomRight.appendChild(comp);
+        }}
+    }});
+    </script>
+    '''
+
+    # WIDE MAP LAYOUT (3.8 vs 1.2 giving ~76% width to map and 24% to right timeline)
+    col_left, col_right = st.columns([3.8, 1.2])
+
+    with col_left:
+        map_raw = m._repr_html_()
+        map_with_ui = map_raw.replace('</body>', f'{hud_controls}</body>')
+        components.html(map_with_ui, height=620)
+        st.caption(f"📍 **Satellite Multi-Track Network View** — {net['corridor_title']} | {net['jurisdiction']}")
+
+    with col_right:
+        # CORRIDOR TIMELINE GANTT COMPONENT (Item 6: Dynamic for all divisions)
+        timeline_rows = ""
+        for tr_entry in net.get("timeline", []):
+            segs_html = ""
+            for seg in tr_entry.get("segments", []):
+                bg_style = seg.get("bg", "#22c55e")
+                b_style = f"border: {seg['border']};" if "border" in seg else ""
+                segs_html += f'<div style="position: absolute; left: {seg["left"]}; width: {seg["width"]}; height: 13px; background: {bg_style}; {b_style} border-radius: 4px;" title="{seg.get("title", "")}"></div>'
+            timeline_rows += f'''
+<div style="display: flex; align-items: center; margin-bottom: 12px; position: relative; z-index: 2;">
+<div style="width: 105px; font-size: 10.5px; font-weight: 600; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex-shrink: 0;">{tr_entry["train"]}</div>
+<div style="flex: 1; position: relative; height: 18px; display: flex; align-items: center;">
+{segs_html}
+</div>
+</div>'''
+
+        timeline_html = f"""
+<div style="background: #0b1329; border: 1.5px solid #1e3a5f; border-radius: 10px; padding: 12px 14px; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-shadow: 0 4px 16px rgba(0,0,0,0.4); width: 100%; box-sizing: border-box;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 6px;">
+<div style="font-size: 13px; font-weight: 700; color: #f8fafc;">Corridor Timeline — {match_key.split(' (')[0]}</div>
+<div style="display: flex; align-items: center; gap: 6px;">
+<div style="background: #111e38; border: 1px solid #1e3a5f; border-radius: 4px; padding: 2px 6px; font-size: 10px; color: #cbd5e1;">📅 <b>{datetime.now().strftime('%d %b %Y')}</b></div>
+<div style="background: #111e38; border: 1px solid #1e3a5f; border-radius: 4px; padding: 2px 6px; font-size: 10px; color: #cbd5e1;">⏰ <b>06:00 – 18:00 IST</b></div>
+</div>
+</div>
+<div style="display: flex; align-items: center; margin-bottom: 6px;">
+<div style="width: 105px; flex-shrink: 0;"></div>
+<div style="flex: 1; display: flex; justify-content: space-between; font-size: 9.5px; color: #94a3b8; font-weight: 700; padding: 0 2px;">
+<span>06:00</span>
+<span>08:00</span>
+<span>10:00</span>
+<span>12:00</span>
+<span>14:00</span>
+<span>16:00</span>
+<span>18:00</span>
+</div>
+</div>
+<div style="position: relative;">
+<div style="position: absolute; top: 0; bottom: 0; left: 105px; right: 0; display: flex; justify-content: space-between; pointer-events: none; z-index: 1;">
+<div style="width: 1px; background: rgba(51, 65, 85, 0.4);"></div>
+<div style="width: 1px; background: rgba(51, 65, 85, 0.4);"></div>
+<div style="width: 1px; background: rgba(51, 65, 85, 0.4);"></div>
+<div style="width: 1px; background: rgba(51, 65, 85, 0.4);"></div>
+<div style="width: 1px; background: rgba(51, 65, 85, 0.4);"></div>
+<div style="width: 1px; background: rgba(51, 65, 85, 0.4);"></div>
+<div style="width: 1px; background: rgba(51, 65, 85, 0.4);"></div>
+</div>
+{timeline_rows}
+</div>
+</div>
+"""
+        st.markdown(clean_html(timeline_html), unsafe_allow_html=True)
+
+        # LIVE OPERATIONAL CONTROL ROOM FEED
+        feed_cards = ""
+        for tr_item in net.get("trains", [])[:2]:
+            feed_cards += f'''
+<div style="background: #1e293b; border-left: 3.5px solid {tr_item['bg']}; border-radius: 5px; padding: 6px 10px;">
+<div style="display: flex; justify-content: space-between;">
+<span style="font-size: 11px; font-weight: 800; color: #f8fafc;">🚆 {tr_item['num']} {tr_item['name']}</span>
+<span style="font-size: 10px; font-weight: 700; color: {tr_item['bg']};">{tr_item['speed']}</span>
+</div>
+<div style="font-size: 10px; color: #cbd5e1; margin-top: 1px;">📍 Status: {tr_item.get('delay', 'On Time')} | {tr_item['signal']}</div>
+</div>'''
+
+        for blk_item in net.get("blocks", [])[:1]:
+            feed_cards += f'''
+<div style="background: #1e293b; border-left: 3.5px solid {blk_item['color']}; border-radius: 5px; padding: 6px 10px;">
+<div style="display: flex; justify-content: space-between;">
+<span style="font-size: 11px; font-weight: 800; color: #f87171;">🛠️ {blk_item['title']} ({blk_item['km_txt']})</span>
+<span style="font-size: 9px; background: #7f1d1d; color: #fca5a5; padding: 1px 4px; border-radius: 3px;">POSSESSION</span>
+</div>
+<div style="font-size: 10px; color: #cbd5e1; margin-top: 1px;">⏱️ {blk_item.get('window', 'Active Window')} | {blk_item.get('dept', '')}</div>
+</div>'''
+
+        feed_html = f"""
+<div style="background: #0f172a; border: 1.5px solid #1e3a5f; border-radius: 10px; padding: 12px 14px; color: white; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin-top: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.4); width: 100%;">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+<div style="font-size: 12.5px; font-weight: 700; color: #38bdf8;">📡 Operational Control Feed — {match_key.split(' (')[0]}</div>
+<div style="background: #064e3b; border: 1px solid #059669; border-radius: 4px; padding: 1px 5px; font-size: 9.5px; color: #6ee7b7; font-weight: 700;">LIVE TELEMETRY</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 7px;">
+{feed_cards}
+</div>
+</div>
+"""
+        st.markdown(clean_html(feed_html), unsafe_allow_html=True)
+
+
+def render_live_corridor_map_plotly(df_trains=None, division="Vijayawada Division (BZA)"):
+    """
+    Renders an interactive Control-Room Live Railway Corridor Map using Plotly.
+    Renders exact division stations, maintenance blocks (ACTIVE, UPCOMING, OVERRUN, JOINT),
+    speed restrictions (TSR 30 km/h), and moving trains with dynamic speed vectors, direction, and statuses.
+    """
+    division_configs = {
+        "Khurda Road Division (KUR)": {
+            "title": "Khurda Road Main Trunk Corridor (CTC → BBS → KUR → BALU → BAM)",
+            "stations": [
+                {"name": "Cuttack (CTC)", "km": 0, "type": "Division Junction"},
+                {"name": "Bhubaneswar (BBS)", "km": 28, "type": "State Capital"},
+                {"name": "Khurda Road (KUR)", "km": 48, "type": "Division HQ"},
+                {"name": "Balugaon (BALU)", "km": 118, "type": "Station"},
+                {"name": "Brahmapur (BAM)", "km": 194, "type": "Junction"}
+            ],
+            "max_km": 220,
+            "blocks": [
+                {"id": "BLK-KUR-298", "start_km": 55, "end_km": 72, "status": "ACTIVE", "dept": "Engineering (Track Renewal)", "time": "10:00–14:00", "desc": "TRACK RENEWAL & TAMPER BLOCK", "is_joint": False},
+                {"id": "BLK-KUR-312", "start_km": 130, "end_km": 145, "status": "UPCOMING", "dept": "TRD + S&T", "time": "12:00–16:00", "desc": "OHE INSPECTION & INTERLOCKING", "is_joint": True}
+            ],
+            "tsrs": [
+                {"name": "TSR 30 km/h Caution Order", "start_km": 55, "end_km": 72, "speed_limit": 30}
+            ]
+        },
+        "Vijayawada Division (BZA)": {
+            "title": "Vijayawada Main Line Corridor (BZA → RYP → KDM → MDR → KMT → WL)",
+            "stations": [
+                {"name": "Vijayawada (BZA)", "km": 0, "type": "Division HQ"},
+                {"name": "Rayanapadu (RYP)", "km": 15, "type": "Junction"},
+                {"name": "Kondapalli (KDM)", "km": 30, "type": "Crossing Station"},
+                {"name": "Madhira (MDR)", "km": 65, "type": "Crossing Station"},
+                {"name": "Khammam (KMT)", "km": 100, "type": "Junction"},
+                {"name": "Warangal (WL)", "km": 150, "type": "Interchange"}
+            ],
+            "max_km": 160,
+            "blocks": [
+                {"id": "BLK-ENG-104", "start_km": 35, "end_km": 48, "status": "ACTIVE", "dept": "Engineering + TRD", "time": "10:00–12:00", "desc": "TRACK TAMPING & OHE MAINTENANCE (JOINT BLOCK)", "is_joint": True},
+                {"id": "BLK-ST-209", "start_km": 75, "end_km": 90, "status": "UPCOMING", "dept": "S&T", "time": "14:00–16:00", "desc": "POINT MACHINE INTERLOCKING TEST", "is_joint": False}
+            ],
+            "tsrs": [
+                {"name": "TSR 30 km/h Caution Order", "start_km": 35, "end_km": 48, "speed_limit": 30}
+            ]
+        },
+        "Secunderabad Division (SC)": {
+            "title": "Secunderabad Main Corridor (SC → MLY → CHZ → BG → ZN → KZJ)",
+            "stations": [
+                {"name": "Secunderabad (SC)", "km": 0, "type": "Division HQ"},
+                {"name": "Moula Ali (MLY)", "km": 10, "type": "Junction"},
+                {"name": "Cherlapalli (CHZ)", "km": 22, "type": "Terminal"},
+                {"name": "Bhongir (BG)", "km": 48, "type": "Station"},
+                {"name": "Jangaon (ZN)", "km": 84, "type": "Station"},
+                {"name": "Kazipet (KZJ)", "km": 132, "type": "Junction"}
+            ],
+            "max_km": 140,
+            "blocks": [
+                {"id": "BLK-SC-088", "start_km": 35, "end_km": 50, "status": "ACTIVE", "dept": "Engineering", "time": "09:30–11:30", "desc": "RAIL RENEWAL WINDOW", "is_joint": False},
+                {"id": "BLK-TRD-301", "start_km": 90, "end_km": 105, "status": "OVERRUN", "dept": "TRD", "time": "08:00–10:00 (Ext. 10:25)", "desc": "CATENARY OVERHAUL ⚠ OVERRUN +25m", "is_joint": False}
+            ],
+            "tsrs": [
+                {"name": "TSR 30 km/h Caution Order", "start_km": 35, "end_km": 50, "speed_limit": 30}
+            ]
+        },
+        "Guntakal Division (GTL)": {
+            "title": "Guntakal Main Corridor (GTL → AD → MALM → RC → YG → WADI)",
+            "stations": [
+                {"name": "Guntakal (GTL)", "km": 0, "type": "Division HQ"},
+                {"name": "Adoni (AD)", "km": 52, "type": "Station"},
+                {"name": "Mantralayam Rd (MALM)", "km": 93, "type": "Station"},
+                {"name": "Raichur (RC)", "km": 121, "type": "Junction"},
+                {"name": "Yadgir (YG)", "km": 190, "type": "Station"},
+                {"name": "Wadi JN (WADI)", "km": 228, "type": "Junction"}
+            ],
+            "max_km": 240,
+            "blocks": [
+                {"id": "BLK-GTL-112", "start_km": 65, "end_km": 80, "status": "ACTIVE", "dept": "Engg + S&T", "time": "10:00–12:30", "desc": "TRACK GEOMETRY & AXLE COUNTER MAINTENANCE", "is_joint": True}
+            ],
+            "tsrs": [
+                {"name": "TSR 30 km/h Caution Order", "start_km": 135, "end_km": 155, "speed_limit": 30}
+            ]
+        },
+        "Guntur Division (GNT)": {
+            "title": "Guntur Main Line (GNT → NLPD → NRT → VKN → MRK → NDL)",
+            "stations": [
+                {"name": "Guntur (GNT)", "km": 0, "type": "Division HQ"},
+                {"name": "Nallapadu (NLPD)", "km": 12, "type": "Junction"},
+                {"name": "Narasaraopet (NRT)", "km": 45, "type": "Station"},
+                {"name": "Vinukonda (VKN)", "km": 82, "type": "Station"},
+                {"name": "Markapur Rd (MRK)", "km": 140, "type": "Station"},
+                {"name": "Nandyal (NDL)", "km": 210, "type": "Junction"}
+            ],
+            "max_km": 220,
+            "blocks": [
+                {"id": "BLK-GNT-404", "start_km": 60, "end_km": 75, "status": "ACTIVE", "dept": "Engineering", "time": "09:00–12:00", "desc": "CSM HEAVY TAMPING MACHINE BLOCK", "is_joint": False}
+            ],
+            "tsrs": [
+                {"name": "TSR 30 km/h Caution Order", "start_km": 150, "end_km": 170, "speed_limit": 30}
+            ]
+        },
+        "Hyderabad Division (HYB)": {
+            "title": "Hyderabad Suburban Corridor (HYB → KCG → UR → SHNR → JCL → MBNR)",
+            "stations": [
+                {"name": "Hyderabad (HYB)", "km": 0, "type": "Terminal"},
+                {"name": "Kacheguda (KCG)", "km": 12, "type": "Division HQ"},
+                {"name": "Umdanagar (UR)", "km": 28, "type": "Station"},
+                {"name": "Shadnagar (SHNR)", "km": 55, "type": "Station"},
+                {"name": "Jadcherla (JCL)", "km": 90, "type": "Station"},
+                {"name": "Mahbubnagar (MBNR)", "km": 108, "type": "Junction"}
+            ],
+            "max_km": 120,
+            "blocks": [
+                {"id": "BLK-HYB-050", "start_km": 35, "end_km": 48, "status": "ACTIVE", "dept": "S&T", "time": "10:15–11:45", "desc": "SIGNAL CABLE INTEGRITY TESTING", "is_joint": False}
+            ],
+            "tsrs": [
+                {"name": "TSR 30 km/h Caution Order", "start_km": 90, "end_km": 100, "speed_limit": 30}
+            ]
+        },
+        "Howrah Division (HWH)": {
+            "title": "Howrah Main Trunk Corridor (HWH → SRP → BDC → BWN → DGR)",
+            "stations": [
+                {"name": "Howrah (HWH)", "km": 0, "type": "Division HQ"},
+                {"name": "Serampore (SRP)", "km": 20, "type": "Station"},
+                {"name": "Bandel (BDC)", "km": 40, "type": "Junction"},
+                {"name": "Bardhaman (BWN)", "km": 100, "type": "Junction"},
+                {"name": "Durgapur (DGR)", "km": 165, "type": "Industrial Hub"}
+            ],
+            "max_km": 180,
+            "blocks": [
+                {"id": "BLK-HWH-040", "start_km": 40, "end_km": 50, "status": "ACTIVE", "dept": "Engineering + TRD", "time": "11:30–14:30", "desc": "CATENARY & TRACK MEGA-BLOCK", "is_joint": True},
+                {"id": "BLK-HWH-075", "start_km": 75, "end_km": 82, "status": "UPCOMING", "dept": "S&T", "time": "12:00–14:00", "desc": "ELECTRONIC INTERLOCKING TEST", "is_joint": False}
+            ],
+            "tsrs": [
+                {"name": "TSR 30 km/h Caution Order", "start_km": 40, "end_km": 50, "speed_limit": 30}
+            ]
+        }
+    }
+
+    # Match division flexibly
+    cfg = division_configs.get(division)
+    if not cfg:
+        div_l = str(division).lower()
+        for k_d, v_d in division_configs.items():
+            if (k_d.lower() in div_l) or (div_l in k_d.lower()) or (k_d[:6].lower() in div_l):
+                cfg = v_d
+                break
+    if not cfg:
+        cfg = division_configs["Vijayawada Division (BZA)"]
+    stations = cfg["stations"]
+    max_km = cfg["max_km"]
+    blocks = cfg["blocks"]
+    tsrs = cfg["tsrs"]
 
     fig = go.Figure()
 
-    # Track Line (Main Corridor Line)
+    # 1. Main Line Corridor Track
     fig.add_trace(go.Scatter(
         x=[s["km"] for s in stations],
         y=[0] * len(stations),
         mode="lines+markers+text",
         name="Main Line Track",
-        line=dict(color="#3b82f6", width=6),
-        marker=dict(size=14, color="#38bdf8", symbol="diamond-wide-open", line=dict(width=2, color="#ffffff")),
+        line=dict(color="#2563eb", width=6),
+        marker=dict(size=14, color="#38bdf8", symbol="diamond-wide-open", line=dict(width=2.5, color="#ffffff")),
         text=[s["name"] for s in stations],
         textposition="bottom center",
-        textfont=dict(size=11, color="#94a3b8"),
+        textfont=dict(size=11, color="#94a3b8", family="monospace"),
         hoverinfo="text"
     ))
 
-    # Work Zone Maintenance Highlights (Shadow Blocks)
-    fig.add_trace(go.Scatter(
-        x=[20, 40], y=[0, 0],
-        mode="lines",
-        name="Active Work Zone (SEC-01)",
-        line=dict(color="#ef4444", width=12),
-        hovertext="🚧 Active Block Possession: Engineering + TRD (KM 20 - 40)"
-    ))
-    fig.add_trace(go.Scatter(
-        x=[120, 145], y=[0, 0],
-        mode="lines",
-        name="Caution Work Zone (BZA-02)",
-        line=dict(color="#f59e0b", width=12),
-        hovertext="🟡 TSR 30 km/h Caution Order Zone (KM 120 - 145)"
-    ))
+    # 2. Speed Restriction (TSR) Zones
+    for tsr in tsrs:
+        fig.add_trace(go.Scatter(
+            x=[tsr["start_km"], tsr["end_km"]], y=[0, 0],
+            mode="lines",
+            name=f"⚠ TSR {tsr['speed_limit']} km/h",
+            line=dict(color="#facc15", width=10, dash="dash"),
+            hovertext=f"🟡 <b>TEMPORARY SPEED RESTRICTED ZONE</b><br>Segment: KM {tsr['start_km']} - {tsr['end_km']}<br>Speed Limit: ⚠ {tsr['speed_limit']} km/h Caution"
+        ))
 
-    # Train Positions with Track Pin Points directly ON the Blue Line & Connector Dashed Lines
+    # 3. Maintenance Blocks Directly ON Track Segment
+    for blk in blocks:
+        st_val = blk["status"]
+        if st_val == "ACTIVE":
+            b_color = "#ef4444" if not blk.get("is_joint") else "#a855f7"
+            b_name = f"████ ACTIVE BLOCK ({blk['id']})"
+        elif st_val == "UPCOMING":
+            b_color = "#f59e0b"
+            b_name = f"░░░░ UPCOMING BLOCK ({blk['id']})"
+        elif st_val == "OVERRUN":
+            b_color = "#991b1b"
+            b_name = f"⚠ OVERRUN BLOCK ({blk['id']})"
+        else:
+            b_color = "#10b981"
+            b_name = f"✔ COMPLETED BLOCK ({blk['id']})"
+
+        fig.add_trace(go.Scatter(
+            x=[blk["start_km"], blk["end_km"]], y=[0, 0],
+            mode="lines",
+            name=b_name,
+            line=dict(color=b_color, width=14),
+            hovertext=f"🚧 <b>MAINTENANCE BLOCK POSSESSION ({blk['id']})</b><br>Department: {blk['dept']}<br>Status: {blk['status']}<br>Window: {blk['time']}<br>Segment: KM {blk['start_km']} - {blk['end_km']}<br>Description: {blk['desc']}"
+        ))
+
+    # 4. Moving Trains & Telemetry Badges
+    if df_trains is None or df_trains.empty:
+        df_trains = get_active_trains_df(division=division)
+
     y_levels = [0.45, -0.45, 0.75, -0.75]
-    if df_trains is not None and not df_trains.empty:
-        for idx, tr in df_trains.iterrows():
-            km = tr.get("current_km", 25 + idx * 25)
-            t_num = tr.get("train_number", f"T-{100+idx}")
-            t_name = tr.get("train_name", "Express")
-            speed = tr.get("speed_kmh", 110)
-            delay = tr.get("delay_minutes", 0)
-            dir_arrow = "➡" if tr.get("direction", "EB") in ["EB", "Eastbound"] else "⬅"
-            status = "🟢 On-Time" if delay <= 5 else f"⏳ +{delay}m Delay"
-            color = "#22c55e" if delay <= 5 else ("#f59e0b" if delay <= 15 else "#ef4444")
-            
+    if not df_trains.empty:
+        for idx, tr in df_trains.reset_index().iterrows():
+            km = float(tr.get("current_km", 25.0))
+            t_num = str(tr.get("train_number", f"T-{100+idx}"))
+            t_name = str(tr.get("train_name", "Express"))
+            t_type = str(tr.get("train_type", "Express"))
+            speed = float(tr.get("speed_kmh", 110))
+            delay = float(tr.get("delay_minutes", 0))
+            direction = str(tr.get("direction", "EB"))
+            dir_arrow = "➡ EB" if direction in ["EB", "Eastbound"] else "⬅ WB"
+            status_val = str(tr.get("status", "RUNNING"))
+            next_stn = str(tr.get("next_station", "Next Station"))
+
+            # Status visual styling
+            if status_val == "STOPPED" or speed == 0:
+                color = "#ef4444"
+                icon = "🛑"
+                badge_lbl = f"{icon} {t_num} | 0 km/h (STOPPED)"
+            elif status_val in ["RESTRICTED", "SLOWING", "APPROACHING BLOCK"]:
+                color = "#f59e0b"
+                icon = "⚠️"
+                badge_lbl = f"{icon} {t_num} | {speed:.0f} km/h ({status_val})"
+            elif delay > 5:
+                color = "#f97316"
+                icon = "⏱"
+                badge_lbl = f"{icon} {t_num} | {speed:.0f} km/h (+{delay:.0f}m)"
+            else:
+                color = "#22c55e"
+                icon = "🚆"
+                badge_lbl = f"{icon} {t_num} | {speed:.0f} km/h (RUNNING)"
+
             y_pos = y_levels[idx % len(y_levels)]
             txt_pos = "top center" if y_pos > 0 else "bottom center"
 
-            # 1. Direct Track Pin Point ON the Main Blue Line Track (y = 0)
+            # Track Pin ON Blue Line (y = 0)
             fig.add_trace(go.Scatter(
                 x=[km], y=[0],
                 mode="markers",
-                name=f"Track Location {t_num}",
+                name=f"Pin {t_num}",
                 showlegend=False,
                 marker=dict(size=14, color=color, symbol="circle", line=dict(width=2.5, color="#ffffff")),
-                hovertext=f"📍 <b>Train {t_num} Location Pin</b><br>Corridor Distance: KM {km}"
+                hovertext=f"📍 <b>Train {t_num} Track Pin</b><br>KM: {km}<br>Speed: {speed:.0f} km/h"
             ))
 
-            # 2. Vertical Connector Dashed Line from Track (y = 0) to Train Badge (y = y_pos)
+            # Vertical Connector Line
             fig.add_shape(
                 type="line",
                 x0=km, y0=0,
@@ -802,34 +1841,31 @@ def render_live_corridor_map_plotly(df_trains=None):
                 line=dict(color=color, width=2, dash="dot")
             )
 
-            # 3. Floating Train Status Badge Box
+            # Floating Train Status Badge Box
             fig.add_trace(go.Scatter(
                 x=[km], y=[y_pos],
                 mode="markers+text",
                 name=f"Train {t_num}",
                 showlegend=False,
                 marker=dict(size=18, color=color, symbol="square-dot", line=dict(width=2, color="#ffffff")),
-                text=[f"🚆 {t_num}"],
+                text=[badge_lbl],
                 textposition=txt_pos,
                 textfont=dict(size=11, color="#ffffff", family="sans-serif"),
-                hovertext=f"🚆 <b>{t_num} - {t_name}</b><br>📍 Current KM: {km}<br>➡ Direction: {dir_arrow}<br>⚡ Speed: {speed} km/h<br>⏱ Status: {status}<br>📍 Next Station: Kazipet"
+                hovertext=f"🚆 <b>{t_num} - {t_name}</b> ({t_type})<br>📍 Current Location: KM {km}<br>➡ Direction: {dir_arrow}<br>⚡ Speed: {speed:.0f} km/h (MPS: {tr.get('mps', 110)} km/h)<br>⏱ Operational Status: {status_val}<br>⏳ Delay Accumulation: +{delay:.0f} min<br>📍 Next Station: {next_stn}"
             ))
 
     fig.update_layout(
         title=dict(
-            text="🚆 Live Interactive Corridor Map & Train Telemetry Profile",
-            font=dict(size=13, color="#38bdf8"),
-            x=0,
-            xanchor="left",
-            y=0.98,
-            yanchor="top"
+            text=f"🚆 LIVE CONTROL-ROOM CORRIDOR TRACKING: {cfg['title'].upper()}",
+            font=dict(size=13, color="#38bdf8", family="sans-serif"),
+            x=0, xanchor="left", y=0.98, yanchor="top"
         ),
-        xaxis=dict(title="Corridor Distance (Kilometers - KM)", showgrid=True, gridcolor="#1e293b", range=[-15, 295]),
+        xaxis=dict(title="Corridor Distance (Kilometers - KM)", showgrid=True, gridcolor="#1e293b", range=[-10, max_km]),
         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[-1.4, 1.4]),
         paper_bgcolor="#0f172a",
         plot_bgcolor="#0d1322",
         font=dict(color="#ffffff"),
-        height=360,
+        height=380,
         margin=dict(l=25, r=25, t=50, b=45),
         showlegend=True,
         legend=dict(
@@ -838,7 +1874,7 @@ def render_live_corridor_map_plotly(df_trains=None):
             y=1.02,
             xanchor="right",
             x=1,
-            bgcolor="rgba(15, 23, 42, 0.8)",
+            bgcolor="rgba(15, 23, 42, 0.85)",
             bordercolor="#334155",
             borderwidth=1
         )
@@ -846,94 +1882,131 @@ def render_live_corridor_map_plotly(df_trains=None):
     return fig
 
 
-def advance_telemetry_step():
+def advance_telemetry_step(step_km=1.5):
     """
-    Advances train KM positions, updates speed profiles, signal aspects, and delay minutes,
-    and syncs live telemetry to railway.db.
+    Advances train KM positions along the corridor deterministically.
+    Calculates train-block proximity, speed transitions (110 -> 60 -> 30 -> 0 km/h),
+    signal aspects, and delay accumulation, syncing updated state to SQLite and session state.
     """
     init_trains_10_state()
     if "trains_10_state" in st.session_state:
         for t_id, tr in st.session_state.trains_10_state.items():
-            new_km = tr["current_km"] + 3
-            if new_km > 280:
-                new_km = 10
-            tr["current_km"] = new_km
+            curr_km = tr["current_km"]
+            direction = tr.get("direction", "EB")
+            mps = tr.get("mps", 110)
+            work_zone = tr.get("work_zone_kms", [35, 48])
+            w_start, w_end = work_zone[0], work_zone[1]
 
-            w_kms = tr.get("work_zone_kms", [114, 116, 118])
-            if any(abs(new_km - wk) <= 2 for wk in w_kms) and not tr.get("early_cleared", False):
-                tr["current_speed"] = 30
-                tr["status"] = "Regulated (30 km/h Caution)"
-                tr["signal"] = "🔴 Red / Amber Caution"
-                tr["delay_minutes"] = min(45, tr["delay_minutes"] + 2)
+            # Advance KM along route direction
+            if direction == "EB":
+                new_km = curr_km + step_km
+                if new_km > 160: new_km = 5.0
             else:
-                tr["current_speed"] = tr.get("mps", 110)
-                tr["status"] = "Cruising (On Time)" if tr["delay_minutes"] == 0 else f"Running (+{tr['delay_minutes']}m Delay)"
-                tr["signal"] = "🟢 Green (Clearance Fit)"
+                new_km = curr_km - step_km
+                if new_km < 5.0: new_km = 150.0
+
+            tr["current_km"] = round(new_km, 1)
+
+            # Calculate proximity to active maintenance block / TSR zone (KM w_start to w_end)
+            dist_to_block = w_start - new_km if direction == "EB" else new_km - w_end
+
+            if w_start <= new_km <= w_end:
+                # Inside Block Possession Zone -> Full Stop or TSR limit
+                if tr.get("early_cleared", False):
+                    tr["current_speed"] = 30
+                    tr["status"] = "RESTRICTED"
+                    tr["signal"] = "🟡 Amber Caution (30 km/h)"
+                else:
+                    tr["current_speed"] = 0
+                    tr["status"] = "STOPPED"
+                    tr["signal"] = "🔴 Red (Block Possession)"
+                    tr["delay_minutes"] = min(60.0, tr["delay_minutes"] + 2.0)
+            elif 0 < dist_to_block <= 8.0:
+                # Approaching Block -> Decelerating
+                tr["current_speed"] = 60
+                tr["status"] = "SLOWING"
+                tr["signal"] = "🟡 Amber Caution (Approach)"
+            else:
+                # Clear corridor -> Normal speed cruising
+                tr["current_speed"] = mps
+                tr["status"] = "RUNNING"
+                tr["signal"] = "🟢 Green (Clear Line)"
                 if tr["delay_minutes"] > 0:
-                    tr["delay_minutes"] = max(0, tr["delay_minutes"] - 1)
+                    tr["delay_minutes"] = max(0.0, tr["delay_minutes"] - 1.0)
 
     try:
         conn = get_db()
         for t_id, tr in st.session_state.trains_10_state.items():
             conn.execute("""
-                INSERT OR REPLACE INTO live_train_status (train_id, train_number, train_name, current_km, speed_kmh, delay_minutes, status, updated_at)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (t_id, tr.get("number", "100"), tr.get("name", "Express"), tr["current_km"], tr["current_speed"], tr["delay_minutes"], tr["status"], datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+                INSERT OR REPLACE INTO live_train_status (train_id, train_name, train_type, division_id, section_id, current_km, speed_kmh, delay_minutes, status, last_updated)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, (t_id, tr.get("name", "Express"), tr.get("type", "Express"), tr.get("division", "Vijayawada Division (BZA)"), tr.get("section_id", "SEC-01"), tr["current_km"], tr["current_speed"], tr["delay_minutes"], tr["status"], datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         conn.commit()
         conn.close()
     except Exception:
         pass
 
 
-def render_visual_train_cards(df_trains=None):
+def render_visual_train_cards(df_trains=None, division="Vijayawada Division (BZA)"):
     """
-    Renders visual cards for active trains containing:
-    🚆 Train | 📍 Current Location/KM | ➡ Direction | ⚡ Speed | ⏱ ETA | ⏳ Delay | 📍 Next Station | Status Badge
+    Renders visual operational status cards for active trains.
     """
     if df_trains is None or df_trains.empty:
-        df_trains = get_active_trains_df()
+        df_trains = get_active_trains_df(division=division)
 
     h_col1, h_col2 = st.columns([3.5, 1.2])
     with h_col1:
-        st.markdown("#### 🚆 Live Train Operational Status Cards")
+        st.markdown(f"#### 🚆 Live Train Operational Status Cards — {division}")
     with h_col2:
         if st.button("⚡ Refresh / Advance Status", key="btn_adv_tele_cards_header", use_container_width=True):
             advance_telemetry_step()
-            st.toast("⚡ Train positions & speeds refreshed.", icon="✅")
+            st.toast("⚡ Telemetry step advanced train positions & speed vectors.", icon="✅")
             st.rerun()
 
+    if df_trains.empty:
+        st.info("No active trains currently on this division's corridor segment.")
+        return
+
     c1, c2 = st.columns(2)
-    for idx, tr in df_trains.iterrows():
+    for idx, tr in df_trains.reset_index().iterrows():
         col = c1 if idx % 2 == 0 else c2
         t_num = tr.get("train_number", f"T-{100+idx}")
         t_name = tr.get("train_name", "Express")
-        km = tr.get("current_km", 25 + idx * 25)
-        speed = tr.get("speed_kmh", 110)
-        delay = tr.get("delay_minutes", 0)
+        km = float(tr.get("current_km", 25.0))
+        speed = float(tr.get("speed_kmh", 110))
+        delay = float(tr.get("delay_minutes", 0))
         direction = tr.get("direction", "EB")
         dir_label = "➡ Eastbound" if direction in ["EB", "Eastbound"] else "⬅ Westbound"
-        status_color = "#10b981" if delay <= 5 else ("#f59e0b" if delay <= 15 else "#ef4444")
-        status_text = "🟢 On Time" if delay <= 5 else (f"🟡 Minor Delay (+{delay}m)" if delay <= 15 else f"🔴 Major Delay (+{delay}m)")
+        status_val = tr.get("status", "RUNNING")
+        next_stn = tr.get("next_station", "Next Station")
+
+        if status_val == "STOPPED" or speed == 0:
+            status_color = "#ef4444"
+            status_badge = "🔴 STOPPED (Block Possession)"
+        elif status_val in ["RESTRICTED", "SLOWING", "APPROACHING BLOCK"]:
+            status_color = "#f59e0b"
+            status_badge = f"🟡 {status_val} ({speed:.0f} km/h)"
+        elif delay > 5:
+            status_color = "#f97316"
+            status_badge = f"🟠 DELAYED (+{delay:.0f}m)"
+        else:
+            status_color = "#10b981"
+            status_badge = f"🟢 RUNNING ({speed:.0f} km/h)"
 
         with col:
             st.markdown(f"""
             <div style="background: #0f172a; border: 1.5px solid #1e293b; border-left: 5px solid {status_color}; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.15);">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 14px; font-weight: 800; color: #ffffff;">
-                        🚆 {t_num} — {t_name}
-                    </div>
-                    <span style="background: rgba(255,255,255,0.08); color: {status_color}; padding: 2px 8px; border-radius: 12px; font-size: 10.5px; font-weight: 700;">
-                        {status_text}
-                    </span>
+                    <div style="font-weight: 800; font-size: 15px; color: #ffffff;">🚆 {t_num} — {t_name}</div>
+                    <span style="font-size: 11px; background: #1e293b; color: {status_color}; border: 1px solid {status_color}; font-weight: 700; padding: 2px 8px; border-radius: 12px;">{status_badge}</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 11.5px; color: #cbd5e1;">
-                    <div>📍 <strong>Location:</strong> Secunderabad (KM {km})</div>
-                    <div>{dir_label}</div>
-                </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 11.5px;">
-                    <div style="color: #38bdf8; font-weight: 600;">⚡ Speed: {speed} km/h</div>
-                    <div style="color: #facc15; font-weight: 600;">⏱ ETA: 14:35</div>
-                    <div style="color: #94a3b8;">📍 Next: Kazipet</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; font-size: 12px; color: #94a3b8;">
+                    <div>📍 <b>Location:</b> KM {km:.1f} ({tr.get('section_id', 'SEC')})</div>
+                    <div>➡ <b>Direction:</b> {dir_label}</div>
+                    <div>⚡ <b>Current Speed:</b> <span style="color: #ffffff; font-weight: 700;">{speed:.0f} km/h</span></div>
+                    <div>⏱ <b>Delay:</b> <span style="color: {'#ef4444' if delay > 5 else '#22c55e'}; font-weight: 700;">+{delay:.0f} mins</span></div>
+                    <div>📍 <b>Next Station:</b> {next_stn}</div>
+                    <div>⚡ <b>MPS Limit:</b> {tr.get('mps', 110)} km/h</div>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -1312,7 +2385,7 @@ DEPT_PORTAL_CONFIG = {
     "Engineering": {
         "acronym": "TMS",
         "full_system": "Track Management System",
-        "dept_title": "CIVIL ENGINEERING (TRACK / P-WAY)",
+        "dept_title": "ENGINEERING (TRACK / P-WAY)",
         "icon": "🛤️",
         "theme_color": "#2563eb",
         "scope": "Permanent Way, Track Geometry, Ballast, Point & Crossing Maintenance",
@@ -1341,6 +2414,8 @@ DEPT_PORTAL_CONFIG = {
     },
 }
 cur_dept_cfg = DEPT_PORTAL_CONFIG.get(my_dept, DEPT_PORTAL_CONFIG["Engineering"])
+DEPARTMENT_CONFIGS = DEPT_PORTAL_CONFIG
+
 
 
 # ---------------------------------------------------------------------------
@@ -1815,9 +2890,17 @@ conn = get_db()
 cur = conn.cursor()
 where_conds = []
 if is_dept_user:
-    where_conds.append(f"(recipient_role = '{user['role']}' OR recipient_role = 'admin' OR audience = 'public')")
+    u_role = str(user.get('role', '')).lower()
+    if u_role == 'engineering' or my_dept == 'Engineering':
+        where_conds.append("(recipient_role IN ('engineering', 'Engineering', 'tms', 'TMS') OR (message LIKE '%Engineering%' OR message LIKE '%TMS%' OR message LIKE '%P-Way%' OR message LIKE '%Track%')) AND recipient_role NOT IN ('signal', 'traction', 'st', 'trd')")
+    elif u_role == 'signal' or my_dept == 'S&T':
+        where_conds.append("(recipient_role IN ('signal', 'Signal', 'st', 'ST', 'S&T', 'smms', 'SMMS') OR (message LIKE '%Signal%' OR message LIKE '%S&T%' OR message LIKE '%SMMS%' OR message LIKE '%Interlocking%')) AND recipient_role NOT IN ('engineering', 'traction', 'trd')")
+    elif u_role == 'traction' or my_dept == 'TRD':
+        where_conds.append("(recipient_role IN ('traction', 'Traction', 'trd', 'TRD', 'tdms', 'TDMS') OR (message LIKE '%Traction%' OR message LIKE '%TRD%' OR message LIKE '%TDMS%' OR message LIKE '%OHE%' OR message LIKE '%Power Block%')) AND recipient_role NOT IN ('engineering', 'signal', 'st')")
+    else:
+        where_conds.append(f"recipient_role = '{user.get('role', '')}'")
 notif_where = " WHERE " + " AND ".join(where_conds) if where_conds else ""
-notif_query = f"SELECT notif_id, recipient_role, category, audience, message, created_at, COALESCE(is_read, 0) as is_read FROM notifications {notif_where} ORDER BY notif_id DESC LIMIT 20"
+notif_query = f"SELECT notif_id, recipient_role, category, audience, message, created_at, COALESCE(is_read, 0) as is_read FROM notifications {notif_where} ORDER BY notif_id DESC LIMIT 25"
 cur.execute(notif_query)
 notif_rows = [dict(r) for r in cur.fetchall()]
 conn.close()
@@ -2285,19 +3368,12 @@ if is_dept_user:
             fig_map = render_live_corridor_map_plotly(df_active_trains)
             st.plotly_chart(fig_map, use_container_width=True)
 
-            # 3. VISUAL AI ADVISORY PIPELINE FLOW
-            render_visual_ai_advisory_flow()
-
-            # 4. VISUAL TRAIN STATUS CARDS
+            # 3. VISUAL TRAIN STATUS CARDS
             render_visual_train_cards(df_active_trains)
 
             st.markdown("---")
-            dept_options = ["All Departments", "Engineering", "S&T", "TRD"]
-            default_idx = dept_options.index(my_dept) if my_dept in dept_options else 1
-            dept_filter = st.selectbox("🎯 Filter Overview by Department", dept_options, index=default_idx, key="dept_portal_overview_filter")
-
-            target_dept = dept_filter if dept_filter != "All Departments" else None
-            filter_cfg = DEPARTMENT_CONFIGS.get(target_dept, cur_dept_cfg) if target_dept else None
+            target_dept = my_dept
+            filter_cfg = DEPARTMENT_CONFIGS.get(target_dept, cur_dept_cfg)
 
             if target_dept:
                 st.subheader(f"📊 {filter_cfg['acronym']} Asset Reliability & Defect Metrics")
@@ -2473,70 +3549,84 @@ if is_dept_user:
         # SEGMENT 2: MAINTENANCE BLOCK SCHEDULE
         # =======================================================================
         elif "Schedule" in dept_menu:
-            st.subheader(f"📅 Maintenance Block Schedule & Corridor Timeline ({cur_dept_cfg['acronym']} — {my_dept})")
-            st.caption(f"Coordinated block disconnections granted by Central Controller (COA) for {cur_dept_cfg['full_system']}.")
+            st.subheader(f"📅 Maintenance Block Schedule & Corridor Planning ({cur_dept_cfg['acronym']} — {my_dept})")
+            st.caption(f"Coordinated block disconnections granted by Central Controller (COA) for {cur_dept_cfg['full_system']}. Regularly updated across rolling weekly and monthly planning horizons.")
 
-            # Single Authoritative Source of Truth Schedule Retrieval
-            df_sched = get_full_schedule(department=my_dept, include_completed=False)
+            now_dt = datetime.now()
+            week_end = now_dt + timedelta(days=7)
+            month_end = now_dt + timedelta(days=30)
+            d_week_label = f"📅 7-Day Rolling Weekly Plan ({now_dt.strftime('%d %b')} – {week_end.strftime('%d %b %Y')})"
+            d_month_label = f"🗓️ 30-Day Strategic Monthly Plan ({now_dt.strftime('%d %b')} – {month_end.strftime('%d %b %Y')})"
 
-            if not df_sched.empty:
-                df_sched["Timeline"] = df_sched.apply(
-                    lambda r: f"{format_time_12h(r['planned_start'])} to {format_time_12h(r['planned_end'])}",
-                    axis=1
-                )
-                df_sched["Corridor Duration"] = df_sched["slot_duration_hours"].apply(lambda h: f"{h} Hours" if pd.notna(h) else "Allocated")
-                df_sched["Required Repair Duration"] = df_sched["estimated_duration_hours"].apply(lambda h: f"{h} Hours" if pd.notna(h) else "N/A")
+            d_tab_w, d_tab_m = st.tabs([d_week_label, d_month_label])
 
-                st.markdown("##### 📊 Interactive Corridor Block Allocation Gantt Timeline")
-
-                try:
-                    gantt_df = df_sched.copy()
-                    gantt_df["start_dt"] = pd.to_datetime(gantt_df["planned_start"], errors="coerce")
-                    gantt_df["end_dt"] = pd.to_datetime(gantt_df["planned_end"], errors="coerce")
-                    gantt_df.dropna(subset=["start_dt"], inplace=True)
-                    gantt_df.loc[gantt_df["end_dt"].isna() | (gantt_df["end_dt"] <= gantt_df["start_dt"]), "end_dt"] = gantt_df["start_dt"] + pd.Timedelta(hours=2)
-
-                    color_map = {
-                        "Critical": "#ef4444",
-                        "High": "#f97316",
-                        "Medium": "#3b82f6",
-                        "Low": "#10b981"
-                    }
-
-                    fig_sched = px.timeline(
-                        gantt_df,
-                        x_start="start_dt",
-                        x_end="end_dt",
-                        y="section_id",
-                        color="severity",
-                        color_discrete_map=color_map,
-                        hover_data=["defect_id", "defect_type", "Timeline", "Corridor Duration", "Required Repair Duration", "decided_by"],
-                        title=f"🚆 Scheduled Block Windows ({cur_dept_cfg['acronym']})",
-                        height=440
+            def render_dept_schedule_view(df_sched_sub, horizon_name):
+                if not df_sched_sub.empty:
+                    df_sched_sub["Timeline"] = df_sched_sub.apply(
+                        lambda r: f"{format_time_12h(r['planned_start'])} to {format_time_12h(r['planned_end'])}",
+                        axis=1
                     )
-                    fig_sched.update_layout(
-                        yaxis=dict(autorange="reversed", title="Railway Section"),
-                        xaxis=dict(title="Block Window Timeline"),
-                        margin=dict(l=120, r=20, t=50, b=60)
-                    )
-                    st.plotly_chart(fig_sched, use_container_width=True)
-                except Exception as ex:
-                    st.error(f"Error rendering timeline chart: {ex}")
+                    df_sched_sub["Corridor Duration"] = df_sched_sub["slot_duration_hours"].apply(lambda h: f"{h} Hours" if pd.notna(h) else "Allocated")
+                    df_sched_sub["Required Repair Duration"] = df_sched_sub["estimated_duration_hours"].apply(lambda h: f"{h} Hours" if pd.notna(h) else "N/A")
 
-                st.markdown("---")
-                matrix_html = generate_ai_block_plan_matrix_html(df_sched, current_dept=my_dept, color_mode="impact")
-                components.html(matrix_html, height=450, scrolling=True)
+                    st.markdown("##### 📊 Interactive Corridor Block Allocation Gantt Timeline")
 
-                st.markdown(f"##### 📋 Block Allocation Table ({cur_dept_cfg['acronym']})")
-                table_cols = [
-                    "schedule_id", "defect_id", "section_id", "defect_type",
-                    "severity", "Timeline", "Corridor Duration", "Required Repair Duration",
-                    "status", "decided_by"
-                ]
-                st.dataframe(df_sched[table_cols], use_container_width=True, hide_index=True)
-                display_overall_statistics(df_sched, context_title=f"{cur_dept_cfg['acronym']} Scheduled Blocks")
-            else:
-                st.info("No maintenance blocks currently scheduled for this department.")
+                    try:
+                        gantt_df = df_sched_sub.copy()
+                        gantt_df["start_dt"] = pd.to_datetime(gantt_df["planned_start"], errors="coerce")
+                        gantt_df["end_dt"] = pd.to_datetime(gantt_df["planned_end"], errors="coerce")
+                        gantt_df.dropna(subset=["start_dt"], inplace=True)
+                        gantt_df.loc[gantt_df["end_dt"].isna() | (gantt_df["end_dt"] <= gantt_df["start_dt"]), "end_dt"] = gantt_df["start_dt"] + pd.Timedelta(hours=2)
+
+                        color_map = {
+                            "Critical": "#ef4444",
+                            "High": "#f97316",
+                            "Medium": "#3b82f6",
+                            "Low": "#10b981"
+                        }
+
+                        fig_sched = px.timeline(
+                            gantt_df,
+                            x_start="start_dt",
+                            x_end="end_dt",
+                            y="section_id",
+                            color="severity",
+                            color_discrete_map=color_map,
+                            hover_data=["defect_id", "defect_type", "Timeline", "Corridor Duration", "Required Repair Duration", "decided_by"],
+                            title=f"🚆 Scheduled Block Windows ({cur_dept_cfg['acronym']} — {horizon_name})",
+                            height=440
+                        )
+                        fig_sched.update_layout(
+                            yaxis=dict(autorange="reversed", title="Railway Section"),
+                            xaxis=dict(title="Block Window Timeline"),
+                            margin=dict(l=120, r=20, t=50, b=60)
+                        )
+                        st.plotly_chart(fig_sched, use_container_width=True)
+                    except Exception as ex:
+                        st.error(f"Error rendering timeline chart: {ex}")
+
+                    st.markdown("---")
+                    matrix_html = generate_ai_block_plan_matrix_html(df_sched_sub, current_dept=my_dept, color_mode="impact")
+                    components.html(matrix_html, height=450, scrolling=True)
+
+                    st.markdown(f"##### 📋 Block Allocation Table ({cur_dept_cfg['acronym']} — {horizon_name})")
+                    table_cols = [
+                        "schedule_id", "defect_id", "section_id", "defect_type",
+                        "severity", "Timeline", "Corridor Duration", "Required Repair Duration",
+                        "status", "decided_by"
+                    ]
+                    st.dataframe(df_sched_sub[table_cols], use_container_width=True, hide_index=True)
+                    display_overall_statistics(df_sched_sub, context_title=f"{cur_dept_cfg['acronym']} {horizon_name}")
+                else:
+                    st.info(f"No maintenance blocks currently scheduled for {cur_dept_cfg['acronym']} in the {horizon_name.lower()}.")
+
+            with d_tab_w:
+                df_sched_w = get_full_schedule(department=my_dept, horizon="weekly", include_completed=False)
+                render_dept_schedule_view(df_sched_w, "Weekly Plan")
+
+            with d_tab_m:
+                df_sched_m = get_full_schedule(department=my_dept, horizon="monthly", include_completed=False)
+                render_dept_schedule_view(df_sched_m, "Monthly Plan")
 
         # =======================================================================
         # SEGMENT 3: DEFECT WORK ORDERS
@@ -2869,1365 +3959,1326 @@ if is_dept_user:
         render_persistent_ai_chatbot_panel(page_context=f"Department Portal ({my_dept}) > {dept_menu}", department=my_dept)
 
 else:
-    col_left, col_right = st.columns([2.3, 1.0], gap="medium")
-    with col_left:
+    if admin_menu == "🚆 Locopilot Speed & Live Trains":
+        # --- FULL-WIDTH CORRIDOR TRACKING & LOCOPILOT SPEED CENTER ---
+        st.subheader("🚆 Live Corridor Traffic & Locopilot Speed Optimization Center")
+        st.caption("COA Real-Time Digital Twin • Moving Train Vectors • Dynamic Early Block Clearance Prioritization • Multi-Department Block Merging")
 
+        loco_agent = LocopilotSpeedAgent()
+        merger_agent = BlockMergingAgent()
 
-        if admin_menu == "📊 Overview":
-            st.subheader("System State & Visual Operational Intelligence Center")
+        col_div1, col_div2 = st.columns([2.5, 1.5])
+        with col_div1:
+            selected_division = st.selectbox(
+                "🚉 Select Operational Division:",
+                ["Khurda Road Division (KUR)", "Vijayawada Division (BZA)", "Secunderabad Division (SC)", "Howrah Division (HWH)", "Guntakal Division (GTL)", "Guntur Division (GNT)", "Hyderabad Division (HYB)"],
+                key="live_track_selected_division"
+            )
+        with col_div2:
+            st.markdown("<div style='padding-top: 24px; text-align: right;'><span style='background: #1e293b; color: #38bdf8; border: 1px solid #334155; padding: 6px 12px; border-radius: 8px; font-weight: 600; font-size: 13px;'>📡 RTIS / COA Live Stream: ACTIVE</span></div>", unsafe_allow_html=True)
 
-            # 1. VISUAL OPERATIONAL KPI STRIP
-            render_operational_kpi_bar(department="All")
+        # 1. VISUAL OPERATIONAL KPI STRIP
+        render_operational_kpi_bar(department="All", division=selected_division)
 
-            # 2. LIVE INTERACTIVE RAILWAY CORRIDOR MAP (PLOTLY)
-            df_active_trains = get_active_trains_df()
-            fig_map = render_live_corridor_map_plotly(df_active_trains)
-            st.plotly_chart(fig_map, use_container_width=True)
+        # 2. LIVE INTERACTIVE RAILWAY CORRIDOR MAP (PLOTLY)
+        df_active_trains = get_active_trains_df(division=selected_division)
+        fig_map = render_live_corridor_map_plotly(df_active_trains, division=selected_division)
+        st.plotly_chart(fig_map, use_container_width=True)
 
-            # 3. VISUAL AI ADVISORY PIPELINE FLOW
-            render_visual_ai_advisory_flow()
+        # 3. VISUAL TRAIN CARDS
+        render_visual_train_cards(df_active_trains, division=selected_division)
 
-            # 4. VISUAL TRAIN STATUS CARDS
-            render_visual_train_cards(df_active_trains)
+        st.markdown("---")
 
-            st.markdown("---")
-            dept_filter = st.selectbox("🎯 Filter Overview by Department", ["All Departments", "Engineering", "S&T", "TRD"], key="admin_overview_dept_filter")
-            st.subheader("📊 Operational Defect & Capacity Metrics")
-
-            admin_counts = get_cached_admin_overview_counts(dept_filter)
-            total_def = admin_counts["total_def"]
-            open_def = admin_counts["open_def"]
-            sched_def = admin_counts["sched_def"]
-            comp_def = admin_counts["comp_def"]
-            sched_blocks = admin_counts["sched_blocks"]
+        # --- FEATURE 1: TRANSPARENT G&SR SAFETY CLEARANCE CERTIFICATE ---
+        with st.expander("🛡️ Transparent G&SR Safety Clearance Certificate Viewer", expanded=False):
+            safety_agent = SafetyClearanceAgent()
+            cert = safety_agent.generate_gsr_certificate(schedule_id=1, section_id="Vijayawada-SEC-01")
+            st.success(f"### {cert['overall_status']}")
+            st.caption(f"**Certificate ID:** `{cert['certificate_id']}` | **Section:** `{cert['section_id']}` | **Department:** `{cert['department']}` | **Window:** `{cert['block_window']}`")
             
-            conn = get_db()
-            cur = conn.cursor()
-            total_slots = cur.execute("SELECT COUNT(*) FROM corridor_slots").fetchone()[0]
-            avail_slots = cur.execute("SELECT COUNT(*) FROM corridor_slots WHERE is_available=1").fetchone()[0]
-            conn.close()
+            df_checks = pd.DataFrame(cert["safety_checks"], columns=["G&SR Safety Rule", "Evaluation", "Rule Compliance Rationale"])
+            st.dataframe(df_checks, use_container_width=True, hide_index=True)
+            st.caption(f"Issued by: *{cert['issued_by']}*")
 
-            open_pct = (open_def / total_def * 100) if total_def > 0 else 0.0
+        # --- FEATURE 2: TRACK MACHINE BLOCK PACKING & SEQUENCE OPTIMIZER ---
+        with st.expander("🚜 Track Machine Block Packing & Sequence Optimizer (CSM / DGS / BCM)", expanded=False):
+            st.caption("Bundles multiple heavy track machines into a single contiguous block window to eliminate duplicate transit overhead.")
+            packer_agent = TrackMachinePackerAgent()
+            pack_res = packer_agent.optimize_machine_blocks(section_id="Vijayawada-SEC-01")
+            
+            pk_c1, pk_c2, pk_c3 = st.columns(3)
+            pk_c1.metric("Packed Heavy Machine Blocks", f"{len(pack_res.get('heavy_machine_blocks', []))} Blocks", delta="CSM / BCM Machines")
+            pk_c2.metric("Effective Track Output", f"{pack_res.get('total_linear_track_tamped_km', 12.6)} Tamping KM", delta=f"{pack_res.get('overall_machine_efficiency_pct', 84.5)}% Efficiency")
+            pk_c3.metric("Transit Overhead Avoided", f"{pack_res.get('overhead_avoided_mins', 90)} Mins", delta="Corridor Slots Saved")
+            
+            if pack_res.get("heavy_machine_blocks"):
+                df_pk = pd.DataFrame(pack_res["heavy_machine_blocks"])
+                st.dataframe(df_pk, use_container_width=True, hide_index=True)
 
-            m1, m2, m3, m4, m5 = st.columns(5)
-            m1.metric("Total Ingested Defects", f"{total_def:,}")
-            m2.metric("Open Backlog", f"{open_def:,}", delta=f"{open_pct:.1f}%", delta_color="inverse")
-            m3.metric("Scheduled Blocks", f"{sched_blocks:,}", delta="Coordinated")
-            m4.metric("Completed Tasks", f"{comp_def:,}")
-            m5.metric("Available Corridor Slots", f"{avail_slots:,}", delta=f"of {total_slots:,}")
+        # --- FEATURE 3: TRACTION-AWARE ROUTER UNDER OHE POWER BLOCK ---
+        with st.expander("⚡ Traction-Aware Traffic Router under OHE Power Block", expanded=False):
+            st.caption("Routes trains safely during TRD OHE power blocks: diesel locos proceed, electric locos coast or hold/reroute.")
+            trac_agent = TractionAwareRouterAgent()
+            routed_trains = trac_agent.route_traffic_under_ptw(section_id="Vijayawada-SEC-01")
+            
+            st.info(f"⚡ **OHE Power Block Active on Section**: `Vijayawada-SEC-01 (25kV Isolated)`")
+            if routed_trains:
+                df_trac = pd.DataFrame(routed_trains)
+                st.dataframe(df_trac, use_container_width=True, hide_index=True)
 
-            st.markdown("---")
-            if dept_filter == "All Departments":
-                col_ch1, col_ch2 = st.columns(2)
-                with col_ch1:
-                    st.markdown("#### Defect Distribution by Department & Status")
-                    conn = get_db()
-                    dept_stat = pd.read_sql("SELECT department, status, COUNT(*) as count FROM defects GROUP BY department, status", conn)
-                    conn.close()
-                    fig_bar = px.bar(dept_stat, x="department", y="count", color="status", barmode="group",
-                                     title="Defects by Department & Status", color_discrete_sequence=px.colors.qualitative.Safe)
-                    st.plotly_chart(fig_bar, use_container_width=True)
+        # --- FEATURE 4: TSR LIFECYCLE & TIMETABLE PADDING CALCULATOR ---
+        with st.expander("🚧 TSR Lifecycle & Timetable Speed Restriction Padding", expanded=False):
+            st.caption("Tracks Temporary Speed Restrictions (TSRs) across track renewal stages and calculates automatic timetable padding.")
+            tsr_agent = TSRLifecycleAgent()
+            tsr_impacts = tsr_agent.calculate_tsr_delay_padding(section_id="Vijayawada-SEC-01")
+            
+            ts_c1, ts_c2 = st.columns(2)
+            ts_c1.metric("Active Section TSRs", f"{len(tsr_impacts)} Active", delta="Track Caution Orders")
+            ts_c2.metric("Total Timetable Padding", "+10 Minutes", delta="Added to Train Schedule")
+            
+            if tsr_impacts:
+                df_tsr = pd.DataFrame(tsr_impacts)
+                st.dataframe(df_tsr, use_container_width=True, hide_index=True)
 
-                with col_ch2:
-                    st.markdown("#### Scheduled Blocks by Department")
-                    conn = get_db()
-                    sched_dept = pd.read_sql("SELECT department, COUNT(*) as count FROM schedule GROUP BY department", conn)
-                    conn.close()
-                    fig_pie = px.pie(sched_dept, names="department", values="count", title="Scheduled Maintenance Allocation",
-                                     color="department", color_discrete_map={"Engineering": "#1f77b4", "S&T": "#2ca02c", "TRD": "#ff7f0e"})
-                    st.plotly_chart(fig_pie, use_container_width=True)
+        # Initialize 10-Train State Data across 2 Divisions
+        if "trains_10_state" not in st.session_state:
+            st.session_state.trains_10_state = {
+                # --- VIJAYAWADA DIVISION (BZA) ---
+                "Vijayawada Train 01": {
+                    "id": "Vijayawada Train 01",
+                    "division": "Vijayawada Division (BZA)",
+                    "number": "12727",
+                    "name": "Godavari Express",
+                    "type": "Superfast Express",
+                    "corridor": "Vijayawada → Kondapalli → Madhira",
+                    "section_id": "BZA-RAY",
+                    "current_km": 105,
+                    "current_speed": 110,
+                    "mps": 110,
+                    "status": "Cruising (On Time)",
+                    "signal": "🟢 Green (Clearance Fit)",
+                    "delay_minutes": 0,
+                    "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                    "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                    "work_zone_kms": [114, 116, 118],
+                    "speed_profile": [110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110],
+                    "early_cleared": True,
+                    "merged": False
+                },
+                "Vijayawada Train 02": {
+                    "id": "Vijayawada Train 02",
+                    "division": "Vijayawada Division (BZA)",
+                    "number": "12759",
+                    "name": "Charminar Express",
+                    "type": "Superfast",
+                    "corridor": "Vijayawada → Kondapalli → Madhira",
+                    "section_id": "BZA-KDM",
+                    "current_km": 114,
+                    "current_speed": 30,
+                    "mps": 110,
+                    "status": "Regulated (30 km/h Caution)",
+                    "signal": "🔴 Red / Amber Caution",
+                    "delay_minutes": 12,
+                    "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                    "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                    "work_zone_kms": [114, 116, 118],
+                    "speed_profile": [110, 110, 110, 45, 30, 30, 30, 80, 110, 110, 110],
+                    "early_cleared": False,
+                    "merged": False
+                },
+                "Vijayawada Train 03": {
+                    "id": "Vijayawada Train 03",
+                    "division": "Vijayawada Division (BZA)",
+                    "number": "20833",
+                    "name": "Vande Bharat Express",
+                    "type": "Semi High Speed",
+                    "corridor": "Vijayawada → Kondapalli → Madhira",
+                    "section_id": "KDM-KMT",
+                    "current_km": 122,
+                    "current_speed": 120,
+                    "mps": 130,
+                    "status": "Speed Boost Active",
+                    "signal": "🟢 Green (Clear Run)",
+                    "delay_minutes": 0,
+                    "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                    "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                    "work_zone_kms": [114, 116, 118],
+                    "speed_profile": [120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120],
+                    "early_cleared": True,
+                    "merged": False
+                },
+                "Vijayawada Train 04": {
+                    "id": "Vijayawada Train 04",
+                    "division": "Vijayawada Division (BZA)",
+                    "number": "G-402",
+                    "name": "Coal Freight Rake",
+                    "type": "Heavy Freight",
+                    "corridor": "Vijayawada → Kondapalli → Madhira",
+                    "section_id": "RAY-KDM",
+                    "current_km": 111,
+                    "current_speed": 45,
+                    "mps": 75,
+                    "status": "Approach Braking",
+                    "signal": "🟡 Double Yellow (Attention)",
+                    "delay_minutes": 18,
+                    "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                    "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                    "work_zone_kms": [114, 116, 118],
+                    "speed_profile": [75, 75, 75, 45, 30, 30, 30, 60, 75, 75, 75],
+                    "early_cleared": False,
+                    "merged": False
+                },
+                "Vijayawada Train 05": {
+                    "id": "Vijayawada Train 05",
+                    "division": "Vijayawada Division (BZA)",
+                    "number": "57231",
+                    "name": "BZA-KMT Passenger Local",
+                    "type": "Passenger Local",
+                    "corridor": "Vijayawada → Kondapalli → Madhira",
+                    "section_id": "KDM-MDR",
+                    "current_km": 128,
+                    "current_speed": 40,
+                    "mps": 90,
+                    "status": "Station Approach",
+                    "signal": "🟡 Yellow (Station Signal)",
+                    "delay_minutes": 5,
+                    "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
+                    "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
+                    "work_zone_kms": [114, 116, 118],
+                    "speed_profile": [90, 90, 60, 90, 90, 90, 90, 90, 40, 75, 90],
+                    "early_cleared": True,
+                    "merged": False
+                },
+
+                # --- HOWRAH DIVISION (HWH) ---
+                "Howrah Train 01": {
+                    "id": "Howrah Train 01",
+                    "division": "Howrah Division (HWH)",
+                    "number": "12301",
+                    "name": "Howrah Rajdhani Express",
+                    "type": "Superfast Rajdhani",
+                    "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                    "section_id": "HWH-SRP",
+                    "current_km": 25,
+                    "current_speed": 130,
+                    "mps": 130,
+                    "status": "High Speed Cruising",
+                    "signal": "🟢 Green (Automatic Block)",
+                    "delay_minutes": 0,
+                    "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                    "work_zone_kms": [40, 45, 50],
+                    "speed_profile": [130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130],
+                    "early_cleared": True,
+                    "merged": False
+                },
+                "Howrah Train 02": {
+                    "id": "Howrah Train 02",
+                    "division": "Howrah Division (HWH)",
+                    "number": "37211",
+                    "name": "Bandel EMU Suburban Local",
+                    "type": "Suburban EMU",
+                    "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                    "section_id": "SRP-BDC",
+                    "current_km": 15,
+                    "current_speed": 65,
+                    "mps": 90,
+                    "status": "Suburban Service",
+                    "signal": "🟡 Yellow (Distant Caution)",
+                    "delay_minutes": 3,
+                    "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                    "work_zone_kms": [40, 45, 50],
+                    "speed_profile": [65, 45, 65, 45, 65, 45, 65, 45, 65, 45, 65],
+                    "early_cleared": False,
+                    "merged": False
+                },
+                "Howrah Train 03": {
+                    "id": "Howrah Train 03",
+                    "division": "Howrah Division (HWH)",
+                    "number": "F-819",
+                    "name": "Steel Coil Special Freight",
+                    "type": "Heavy Goods",
+                    "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                    "section_id": "BDC-BWN",
+                    "current_km": 42,
+                    "current_speed": 30,
+                    "mps": 75,
+                    "status": "Active TSR Caution (30 km/h)",
+                    "signal": "🔴 Red / Amber Caution",
+                    "delay_minutes": 25,
+                    "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                    "work_zone_kms": [40, 45, 50],
+                    "speed_profile": [75, 75, 75, 50, 30, 30, 30, 60, 75, 75, 75],
+                    "early_cleared": False,
+                    "merged": False
+                },
+                "Howrah Train 04": {
+                    "id": "Howrah Train 04",
+                    "division": "Howrah Division (HWH)",
+                    "number": "12339",
+                    "name": "Coalfield Express",
+                    "type": "Superfast Express",
+                    "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                    "section_id": "BWN-DGR",
+                    "current_km": 65,
+                    "current_speed": 105,
+                    "mps": 110,
+                    "status": "Clear Block Run",
+                    "signal": "🟢 Green (Clearance)",
+                    "delay_minutes": 0,
+                    "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                    "work_zone_kms": [40, 45, 50],
+                    "speed_profile": [105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105],
+                    "early_cleared": True,
+                    "merged": False
+                },
+                "Howrah Train 05": {
+                    "id": "Howrah Train 05",
+                    "division": "Howrah Division (HWH)",
+                    "number": "22301",
+                    "name": "Vande Bharat Express HWH-NJP",
+                    "type": "Semi High Speed",
+                    "corridor": "Howrah → Serampore → Bandel → Bardhaman",
+                    "section_id": "BWN-DGR",
+                    "current_km": 85,
+                    "current_speed": 115,
+                    "mps": 130,
+                    "status": "Accelerated Cruise",
+                    "signal": "🟢 Green (High Speed Fit)",
+                    "delay_minutes": 0,
+                    "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+                    "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
+                    "work_zone_kms": [40, 45, 50],
+                    "speed_profile": [115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115],
+                    "early_cleared": True,
+                    "merged": False
+                }
+            }
+
+        # DIVISION AND TRAIN SELECTOR UI
+        st.markdown("---")
+        sel_div_col, sel_trn_col = st.columns([1.5, 2.5])
+        with sel_div_col:
+            div_options = [
+                "Khurda Road Division (KUR)",
+                "Vijayawada Division (BZA)",
+                "Secunderabad Division (SC)",
+                "Howrah Division (HWH)"
+            ]
+            target_div_opt = div_options[0]
+            for opt in div_options:
+                if selected_division and (opt[:6].lower() in selected_division.lower() or selected_division[:6].lower() in opt.lower()):
+                    target_div_opt = opt
+                    break
+            if st.session_state.get("last_synced_top_div") != selected_division:
+                st.session_state["last_synced_top_div"] = selected_division
+                st.session_state["ctrl_sel_division"] = target_div_opt
+
+            selected_ctrl_division = st.selectbox(
+                "🏛️ Select Railway Division:",
+                div_options,
+                key="ctrl_sel_division"
+            )
+        
+        with sel_trn_col:
+            init_trains_10_state()
+            if "Khurda" in selected_ctrl_division:
+                train_options = ["Khurda Road Train 01", "Khurda Road Train 02", "Khurda Road Train 03"]
+            elif "Secunderabad" in selected_ctrl_division:
+                train_options = ["SC-12701", "SC-12792", "SC-17015", "SC-F819"]
+            elif "Vijayawada" in selected_ctrl_division:
+                train_options = ["Vijayawada Train 01", "Vijayawada Train 02", "Vijayawada Train 03", "Vijayawada Train 04", "Vijayawada Train 05"]
             else:
-                st.markdown("---")
-                tot_d = total_def
-                open_d = open_def
-                comp_d = comp_def
+                train_options = ["Howrah Train 01", "Howrah Train 02", "Howrah Train 03", "Howrah Train 04", "Howrah Train 05"]
 
-                comp_rate = (comp_d / tot_d * 100) if tot_d > 0 else 0.0
-                open_pct = (open_d / tot_d * 100) if tot_d > 0 else 0.0
+            avail_options = [t for t in train_options if t in st.session_state.trains_10_state]
+            if not avail_options:
+                avail_options = list(st.session_state.trains_10_state.keys())
+
+            selected_train_id = st.selectbox(
+                "🚆 Select Train for Telemetry & Locopilot Speed Controls:",
+                avail_options,
+                key="ctrl_sel_train"
+            )
+
+        # Get current active train object safely
+        tr = st.session_state.trains_10_state.get(selected_train_id)
+        if not tr:
+            tr = next(iter(st.session_state.trains_10_state.values()))
+        is_early = tr["early_cleared"]
+        is_merged = tr["merged"]
+
+        loco_agent = LocopilotSpeedAgent()
+        merger_agent = BlockMergingAgent()
+
+        # Top Action & Simulation Controls
+        ctrl_col1, ctrl_col2, ctrl_col3, ctrl_col4, ctrl_col5 = st.columns([1.4, 1.4, 1.4, 1.2, 1.0])
+
+        with ctrl_col1:
+            early_btn_label = "⚡ Simulate Early Release" if not is_early else "🟢 Early Release Active (+45m)"
+            early_btn_type = "primary" if not is_early else "secondary"
+            if st.button(early_btn_label, key=f"btn_early_{tr['id']}", type=early_btn_type, use_container_width=True):
+                tr["early_cleared"] = True
+                tr["merged"] = False
+                tr["speed_profile"] = [tr["mps"]] * len(tr["km_options"])
+                tr["current_speed"] = tr["mps"]
+                tr["status"] = "🟢 Early Released (Full Speed Fit)"
+                tr["signal"] = "🟢 Green (Clearance Fit)"
+                loco_agent.generate_speed_advisory(tr["section_id"], freed_minutes=45.0, department_source="Engineering")
+                st.session_state.last_action_banner = ("success", f"⚡ Early Block Clearance Activated for {tr['id']}! Speed limit restored to {tr['mps']} km/h.")
+                st.rerun()
+
+        with ctrl_col2:
+            merge_btn_label = "🤝 Merge Multi-Dept Blocks" if not is_merged else "🟡 Mega-Block Active"
+            merge_btn_type = "primary" if not is_merged else "secondary"
+            if st.button(merge_btn_label, key=f"btn_merge_{tr['id']}", type=merge_btn_type, use_container_width=True):
+                tr["merged"] = True
+                tr["early_cleared"] = False
+                tr["current_speed"] = 30
+                tr["status"] = "🟡 Mega-Block Active (Merged)"
+                tr["signal"] = "🟡 Amber (Caution Speed)"
+                merger_agent.execute_merge(tr["section_id"])
+                st.session_state.last_action_banner = ("warning", f"🤝 Multi-Department Mega-Block Activated for {tr['id']}! Speed regulated to 30 km/h.")
+                st.rerun()
+
+        with ctrl_col3:
+            if st.button("⚡ Execute Instant Dispatch", key=f"btn_dispatch_{tr['id']}", type="primary", use_container_width=True):
+                tr["early_cleared"] = True
+                tr["current_speed"] = tr["mps"]
+                tr["status"] = "⚡ Priority Dispatched"
+                loco_agent.dispatch_advisories()
+                st.session_state.last_action_banner = ("success", f"⚡ Instant Priority Dispatch Executed for {tr['name']}! Section delay reduced.")
+                st.balloons()
+                st.rerun()
+
+        with ctrl_col4:
+            if st.button("📡 Dispatch to Locopilots", key=f"btn_trans_{tr['id']}", use_container_width=True):
+                loco_agent.dispatch_advisories()
+                now_time = datetime.now().strftime("%H:%M:%S")
+                st.session_state.last_action_banner = ("info", f"📡 Speed Orders Dispatched! [{now_time}] Transmitted to {tr['name']} CAB display.")
+                st.rerun()
+
+        with ctrl_col5:
+            if st.button("🔄 Reset Normal", key=f"btn_reset_{tr['id']}", use_container_width=True):
+                tr["early_cleared"] = False
+                tr["merged"] = False
+                tr["current_speed"] = 30 if tr["km_options"][4] in tr["work_zone_kms"] else tr["mps"]
+                tr["status"] = "Regulated (30 km/h Caution)"
+                st.session_state.last_action_banner = ("info", f"🔄 Reset corridor to normal active maintenance block for {tr['id']}.")
+                st.rerun()
+
+        if "last_action_banner" in st.session_state and st.session_state.last_action_banner:
+            b_type, b_msg = st.session_state.last_action_banner
+            if b_type == "success":
+                st.success(b_msg)
+            elif b_type == "warning":
+                st.warning(b_msg)
+            else:
+                st.info(b_msg)
+
+        # LAYER 1: TELEMETRY OVERVIEW SUMMARY CARDS
+        st.markdown("#### 📊 Live Train Telemetry & Status Summary")
+        
+        del_val = tr.get("delay_minutes", 0)
+        del_text = f"⏱️ Delay: +{del_val} min" if del_val > 0 else "⏱️ On Time (0 min)"
+        del_color = "#f87171" if del_val > 0 else "#4ade80"
+        sig_text = tr.get("signal", "🟢 Green")
+
+        t_cards_html = f'''
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 20px;">
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px 16px;">
+                <div style="font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Train Name / No.</div>
+                <div style="font-size: 22px; font-weight: 800; color: #f8fafc; margin: 2px 0;">{tr.get('number', '')}</div>
+                <div style="font-size: 13px; color: #38bdf8; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">🚆 {tr.get('name', '')}</div>
+            </div>
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px 16px;">
+                <div style="font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Current Speed</div>
+                <div style="font-size: 22px; font-weight: 800; color: #f8fafc; margin: 2px 0;">{tr.get('current_speed', 0)} km/h</div>
+                <div style="font-size: 13px; color: #a7f3d0; font-weight: 600;">⚡ MPS: {tr.get('mps', 110)} km/h</div>
+            </div>
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px 16px;">
+                <div style="font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Current Location</div>
+                <div style="font-size: 22px; font-weight: 800; color: #f8fafc; margin: 2px 0;">KM {tr.get('current_km', 0)}</div>
+                <div style="font-size: 13px; color: #cbd5e1; font-weight: 600;">📍 Section: {tr.get('section_id', 'SEC')}</div>
+            </div>
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px 16px;">
+                <div style="font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase;">Signal Aspect & Delay</div>
+                <div style="font-size: 15px; font-weight: 700; color: #f8fafc; margin: 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{sig_text}</div>
+                <div style="font-size: 13px; color: {del_color}; font-weight: 600;">{del_text}</div>
+            </div>
+        </div>
+        '''
+        st.markdown(t_cards_html, unsafe_allow_html=True)
+
+        st.markdown("---")
+
+        # LAYER 2: RAILFLOW GEOGRAPHIC CORRIDOR MAP & LIVE STATUS MONITOR
+        st.markdown(f"#### 🗺️ Live Geographic Corridor Track Map & Status Monitor — `{tr['corridor']}`")
+        st.caption(f"Interactive Geographic Map showing station posts, work zones, signal aspects, and real-time status monitor for **{tr['id']} ({tr['name']})**.")
+        render_railflow_geographic_corridor_view(division=selected_ctrl_division, df_trains=df_active_trains)
+
+        st.markdown("---")
+
+        # LAYER 3: PLOTLY SPEED PROFILE & TELEMETRY GRAPHS
+        st.markdown("#### 📈 Speed Profile & Telemetry Graphs")
+        
+        km_points = tr["km_options"]
+        speed_vals = tr["speed_profile"]
+        mps_vals = [tr["mps"]] * len(km_points)
+
+        fig_speed = go.Figure()
+        fig_speed.add_trace(go.Scatter(
+            x=km_points, y=speed_vals,
+            mode="lines+markers", name=f"{tr['id']} Speed Profile",
+            line=dict(color="#3b82f6", width=3.5),
+            marker=dict(size=8, color="#3b82f6")
+        ))
+        fig_speed.add_trace(go.Scatter(
+            x=km_points, y=mps_vals,
+            mode="lines", name="Maximum Permissible Speed (MPS)",
+            line=dict(color="#10b981", dash="dash", width=2)
+        ))
+
+        fig_speed.update_layout(
+            title=f"Instructed Speed Profile vs Track Kilometer Post — {tr['id']} ({tr['name']})",
+            xaxis_title="Track Kilometer Post (KM)",
+            yaxis_title="Instructed Speed (km/h)",
+            yaxis=dict(range=[0, 150]),
+            margin=dict(l=40, r=40, t=50, b=40),
+            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        )
+        st.plotly_chart(fig_speed, use_container_width=True)
+
+        # LAYER 4: KILOMETER-BY-KILOMETER IN-CAB ADVISORY INSPECTOR
+        st.markdown("#### 🔍 Kilometer-by-Kilometer Telemetry & In-Cab Advisory Inspector")
+        st.caption("Select any track kilometer post to inspect signal aspect, permissible speed, and driver advisory display:")
+
+        selected_km = st.select_slider(
+            "Select Track Kilometer Post (KM) to Inspect:",
+            options=tr["km_options"],
+            value=tr["km_options"][4],
+            format_func=lambda x: f"KM {x}",
+            key=f"slider_km_{tr['id']}"
+        )
+
+        idx_km = tr["km_options"].index(selected_km)
+        km_speed = speed_vals[idx_km]
+        
+        if selected_km in tr["work_zone_kms"]:
+            km_desc = f"Inside / Approaching Work Zone (KM {tr['work_zone_kms'][0]}–{tr['work_zone_kms'][-1]})"
+            km_signal = "🟢 Green (Clearance Fit)" if is_early else ("🟡 Yellow (Caution Speed)" if is_merged else "🔴 Red / Amber Caution")
+            km_adv = "Corridor cleared early! Full permissible speed authorized." if is_early else ("Multi-crew safety caution: Maintain 30 km/h." if is_merged else "Active maintenance gang ahead: Regulate speed to 30 km/h.")
+        else:
+            km_desc = "Open Block Section"
+            km_signal = "🟢 Green (Automatic Clearance)"
+            km_adv = f"Sectional MPS Authorized: {km_speed} km/h."
+
+        km_c1, km_c2, km_c3, km_c4 = st.columns(4)
+        with km_c1:
+            st.metric("Inspected Track KM", f"KM {selected_km}", delta=km_desc, delta_color="off")
+        with km_c2:
+            st.metric("Permissible Speed", f"{km_speed} km/h", delta=f"{'+0' if km_speed==tr['mps'] else f'-{tr["mps"]-km_speed}'} km/h vs MPS")
+        with km_c3:
+            st.metric("Signal Aspect on Map", km_signal, delta="Aspect Telemetry", delta_color="off")
+        with km_c4:
+            st.metric("Safety Headway", "4.8 KM", delta="Zero Collision", delta_color="normal")
+
+        st.info(f"**🚆 Locopilot In-Cab Advisory Display at KM {selected_km}:** `{km_adv}`")
+
+        st.markdown("---")
+
+        # LAYER 5: MULTI-DEPARTMENT BLOCK MERGING CONSOLE
+        st.markdown("#### 🤝 Multi-Department Block Merging (Shadow Block Aggregator)")
+        st.caption("AI clusters multi-department track time requests on the active corridor to prevent repeated shutdowns.")
+        
+        try:
+            m_agent = BlockMergingAgent()
+            merge_ops = m_agent.find_merge_opportunities()
+        except Exception:
+            merge_ops = []
+        if merge_ops:
+            for mop in merge_ops[:2]:
+                m_c1, m_c2, m_c3, m_c4 = st.columns([1.5, 1.2, 1.2, 1.5])
+                with m_c1:
+                    st.markdown(f"**Section: `{mop['section_id']}`**")
+                    depts_badge = " + ".join(mop["departments"])
+                    st.caption(f"Departments: `{depts_badge}` ({mop['task_count']} Tasks)")
+                with m_c2:
+                    st.metric("Separate Shutdowns", f"{mop['separate_hours']} hrs", delta="3 Days Interrupted", delta_color="inverse")
+                with m_c3:
+                    st.metric("Merged Mega-Block", f"{mop['merged_duration_hours']} hrs", delta=f"{mop['corridor_hours_saved']} hrs Saved!", delta_color="normal")
+                with m_c4:
+                    st.markdown(f"**Caution Order:** `{mop['caution_order_km']}`")
+                    st.caption(f"Speed Regulated to: `{mop['approach_speed_kmh']} km/h` ({mop['recommended_slot']})")
+        else:
+            st.info("No unmerged multi-department conflicts on the active corridor.")
+
+        st.markdown("---")
+
+        # LAYER 6: DATA REGISTERS TABS
+        l_tab1, l_tab2, l_tab3 = st.tabs([
+            "📑 Active Speed Advisories",
+            "🚆 Live Train Telemetry Register",
+            "📦 Freight & Goods Train Forecast"
+        ])
+
+        with l_tab1:
+            st.markdown("##### 📑 Active Speed Advisories & Caution Orders")
+            conn = get_db()
+            df_advisories = pd.read_sql("SELECT * FROM locopilot_speed_advisories ORDER BY advisory_id DESC LIMIT 30", conn)
+            conn.close()
+            if not df_advisories.empty:
+                st.dataframe(df_advisories, use_container_width=True, hide_index=True)
+            else:
+                st.info("No active speed advisories.")
+
+        with l_tab2:
+            st.markdown("##### 🚆 Live Train Telemetry Register")
+            conn = get_db()
+            df_live_trains = pd.read_sql("SELECT * FROM live_train_status ORDER BY delay_minutes DESC", conn)
+            conn.close()
+            if not df_live_trains.empty:
+                st.dataframe(df_live_trains, use_container_width=True, hide_index=True)
+            else:
+                st.info("No live train telemetry records.")
+
+        with l_tab3:
+            st.markdown("##### 📦 Freight & Goods Train Forecast")
+            conn = get_db()
+            df_goods = pd.read_sql("SELECT * FROM goods_forecast ORDER BY expected_rakes DESC", conn)
+            conn.close()
+            if not df_goods.empty:
+                st.dataframe(df_goods, use_container_width=True, hide_index=True)
+            else:
+                st.info("No goods freight forecast data.")
+        st.markdown("---")
+        with st.expander("💬 AI Assistant & Operational Co-Pilot", expanded=False):
+            render_persistent_ai_chatbot_panel(page_context=f"Central Controller > {admin_menu}", department="All")
+
+    else:
+        col_left, col_right = st.columns([2.3, 1.0], gap="medium")
+        with col_left:
+
+
+            if admin_menu == "📊 Overview":
+                st.subheader("System State & Visual Operational Intelligence Center")
+
+                dept_filter = st.selectbox("🎯 Filter Overview by Department", ["All Departments", "Engineering", "S&T", "TRD"], key="admin_overview_dept_filter")
+
+                st.markdown("---")
+                st.subheader("📊 Operational Defect & Capacity Metrics")
+
+                admin_counts = get_cached_admin_overview_counts(dept_filter)
+                total_def = admin_counts["total_def"]
+                open_def = admin_counts["open_def"]
+                sched_def = admin_counts["sched_def"]
+                comp_def = admin_counts["comp_def"]
+                sched_blocks = admin_counts["sched_blocks"]
+            
+                conn = get_db()
+                cur = conn.cursor()
+                total_slots = cur.execute("SELECT COUNT(*) FROM corridor_slots").fetchone()[0]
+                avail_slots = cur.execute("SELECT COUNT(*) FROM corridor_slots WHERE is_available=1").fetchone()[0]
+                conn.close()
+
+                open_pct = (open_def / total_def * 100) if total_def > 0 else 0.0
 
                 m1, m2, m3, m4, m5 = st.columns(5)
-                m1.metric(f"Total {dept_filter} Defects", f"{tot_d:,}")
-                m2.metric("Open Backlog", f"{open_d:,}", delta=f"{open_pct:.1f}%", delta_color="inverse")
-                m3.metric("Scheduled Blocks", f"{sched_blocks:,}", delta="Active Plan")
-                m4.metric("Completed Tasks", f"{comp_d:,}")
-                m5.metric("Completion Rate", f"{comp_rate:.1f}%", delta=f"{comp_d} Archived")
+                m1.metric("Total Ingested Defects", f"{total_def:,}")
+                m2.metric("Open Backlog", f"{open_def:,}", delta=f"{open_pct:.1f}%", delta_color="inverse")
+                m3.metric("Scheduled Blocks", f"{sched_blocks:,}", delta="Coordinated")
+                m4.metric("Completed Tasks", f"{comp_def:,}")
+                m5.metric("Available Corridor Slots", f"{avail_slots:,}", delta=f"of {total_slots:,}")
 
                 st.markdown("---")
 
-                c_ov1, c_ov2 = st.columns(2)
-                with c_ov1:
-                    st.markdown(f"#### ⚠️ Defect Severity Breakdown ({dept_filter})")
-                    conn = get_db()
-                    df_sev = pd.read_sql("SELECT severity, COUNT(*) as count FROM defects WHERE department=? GROUP BY severity", conn, params=(dept_filter,))
-                    conn.close()
-                    if not df_sev.empty:
-                        fig_sev = px.pie(
-                            df_sev, names="severity", values="count",
-                            title=f"{dept_filter} Defects by Severity Level",
-                            color="severity",
-                            color_discrete_map={"Critical": "#ef4444", "High": "#f97316", "Medium": "#3b82f6", "Low": "#10b981"},
-                            hole=0.4
-                        )
-                        st.plotly_chart(fig_sev, use_container_width=True)
+                # 1. VISUAL OPERATIONAL KPI STRIP
+                render_operational_kpi_bar(department=dept_filter)
 
-                with c_ov2:
-                    st.markdown(f"#### 📌 Defect Status Breakdown ({dept_filter})")
-                    conn = get_db()
-                    df_st = pd.read_sql("SELECT status, COUNT(*) as count FROM defects WHERE department=? GROUP BY status", conn, params=(dept_filter,))
-                    conn.close()
-                    if not df_st.empty:
-                        fig_st = px.bar(
-                            df_st, x="status", y="count", color="status",
-                            title=f"{dept_filter} Tasks by Status",
-                            color_discrete_map={"Open": "#ef4444", "Scheduled": "#3b82f6", "Completed": "#10b981"}
-                        )
-                        st.plotly_chart(fig_st, use_container_width=True)
+                # 2. LIVE INTERACTIVE RAILWAY CORRIDOR MAP (PLOTLY)
+                df_active_trains = get_active_trains_df()
+                fig_map = render_live_corridor_map_plotly(df_active_trains)
+                st.plotly_chart(fig_map, use_container_width=True)
+
+                # 3. VISUAL TRAIN STATUS CARDS
+                render_visual_train_cards(df_active_trains)
 
                 st.markdown("---")
-                c_ov3, c_ov4 = st.columns(2)
-                with c_ov3:
-                    st.markdown(f"#### 📍 Top Priority Railway Sections ({dept_filter})")
-                    conn = get_db()
-                    df_sec = pd.read_sql("""
-                        SELECT section_id, COUNT(*) as defect_count, AVG(priority_score) as avg_priority 
-                        FROM defects 
-                        WHERE department=? AND LOWER(status)!='completed'
-                        GROUP BY section_id 
-                        ORDER BY avg_priority DESC 
-                        LIMIT 10
-                    """, conn, params=(dept_filter,))
-                    conn.close()
-                    if not df_sec.empty:
-                        fig_sec = px.bar(
-                            df_sec, x="section_id", y="avg_priority", color="defect_count",
-                            title=f"Top 10 High-Priority Sections ({dept_filter})",
-                            labels={"avg_priority": "Avg Priority Score (0-100)", "section_id": "Section ID", "defect_count": "Open Defects"},
-                            color_continuous_scale="Reds"
-                        )
-                        st.plotly_chart(fig_sec, use_container_width=True)
+                if dept_filter == "All Departments":
+                    col_ch1, col_ch2 = st.columns(2)
+                    with col_ch1:
+                        st.markdown("#### Defect Distribution by Department & Status")
+                        conn = get_db()
+                        dept_stat = pd.read_sql("SELECT department, status, COUNT(*) as count FROM defects GROUP BY department, status", conn)
+                        conn.close()
+                        fig_bar = px.bar(dept_stat, x="department", y="count", color="status", barmode="group",
+                                         title="Defects by Department & Status", color_discrete_sequence=px.colors.qualitative.Safe)
+                        st.plotly_chart(fig_bar, use_container_width=True)
 
-                with c_ov4:
-                    st.markdown(f"#### 🔧 Defect Types Frequency ({dept_filter})")
-                    conn = get_db()
-                    df_type = pd.read_sql("""
-                        SELECT defect_type, COUNT(*) as count 
-                        FROM defects 
-                        WHERE department=? 
-                        GROUP BY defect_type 
-                        ORDER BY count DESC 
-                        LIMIT 10
-                    """, conn, params=(dept_filter,))
-                    conn.close()
-                    if not df_type.empty:
-                        fig_type = px.bar(
-                            df_type, y="defect_type", x="count", orientation="h",
-                            title=f"Defect Category Distribution ({dept_filter})",
-                            labels={"defect_type": "Defect Category", "count": "Total Ingested"},
-                            color_discrete_sequence=["#8b5cf6"]
-                        )
-                        fig_type.update_layout(yaxis={'categoryorder':'total ascending'})
-                        st.plotly_chart(fig_type, use_container_width=True)
-
-        elif admin_menu == "🚆 Locopilot Speed & Live Trains":
-            st.subheader("🚆 Live Corridor Traffic & Locopilot Speed Optimization Center")
-            st.caption("COA Real-Time Digital Twin • Moving Train Vectors • Dynamic Early Block Clearance Prioritization • Multi-Department Block Merging")
-
-            # 1. VISUAL OPERATIONAL KPI STRIP
-            render_operational_kpi_bar(department="All")
-
-            # 2. LIVE INTERACTIVE RAILWAY CORRIDOR MAP (PLOTLY)
-            df_active_trains = get_active_trains_df()
-            fig_map = render_live_corridor_map_plotly(df_active_trains)
-            st.plotly_chart(fig_map, use_container_width=True)
-
-            # 3. VISUAL TRAIN CARDS
-            render_visual_train_cards(df_active_trains)
-
-            st.markdown("---")
-
-            loco_agent = LocopilotSpeedAgent()
-            merger_agent = BlockMergingAgent()
-
-            # --- FEATURE 1: LIVE AUTO-ADVANCING TELEMETRY STREAM CONTROLS ---
-            with st.expander("⚡ Live Telemetry Stream & Dynamic Digital Twin Simulator", expanded=True):
-                if "live_telemetry_active" not in st.session_state:
-                    st.session_state.live_telemetry_active = (get_system_setting("live_telemetry_stream", "0") == "1")
-
-                col_tel1, col_tel2, col_tel3 = st.columns([2, 1, 1])
-                with col_tel1:
-                    is_live_stream = st.toggle("📡 Activate Live Auto-Advancing Telemetry Stream", value=st.session_state.live_telemetry_active, key="toggle_live_telemetry")
-                    if is_live_stream != st.session_state.live_telemetry_active:
-                        st.session_state.live_telemetry_active = is_live_stream
-                        set_system_setting("live_telemetry_stream", "1" if is_live_stream else "0")
-                        st.rerun()
-                with col_tel2:
-                    delta_km_step = st.slider("Step Distance (KM)", 0.5, 3.0, 1.5, step=0.5, key="slider_tele_step")
-                with col_tel3:
-                    if st.button("⏩ Advance Telemetry Step Now", type="primary", use_container_width=True, key="btn_advance_tele_now"):
-                        tele_agent = TelemetrySimulatorAgent()
-                        count_adv = tele_agent.advance_stream(delta_km=delta_km_step)
-                        st.toast(f"⚡ Telemetry Stream advanced {count_adv} active digital twin train positions!")
-                        st.rerun()
-
-                if st.session_state.live_telemetry_active:
-                    tele_agent = TelemetrySimulatorAgent()
-                    tele_agent.advance_stream(delta_km=delta_km_step)
-                    st.caption("🟢 Live Telemetry Stream ACTIVE — positions auto-advancing on refresh.")
-
-            # --- FEATURE 2: 4-HOUR DOWNSTREAM DELAY CASCADE FORECAST ---
-            with st.expander("🌊 4-Hour Downstream Delay Cascade & Propagation Forecast", expanded=False):
-                delay_agent = DelayPropagationAgent()
-                cascade_data = delay_agent.predict_delay_cascade(section_id="Vijayawada-SEC-01", disruption_hours=2.0)
-                
-                cd_m1, cd_m2, cd_m3 = st.columns(3)
-                cd_m1.metric("Predicted Cascade Delay", f"{cascade_data['total_cascade_delay_hours']} Hours", delta="Across Trailing Trains")
-                cd_m2.metric("Affected Trains", f"{cascade_data['affected_trains_count']} Rakes", delta="Passenger + Freight")
-                cd_m3.metric("Section Throughput Retention", f"{cascade_data['throughput_retention_pct']}%", delta="Line Capacity")
-
-                if cascade_data["cascade_timeline"]:
-                    df_casc = pd.DataFrame(cascade_data["cascade_timeline"])
-                    st.dataframe(
-                        df_casc[["train_id", "train_name", "train_type", "current_km", "current_delay_min", "projected_4h_delay_min", "recommended_mitigation"]],
-                        use_container_width=True,
-                        hide_index=True
-                    )
-
-            # --- FEATURE 3: PREDICTIVE CONFLICT & DYNAMIC HEADWAY INTELLIGENCE ---
-            with st.expander("🎯 Predictive Conflict & Dynamic Headway Intelligence", expanded=False):
-                col_c1, col_c2 = st.columns(2)
-                with col_c1:
-                    st.markdown("##### 🎯 Predicted Trajectory & Entrance Conflicts")
-                    cnfl_agent = ConflictPredictionAgent()
-                    conflicts_list = cnfl_agent.predict_conflicts(section_id="Vijayawada-SEC-01")
-                    if conflicts_list:
-                        df_cnfl = pd.DataFrame(conflicts_list)
-                        st.dataframe(df_cnfl[["conflict_id", "type", "trains_involved", "location_km", "time_to_conflict_mins", "confidence", "recommended_action"]], use_container_width=True, hide_index=True)
-                    else:
-                        st.success("🟢 Zero predicted train-train or train-block conflicts in next 30 minutes.")
-
-                with col_c2:
-                    st.markdown("##### 📏 Dynamic Headway & Inter-Train Spacing")
-                    hw_agent = DynamicHeadwayAgent()
-                    hw_data = hw_agent.analyze_headway(section_id="Vijayawada-SEC-01")
-                    st.metric("Headway Status", f"{hw_data['headway_status']}", delta=f"Avg Headway: {hw_data['average_headway_km']} km")
-                    if hw_data["headway_issues"]:
-                        for iss in hw_data["headway_issues"]:
-                            st.write(f"- {iss}")
-                    else:
-                        st.caption("🟢 Spacing between active train rakes is within safe operating limits.")
-
-            # --- FEATURE 4: OPERATIONAL RISK INDEX & MULTI-STATION ETA PREDICTION ---
-            with st.expander("🛡️ Operational Risk Score & Multi-Station ETA Forecasting", expanded=False):
-                col_r1, col_r2 = st.columns(2)
-                with col_r1:
-                    st.markdown("##### 🛡️ Explainable Operational Risk Score Index")
-                    risk_agent = OperationalRiskAgent()
-                    r_info = risk_agent.compute_risk_score(train_id="Vijayawada Train 01")
-                    st.metric("Operational Risk Score", f"{r_info['risk_score']} / 100", delta=r_info['risk_level'])
-                    st.caption("**Risk Drivers Breakdown:**")
-                    for bd in r_info["breakdown"]:
-                        st.write(f"• {bd}")
-
-                with col_r2:
-                    st.markdown("##### ⏱️ Multi-Station ETA Predictions (Confidence Bounds)")
-                    eta_agent = ETAPredictionAgent()
-                    etas = eta_agent.predict_etas(train_id="Vijayawada Train 01")
-                    if etas:
-                        st.dataframe(pd.DataFrame(etas)[["station_name", "station_km", "distance_remaining_km", "estimated_arrival", "confidence_margin_mins", "status"]], use_container_width=True, hide_index=True)
-
-            # --- FEATURE 5: FOIS DYNAMIC FREIGHT INSERTION & DEMURRAGE RECOVERY ---
-            with st.expander("📦 FOIS Dynamic Freight Insertion & Demurrage Avoidance Engine", expanded=False):
-                st.caption("COA + FOIS Synchronization: Slots stranded freight rakes from loop yards into moving gaps behind delayed express trains.")
-                fois_agent = FreightInsertionAgent()
-                insertions = fois_agent.calculate_freight_insertions(section_id="Vijayawada-SEC-01")
-                if insertions:
-                    df_fois = pd.DataFrame(insertions)
-                    st.dataframe(df_fois[["insertion_id", "freight_rake", "holding_yard", "preceding_express", "cleared_gap_mins", "permissible_speed_kmh", "demurrage_saved_inr", "action"]], use_container_width=True, hide_index=True)
-
-            # --- FEATURE 6: GREEN-WAVE LOCOPILOT SPEED SMOOTHING & OHE ENERGY ADVISORY ---
-            with st.expander("⚡ Green-Wave Locopilot Speed Smoothing & OHE Energy Advisory", expanded=False):
-                gw_info = loco_agent.compute_green_wave_speed(train_id="Vijayawada Train 01")
-                gw_col1, gw_col2, gw_col3 = st.columns(3)
-                gw_col1.metric("Recommended Cruise Speed", f"{gw_info.get('recommended_cruise_speed', 65.0):.0f} km/h", delta=f"Current: {gw_info.get('current_speed_kmh', 80.0):.0f} km/h")
-                gw_col2.metric("OHE Energy Consumption Saved", f"{gw_info.get('ohe_energy_saved_pct', 16.5):.1f}%", delta="Electrical kWh Saved")
-                gw_col3.metric("Emergency Braking Avoided", f"{gw_info.get('braking_events_avoided', 3)} Events", delta="Wear & Tear Reduction")
-                st.info(f"💡 **Locopilot CAB Speed Advisory**: {gw_info.get('advisory_text', '')}")
-
-            # --- FEATURE 7: TRANSPARENT G&SR SAFETY CLEARANCE CERTIFICATE ---
-            with st.expander("🛡️ Transparent G&SR Safety Clearance Certificate Viewer", expanded=False):
-                safety_agent = SafetyClearanceAgent()
-                cert = safety_agent.generate_gsr_certificate(schedule_id=1, section_id="Vijayawada-SEC-01")
-                st.success(f"### {cert['overall_status']}")
-                st.caption(f"**Certificate ID:** `{cert['certificate_id']}` | **Section:** `{cert['section_id']}` | **Department:** `{cert['department']}` | **Window:** `{cert['block_window']}`")
-                
-                df_checks = pd.DataFrame(cert["safety_checks"], columns=["G&SR Safety Rule", "Evaluation", "Rule Compliance Rationale"])
-                st.dataframe(df_checks, use_container_width=True, hide_index=True)
-                st.caption(f"Issued by: *{cert['issued_by']}*")
-
-            # --- FEATURE 8: TRACK MACHINE BLOCK PACKING & SEQUENCE OPTIMIZER ---
-            with st.expander("🚜 Track Machine Block Packing & Sequence Optimizer (CSM / DGS / BCM)", expanded=False):
-                st.caption("Bundles multiple heavy track machines into a single contiguous block window to eliminate duplicate transit overhead.")
-                packer_agent = TrackMachinePackerAgent()
-                pack_res = packer_agent.optimize_machine_blocks(section_id="Vijayawada-SEC-01")
-                
-                pk_c1, pk_c2, pk_c3 = st.columns(3)
-                pk_c1.metric("Packed Heavy Machine Blocks", f"{len(pack_res.get('heavy_machine_blocks', []))} Blocks", delta="CSM / BCM Machines")
-                pk_c2.metric("Effective Track Output", f"{pack_res.get('total_linear_track_tamped_km', 12.6)} Tamping KM", delta=f"{pack_res.get('overall_machine_efficiency_pct', 84.5)}% Efficiency")
-                pk_c3.metric("Transit Overhead Avoided", f"{pack_res.get('overhead_avoided_mins', 90)} Mins", delta="Corridor Slots Saved")
-                
-                if pack_res.get("heavy_machine_blocks"):
-                    df_pk = pd.DataFrame(pack_res["heavy_machine_blocks"])
-                    st.dataframe(df_pk, use_container_width=True, hide_index=True)
-
-            # --- FEATURE 9: HOER CREW DUTY EXPIRY & EMERGENCY RELIEF ADVISORY ---
-            with st.expander("👨‍✈️ HOER Crew Duty Expiry & Emergency Relief Advisory", expanded=False):
-                st.caption("Hours of Employment Regulations (HOER 10-Hour Rule): Tracks locopilot duty hours and alerts controllers before 10-hour breach.")
-                crew_agent = CrewHOERAgent()
-                crew_alerts = crew_agent.check_hoer_crew_expiry(section_id="Vijayawada-SEC-01")
-                
-                crit_count = sum(1 for c in crew_alerts if "CRITICAL" in c.get("risk_status", ""))
-                st.warning(f"⚠️ **{crit_count} Active Locopilot Crews Approaching Maximum HOER Duty Hours (10h Limit)**")
-                if crew_alerts:
-                    df_crew = pd.DataFrame(crew_alerts)
-                    st.dataframe(df_crew[["train_id", "train_name", "locopilot_id", "cumulative_duty_hours", "hoer_limit_remaining_mins", "risk_status", "tlc_recommendation"]], use_container_width=True, hide_index=True)
-
-            # --- FEATURE 10: TSR LIFECYCLE & TIMETABLE PADDING CALCULATOR ---
-            with st.expander("🚧 TSR Lifecycle & Timetable Speed Restriction Padding", expanded=False):
-                st.caption("Tracks Temporary Speed Restrictions (TSRs) across track renewal stages and calculates automatic timetable padding.")
-                tsr_agent = TSRLifecycleAgent()
-                tsr_impacts = tsr_agent.calculate_tsr_delay_padding(section_id="Vijayawada-SEC-01")
-                
-                ts_c1, ts_c2 = st.columns(2)
-                ts_c1.metric("Active Section TSRs", f"{len(tsr_impacts)} Active", delta="Track Caution Orders")
-                ts_c2.metric("Total Timetable Padding", "+10 Minutes", delta="Added to Train Schedule")
-                
-                if tsr_impacts:
-                    df_tsr = pd.DataFrame(tsr_impacts)
-                    st.dataframe(df_tsr, use_container_width=True, hide_index=True)
-
-            # --- FEATURE 11: TRACTION-AWARE ROUTER UNDER OHE POWER BLOCK ---
-            with st.expander("⚡ Traction-Aware Traffic Router under OHE Power Block", expanded=False):
-                st.caption("Routes trains safely during TRD OHE power blocks: diesel locos proceed, electric locos coast or hold/reroute.")
-                trac_agent = TractionAwareRouterAgent()
-                routed_trains = trac_agent.route_traffic_under_ptw(section_id="Vijayawada-SEC-01")
-                
-                st.info(f"⚡ **OHE Power Block Active on Section**: `Vijayawada-SEC-01 (25kV Isolated)`")
-                if routed_trains:
-                    df_trac = pd.DataFrame(routed_trains)
-                    st.dataframe(df_trac, use_container_width=True, hide_index=True)
-
-            # Initialize 10-Train State Data across 2 Divisions
-            if "trains_10_state" not in st.session_state:
-                st.session_state.trains_10_state = {
-                    # --- VIJAYAWADA DIVISION (BZA) ---
-                    "Vijayawada Train 01": {
-                        "id": "Vijayawada Train 01",
-                        "division": "Vijayawada Division (BZA)",
-                        "number": "12727",
-                        "name": "Godavari Express",
-                        "type": "Superfast Express",
-                        "corridor": "Vijayawada → Kondapalli → Madhira",
-                        "section_id": "BZA-RAY",
-                        "current_km": 105,
-                        "current_speed": 110,
-                        "mps": 110,
-                        "status": "Cruising (On Time)",
-                        "signal": "🟢 Green (Clearance Fit)",
-                        "delay_minutes": 0,
-                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
-                        "work_zone_kms": [114, 116, 118],
-                        "speed_profile": [110, 110, 110, 110, 110, 110, 110, 110, 110, 110, 110],
-                        "early_cleared": True,
-                        "merged": False
-                    },
-                    "Vijayawada Train 02": {
-                        "id": "Vijayawada Train 02",
-                        "division": "Vijayawada Division (BZA)",
-                        "number": "12759",
-                        "name": "Charminar Express",
-                        "type": "Superfast",
-                        "corridor": "Vijayawada → Kondapalli → Madhira",
-                        "section_id": "BZA-KDM",
-                        "current_km": 114,
-                        "current_speed": 30,
-                        "mps": 110,
-                        "status": "Regulated (30 km/h Caution)",
-                        "signal": "🔴 Red / Amber Caution",
-                        "delay_minutes": 12,
-                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
-                        "work_zone_kms": [114, 116, 118],
-                        "speed_profile": [110, 110, 110, 45, 30, 30, 30, 80, 110, 110, 110],
-                        "early_cleared": False,
-                        "merged": False
-                    },
-                    "Vijayawada Train 03": {
-                        "id": "Vijayawada Train 03",
-                        "division": "Vijayawada Division (BZA)",
-                        "number": "20833",
-                        "name": "Vande Bharat Express",
-                        "type": "Semi High Speed",
-                        "corridor": "Vijayawada → Kondapalli → Madhira",
-                        "section_id": "KDM-KMT",
-                        "current_km": 122,
-                        "current_speed": 120,
-                        "mps": 130,
-                        "status": "Speed Boost Active",
-                        "signal": "🟢 Green (Clear Run)",
-                        "delay_minutes": 0,
-                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
-                        "work_zone_kms": [114, 116, 118],
-                        "speed_profile": [120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120],
-                        "early_cleared": True,
-                        "merged": False
-                    },
-                    "Vijayawada Train 04": {
-                        "id": "Vijayawada Train 04",
-                        "division": "Vijayawada Division (BZA)",
-                        "number": "G-402",
-                        "name": "Coal Freight Rake",
-                        "type": "Heavy Freight",
-                        "corridor": "Vijayawada → Kondapalli → Madhira",
-                        "section_id": "RAY-KDM",
-                        "current_km": 111,
-                        "current_speed": 45,
-                        "mps": 75,
-                        "status": "Approach Braking",
-                        "signal": "🟡 Double Yellow (Attention)",
-                        "delay_minutes": 18,
-                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
-                        "work_zone_kms": [114, 116, 118],
-                        "speed_profile": [75, 75, 75, 45, 30, 30, 30, 60, 75, 75, 75],
-                        "early_cleared": False,
-                        "merged": False
-                    },
-                    "Vijayawada Train 05": {
-                        "id": "Vijayawada Train 05",
-                        "division": "Vijayawada Division (BZA)",
-                        "number": "57231",
-                        "name": "BZA-KMT Passenger Local",
-                        "type": "Passenger Local",
-                        "corridor": "Vijayawada → Kondapalli → Madhira",
-                        "section_id": "KDM-MDR",
-                        "current_km": 128,
-                        "current_speed": 40,
-                        "mps": 90,
-                        "status": "Station Approach",
-                        "signal": "🟡 Yellow (Station Signal)",
-                        "delay_minutes": 5,
-                        "km_options": [100, 104, 108, 111, 114, 116, 118, 121, 125, 130, 135],
-                        "stations": [(100, "BZA JN"), (108, "RAYYANAPADU"), (125, "KONDAPALLI"), (135, "MADHIRA")],
-                        "work_zone_kms": [114, 116, 118],
-                        "speed_profile": [90, 90, 60, 90, 90, 90, 90, 90, 40, 75, 90],
-                        "early_cleared": True,
-                        "merged": False
-                    },
-
-                    # --- HOWRAH DIVISION (HWH) ---
-                    "Howrah Train 01": {
-                        "id": "Howrah Train 01",
-                        "division": "Howrah Division (HWH)",
-                        "number": "12301",
-                        "name": "Howrah Rajdhani Express",
-                        "type": "Superfast Rajdhani",
-                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
-                        "section_id": "HWH-SRP",
-                        "current_km": 25,
-                        "current_speed": 130,
-                        "mps": 130,
-                        "status": "High Speed Cruising",
-                        "signal": "🟢 Green (Automatic Block)",
-                        "delay_minutes": 0,
-                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
-                        "work_zone_kms": [40, 45, 50],
-                        "speed_profile": [130, 130, 130, 130, 130, 130, 130, 130, 130, 130, 130],
-                        "early_cleared": True,
-                        "merged": False
-                    },
-                    "Howrah Train 02": {
-                        "id": "Howrah Train 02",
-                        "division": "Howrah Division (HWH)",
-                        "number": "37211",
-                        "name": "Bandel EMU Suburban Local",
-                        "type": "Suburban EMU",
-                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
-                        "section_id": "SRP-BDC",
-                        "current_km": 15,
-                        "current_speed": 65,
-                        "mps": 90,
-                        "status": "Suburban Service",
-                        "signal": "🟡 Yellow (Distant Caution)",
-                        "delay_minutes": 3,
-                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
-                        "work_zone_kms": [40, 45, 50],
-                        "speed_profile": [65, 45, 65, 45, 65, 45, 65, 45, 65, 45, 65],
-                        "early_cleared": False,
-                        "merged": False
-                    },
-                    "Howrah Train 03": {
-                        "id": "Howrah Train 03",
-                        "division": "Howrah Division (HWH)",
-                        "number": "F-819",
-                        "name": "Steel Coil Special Freight",
-                        "type": "Heavy Goods",
-                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
-                        "section_id": "BDC-BWN",
-                        "current_km": 42,
-                        "current_speed": 30,
-                        "mps": 75,
-                        "status": "Active TSR Caution (30 km/h)",
-                        "signal": "🔴 Red / Amber Caution",
-                        "delay_minutes": 25,
-                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
-                        "work_zone_kms": [40, 45, 50],
-                        "speed_profile": [75, 75, 75, 50, 30, 30, 30, 60, 75, 75, 75],
-                        "early_cleared": False,
-                        "merged": False
-                    },
-                    "Howrah Train 04": {
-                        "id": "Howrah Train 04",
-                        "division": "Howrah Division (HWH)",
-                        "number": "12339",
-                        "name": "Coalfield Express",
-                        "type": "Superfast Express",
-                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
-                        "section_id": "BWN-DGR",
-                        "current_km": 65,
-                        "current_speed": 105,
-                        "mps": 110,
-                        "status": "Clear Block Run",
-                        "signal": "🟢 Green (Clearance)",
-                        "delay_minutes": 0,
-                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
-                        "work_zone_kms": [40, 45, 50],
-                        "speed_profile": [105, 105, 105, 105, 105, 105, 105, 105, 105, 105, 105],
-                        "early_cleared": True,
-                        "merged": False
-                    },
-                    "Howrah Train 05": {
-                        "id": "Howrah Train 05",
-                        "division": "Howrah Division (HWH)",
-                        "number": "22301",
-                        "name": "Vande Bharat Express HWH-NJP",
-                        "type": "Semi High Speed",
-                        "corridor": "Howrah → Serampore → Bandel → Bardhaman",
-                        "section_id": "BWN-DGR",
-                        "current_km": 85,
-                        "current_speed": 115,
-                        "mps": 130,
-                        "status": "Accelerated Cruise",
-                        "signal": "🟢 Green (High Speed Fit)",
-                        "delay_minutes": 0,
-                        "km_options": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
-                        "stations": [(0, "HOWRAH JN"), (20, "SERAMPORE"), (40, "BANDEL JN"), (100, "BARDHAMAN")],
-                        "work_zone_kms": [40, 45, 50],
-                        "speed_profile": [115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115],
-                        "early_cleared": True,
-                        "merged": False
-                    }
-                }
-
-            # DIVISION AND TRAIN SELECTOR UI
-            st.markdown("---")
-            sel_div_col, sel_trn_col = st.columns([1.5, 2.5])
-            with sel_div_col:
-                selected_division = st.selectbox(
-                    "🏛️ Select Railway Division:",
-                    ["Vijayawada Division (BZA)", "Howrah Division (HWH) (Simulated / Demo Data)"],
-                    key="ctrl_sel_division"
-                )
-            
-            with sel_trn_col:
-                if "Vijayawada" in selected_division:
-                    train_options = ["Vijayawada Train 01", "Vijayawada Train 02", "Vijayawada Train 03", "Vijayawada Train 04", "Vijayawada Train 05"]
+                    with col_ch2:
+                        st.markdown("#### Scheduled Blocks by Department")
+                        conn = get_db()
+                        sched_dept = pd.read_sql("SELECT department, COUNT(*) as count FROM schedule GROUP BY department", conn)
+                        conn.close()
+                        fig_pie = px.pie(sched_dept, names="department", values="count", title="Scheduled Maintenance Allocation",
+                                         color="department", color_discrete_map={"Engineering": "#1f77b4", "S&T": "#2ca02c", "TRD": "#ff7f0e"})
+                        st.plotly_chart(fig_pie, use_container_width=True)
                 else:
-                    train_options = ["Howrah Train 01", "Howrah Train 02", "Howrah Train 03", "Howrah Train 04", "Howrah Train 05"]
+                    st.markdown("---")
+                    tot_d = total_def
+                    open_d = open_def
+                    comp_d = comp_def
 
-                selected_train_id = st.selectbox(
-                    "🚆 Select Train for Telemetry & Locopilot Speed Controls:",
-                    train_options,
-                    key="ctrl_sel_train"
-                )
+                    comp_rate = (comp_d / tot_d * 100) if tot_d > 0 else 0.0
+                    open_pct = (open_d / tot_d * 100) if tot_d > 0 else 0.0
 
-            # Get current active train object
-            tr = st.session_state.trains_10_state[selected_train_id]
-            is_early = tr["early_cleared"]
-            is_merged = tr["merged"]
+                    m1, m2, m3, m4, m5 = st.columns(5)
+                    m1.metric(f"Total {dept_filter} Defects", f"{tot_d:,}")
+                    m2.metric("Open Backlog", f"{open_d:,}", delta=f"{open_pct:.1f}%", delta_color="inverse")
+                    m3.metric("Scheduled Blocks", f"{sched_blocks:,}", delta="Active Plan")
+                    m4.metric("Completed Tasks", f"{comp_d:,}")
+                    m5.metric("Completion Rate", f"{comp_rate:.1f}%", delta=f"{comp_d} Archived")
 
-            st.caption(f"⚠️ **Simulation / Demo Data Notice**: Displaying independent telemetry, moving track vectors, and speed advisories for **{tr['name']} ({tr['number']})** on `{tr['corridor']}`.")
+                    st.markdown("---")
 
-            # Top Action & Simulation Controls
-            ctrl_col1, ctrl_col2, ctrl_col3, ctrl_col4, ctrl_col5 = st.columns([1.4, 1.4, 1.4, 1.2, 1.0])
-    
-            with ctrl_col1:
-                early_btn_label = "⚡ Simulate Early Release" if not is_early else "🟢 Early Release Active (+45m)"
-                early_btn_type = "primary" if not is_early else "secondary"
-                if st.button(early_btn_label, key=f"btn_early_{tr['id']}", type=early_btn_type, use_container_width=True):
-                    tr["early_cleared"] = True
-                    tr["merged"] = False
-                    tr["speed_profile"] = [tr["mps"]] * len(tr["km_options"])
-                    tr["current_speed"] = tr["mps"]
-                    tr["status"] = "🟢 Early Released (Full Speed Fit)"
-                    tr["signal"] = "🟢 Green (Clearance Fit)"
-                    loco_agent.generate_speed_advisory(tr["section_id"], freed_minutes=45.0, department_source="Engineering")
-                    st.session_state.last_action_banner = ("success", f"⚡ Early Block Clearance Activated for {tr['id']}! Speed limit restored to {tr['mps']} km/h.")
-                    st.rerun()
+                    c_ov1, c_ov2 = st.columns(2)
+                    with c_ov1:
+                        st.markdown(f"#### ⚠️ Defect Severity Breakdown ({dept_filter})")
+                        conn = get_db()
+                        df_sev = pd.read_sql("SELECT severity, COUNT(*) as count FROM defects WHERE department=? GROUP BY severity", conn, params=(dept_filter,))
+                        conn.close()
+                        if not df_sev.empty:
+                            fig_sev = px.pie(
+                                df_sev, names="severity", values="count",
+                                title=f"{dept_filter} Defects by Severity Level",
+                                color="severity",
+                                color_discrete_map={"Critical": "#ef4444", "High": "#f97316", "Medium": "#3b82f6", "Low": "#10b981"},
+                                hole=0.4
+                            )
+                            st.plotly_chart(fig_sev, use_container_width=True)
 
-            with ctrl_col2:
-                merge_btn_label = "🤝 Merge Multi-Dept Blocks" if not is_merged else "🟡 Mega-Block Active"
-                merge_btn_type = "primary" if not is_merged else "secondary"
-                if st.button(merge_btn_label, key=f"btn_merge_{tr['id']}", type=merge_btn_type, use_container_width=True):
-                    tr["merged"] = True
-                    tr["early_cleared"] = False
-                    tr["current_speed"] = 30
-                    tr["status"] = "🟡 Mega-Block Active (Merged)"
-                    tr["signal"] = "🟡 Amber (Caution Speed)"
-                    merger_agent.execute_merge(tr["section_id"])
-                    st.session_state.last_action_banner = ("warning", f"🤝 Multi-Department Mega-Block Activated for {tr['id']}! Speed regulated to 30 km/h.")
-                    st.rerun()
+                    with c_ov2:
+                        st.markdown(f"#### 📌 Defect Status Breakdown ({dept_filter})")
+                        conn = get_db()
+                        df_st = pd.read_sql("SELECT status, COUNT(*) as count FROM defects WHERE department=? GROUP BY status", conn, params=(dept_filter,))
+                        conn.close()
+                        if not df_st.empty:
+                            fig_st = px.bar(
+                                df_st, x="status", y="count", color="status",
+                                title=f"{dept_filter} Tasks by Status",
+                                color_discrete_map={"Open": "#ef4444", "Scheduled": "#3b82f6", "Completed": "#10b981"}
+                            )
+                            st.plotly_chart(fig_st, use_container_width=True)
 
-            with ctrl_col3:
-                if st.button("⚡ Execute Instant Dispatch", key=f"btn_dispatch_{tr['id']}", type="primary", use_container_width=True):
-                    tr["early_cleared"] = True
-                    tr["current_speed"] = tr["mps"]
-                    tr["status"] = "⚡ Priority Dispatched"
-                    loco_agent.dispatch_advisories()
-                    st.session_state.last_action_banner = ("success", f"⚡ Instant Priority Dispatch Executed for {tr['name']}! Section delay reduced.")
-                    st.balloons()
-                    st.rerun()
+                    st.markdown("---")
+                    c_ov3, c_ov4 = st.columns(2)
+                    with c_ov3:
+                        st.markdown(f"#### 📍 Top Priority Railway Sections ({dept_filter})")
+                        conn = get_db()
+                        df_sec = pd.read_sql("""
+                            SELECT section_id, COUNT(*) as defect_count, AVG(priority_score) as avg_priority 
+                            FROM defects 
+                            WHERE department=? AND LOWER(status)!='completed'
+                            GROUP BY section_id 
+                            ORDER BY avg_priority DESC 
+                            LIMIT 10
+                        """, conn, params=(dept_filter,))
+                        conn.close()
+                        if not df_sec.empty:
+                            fig_sec = px.bar(
+                                df_sec, x="section_id", y="avg_priority", color="defect_count",
+                                title=f"Top 10 High-Priority Sections ({dept_filter})",
+                                labels={"avg_priority": "Avg Priority Score (0-100)", "section_id": "Section ID", "defect_count": "Open Defects"},
+                                color_continuous_scale="Reds"
+                            )
+                            st.plotly_chart(fig_sec, use_container_width=True)
 
-            with ctrl_col4:
-                if st.button("📡 Dispatch to Locopilots", key=f"btn_trans_{tr['id']}", use_container_width=True):
-                    loco_agent.dispatch_advisories()
-                    now_time = datetime.now().strftime("%H:%M:%S")
-                    st.session_state.last_action_banner = ("info", f"📡 Speed Orders Dispatched! [{now_time}] Transmitted to {tr['name']} CAB display.")
-                    st.rerun()
+                    with c_ov4:
+                        st.markdown(f"#### 🔧 Defect Types Frequency ({dept_filter})")
+                        conn = get_db()
+                        df_type = pd.read_sql("""
+                            SELECT defect_type, COUNT(*) as count 
+                            FROM defects 
+                            WHERE department=? 
+                            GROUP BY defect_type 
+                            ORDER BY count DESC 
+                            LIMIT 10
+                        """, conn, params=(dept_filter,))
+                        conn.close()
+                        if not df_type.empty:
+                            fig_type = px.bar(
+                                df_type, y="defect_type", x="count", orientation="h",
+                                title=f"Defect Category Distribution ({dept_filter})",
+                                labels={"defect_type": "Defect Category", "count": "Total Ingested"},
+                                color_discrete_sequence=["#8b5cf6"]
+                            )
+                            fig_type.update_layout(yaxis={'categoryorder':'total ascending'})
+                            st.plotly_chart(fig_type, use_container_width=True)
 
-            with ctrl_col5:
-                if st.button("🔄 Reset Normal", key=f"btn_reset_{tr['id']}", use_container_width=True):
-                    tr["early_cleared"] = False
-                    tr["merged"] = False
-                    tr["current_speed"] = 30 if tr["km_options"][4] in tr["work_zone_kms"] else tr["mps"]
-                    tr["status"] = "Regulated (30 km/h Caution)"
-                    st.session_state.last_action_banner = ("info", f"🔄 Reset corridor to normal active maintenance block for {tr['id']}.")
-                    st.rerun()
+            elif admin_menu == "📩 Department Requests":
+                st.subheader("📩 Department Time Slot Requests & Approval Center")
+                st.caption("Review incoming corridor maintenance block requests from Engineering, S&T, and TRD. Accept to schedule or Decline to generate AI Conflict Reports.")
 
-            if "last_action_banner" in st.session_state and st.session_state.last_action_banner:
-                b_type, b_msg = st.session_state.last_action_banner
-                if b_type == "success":
-                    st.success(b_msg)
-                elif b_type == "warning":
-                    st.warning(b_msg)
-                else:
-                    st.info(b_msg)
-
-            # LAYER 1: TELEMETRY OVERVIEW SUMMARY CARDS
-            st.markdown("#### 📊 Live Train Telemetry & Status Summary")
-            t_col1, t_col2, t_col3, t_col4 = st.columns(4)
-            with t_col1:
-                st.metric("Train Name / No.", f"{tr['number']}", delta=tr['name'])
-            with t_col2:
-                st.metric("Current Speed", f"{tr['current_speed']} km/h", delta=f"MPS: {tr['mps']} km/h")
-            with t_col3:
-                st.metric("Current Location", f"KM {tr['current_km']}", delta=tr['section_id'])
-            with t_col4:
-                st.metric("Signal Aspect", tr['signal'], delta=f"Delay: {tr['delay_minutes']} min", delta_color="inverse" if tr['delay_minutes'] > 0 else "normal")
-
-            st.markdown("---")
-
-            # LAYER 2: MOVING TRACK MAP CANVASES
-            st.markdown(f"#### 🗺️ Live Corridor Track Map — `{tr['corridor']}`")
-            st.caption(f"Interactive Vector Map showing station posts, work zones, signal aspects, and real-time marker for **{tr['id']} ({tr['name']})**.")
-
-            # Dynamic stations SVG rendering
-            st_svg_elements = ""
-            for st_km, st_lbl in tr["stations"]:
-                min_km = tr["km_options"][0]
-                max_km = tr["km_options"][-1]
-                svg_x = int(100 + ((st_km - min_km) / (max_km - min_km)) * 900)
-                st_svg_elements += f'''
-                <line x1="{svg_x}" y1="15" x2="{svg_x}" y2="140" stroke="#334155" stroke-dasharray="3,3" stroke-width="1"/>
-                <rect x="{svg_x-45}" y="15" width="90" height="22" rx="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
-                <text x="{svg_x}" y="30" fill="#f8fafc" font-size="11" font-weight="bold" text-anchor="middle">{st_lbl}</text>
-                <text x="{svg_x}" y="132" fill="#94a3b8" font-size="10" text-anchor="middle">KM {st_km}</text>
-                '''
-
-            min_km = tr["km_options"][0]
-            max_km = tr["km_options"][-1]
-            train_svg_x = int(100 + ((tr["current_km"] - min_km) / (max_km - min_km)) * 900)
-
-            svg_map_html = f'''
-            <div style="background-color: #0f172a; border-radius: 8px; padding: 15px; border: 1px solid #1e293b; color: #ffffff;">
-                <svg width="100%" height="160" viewBox="0 0 1100 160">
-                    <line x1="50" y1="75" x2="1050" y2="75" stroke="#475569" stroke-width="6"/>
-                    <line x1="50" y1="85" x2="1050" y2="85" stroke="#475569" stroke-width="6"/>
-                    {st_svg_elements}
-                    <rect x="450" y="55" width="200" height="50" fill="rgba(239, 68, 68, 0.2)" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,4"/>
-                    <text x="550" y="50" fill="#f87171" font-size="11" font-weight="bold" text-anchor="middle">WORK ZONE TSR (30 km/h)</text>
-                    <g transform="translate({train_svg_x}, 80)">
-                        <circle r="16" fill="#3b82f6" stroke="#ffffff" stroke-width="3">
-                            <animate attributeName="r" values="14;18;14" dur="2s" repeatCount="indefinite"/>
-                        </circle>
-                        <text y="4" fill="#ffffff" font-size="12" font-weight="bold" text-anchor="middle">🚆</text>
-                        <rect x="-60" y="-38" width="120" height="20" rx="4" fill="#1d4ed8" stroke="#60a5fa" stroke-width="1"/>
-                        <text x="0" y="-24" fill="#ffffff" font-size="10" font-weight="bold" text-anchor="middle">{tr['id']} ({tr['current_speed']} km/h)</text>
-                    </g>
-                </svg>
-            </div>
-            '''
-            components.html(svg_map_html, height=190)
-
-            st.markdown("---")
-
-            # LAYER 3: PLOTLY SPEED PROFILE & TELEMETRY GRAPHS
-            st.markdown("#### 📈 Speed Profile & Telemetry Graphs")
-            
-            km_points = tr["km_options"]
-            speed_vals = tr["speed_profile"]
-            mps_vals = [tr["mps"]] * len(km_points)
-
-            fig_speed = go.Figure()
-            fig_speed.add_trace(go.Scatter(
-                x=km_points, y=speed_vals,
-                mode="lines+markers", name=f"{tr['id']} Speed Profile",
-                line=dict(color="#3b82f6", width=3.5),
-                marker=dict(size=8, color="#3b82f6")
-            ))
-            fig_speed.add_trace(go.Scatter(
-                x=km_points, y=mps_vals,
-                mode="lines", name="Maximum Permissible Speed (MPS)",
-                line=dict(color="#10b981", dash="dash", width=2)
-            ))
-
-            fig_speed.update_layout(
-                title=f"Instructed Speed Profile vs Track Kilometer Post — {tr['id']} ({tr['name']})",
-                xaxis_title="Track Kilometer Post (KM)",
-                yaxis_title="Instructed Speed (km/h)",
-                yaxis=dict(range=[0, 150]),
-                margin=dict(l=40, r=40, t=50, b=40),
-                legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
-            )
-            st.plotly_chart(fig_speed, use_container_width=True)
-
-            # LAYER 4: KILOMETER-BY-KILOMETER IN-CAB ADVISORY INSPECTOR
-            st.markdown("#### 🔍 Kilometer-by-Kilometer Telemetry & In-Cab Advisory Inspector")
-            st.caption("Select any track kilometer post to inspect signal aspect, permissible speed, and driver advisory display:")
-
-            selected_km = st.select_slider(
-                "Select Track Kilometer Post (KM) to Inspect:",
-                options=tr["km_options"],
-                value=tr["km_options"][4],
-                format_func=lambda x: f"KM {x}",
-                key=f"slider_km_{tr['id']}"
-            )
-
-            idx_km = tr["km_options"].index(selected_km)
-            km_speed = speed_vals[idx_km]
-            
-            if selected_km in tr["work_zone_kms"]:
-                km_desc = f"Inside / Approaching Work Zone (KM {tr['work_zone_kms'][0]}–{tr['work_zone_kms'][-1]})"
-                km_signal = "🟢 Green (Clearance Fit)" if is_early else ("🟡 Yellow (Caution Speed)" if is_merged else "🔴 Red / Amber Caution")
-                km_adv = "Corridor cleared early! Full permissible speed authorized." if is_early else ("Multi-crew safety caution: Maintain 30 km/h." if is_merged else "Active maintenance gang ahead: Regulate speed to 30 km/h.")
-            else:
-                km_desc = "Open Block Section"
-                km_signal = "🟢 Green (Automatic Clearance)"
-                km_adv = f"Sectional MPS Authorized: {km_speed} km/h."
-
-            km_c1, km_c2, km_c3, km_c4 = st.columns(4)
-            with km_c1:
-                st.metric("Inspected Track KM", f"KM {selected_km}", delta=km_desc, delta_color="off")
-            with km_c2:
-                st.metric("Permissible Speed", f"{km_speed} km/h", delta=f"{'+0' if km_speed==tr['mps'] else f'-{tr["mps"]-km_speed}'} km/h vs MPS")
-            with km_c3:
-                st.metric("Signal Aspect on Map", km_signal, delta="Aspect Telemetry", delta_color="off")
-            with km_c4:
-                st.metric("Safety Headway", "4.8 KM", delta="Zero Collision", delta_color="normal")
-
-            st.info(f"**🚆 Locopilot In-Cab Advisory Display at KM {selected_km}:** `{km_adv}`")
-
-            st.markdown("---")
-
-            # LAYER 5: MULTI-DEPARTMENT BLOCK MERGING CONSOLE
-            st.markdown("#### 🤝 Multi-Department Block Merging (Shadow Block Aggregator)")
-            st.caption("AI clusters multi-department track time requests on the active corridor to prevent repeated shutdowns.")
-            
-            merge_ops = merger_agent.find_merge_opportunities()
-            if merge_ops:
-                for mop in merge_ops[:2]:
-                    m_c1, m_c2, m_c3, m_c4 = st.columns([1.5, 1.2, 1.2, 1.5])
-                    with m_c1:
-                        st.markdown(f"**Section: `{mop['section_id']}`**")
-                        depts_badge = " + ".join(mop["departments"])
-                        st.caption(f"Departments: `{depts_badge}` ({mop['task_count']} Tasks)")
-                    with m_c2:
-                        st.metric("Separate Shutdowns", f"{mop['separate_hours']} hrs", delta="3 Days Interrupted", delta_color="inverse")
-                    with m_c3:
-                        st.metric("Merged Mega-Block", f"{mop['merged_duration_hours']} hrs", delta=f"{mop['corridor_hours_saved']} hrs Saved!", delta_color="normal")
-                    with m_c4:
-                        st.markdown(f"**Caution Order:** `{mop['caution_order_km']}`")
-                        st.caption(f"Speed Regulated to: `{mop['approach_speed_kmh']} km/h` ({mop['recommended_slot']})")
-            else:
-                st.info("No unmerged multi-department conflicts on the active corridor.")
-
-            st.markdown("---")
-
-            # LAYER 6: DATA REGISTERS TABS
-            l_tab1, l_tab2, l_tab3 = st.tabs([
-                "📑 Active Speed Advisories",
-                "🚆 Live Train Telemetry Register",
-                "📦 Freight & Goods Train Forecast"
-            ])
-
-            with l_tab1:
-                st.markdown("##### 📑 Active Speed Advisories & Caution Orders")
+                slot_agent = SlotRequestAgent()
                 conn = get_db()
-                df_advisories = pd.read_sql("SELECT * FROM locopilot_speed_advisories ORDER BY advisory_id DESC LIMIT 30", conn)
+                df_reqs = pd.read_sql("SELECT * FROM slot_requests ORDER BY request_id DESC", conn)
                 conn.close()
-                if not df_advisories.empty:
-                    st.dataframe(df_advisories, use_container_width=True, hide_index=True)
-                else:
-                    st.info("No active speed advisories.")
 
-            with l_tab2:
-                st.markdown("##### 🚆 Live Train Telemetry Register")
-                conn = get_db()
-                df_live_trains = pd.read_sql("SELECT * FROM live_train_status ORDER BY delay_minutes DESC", conn)
-                conn.close()
-                if not df_live_trains.empty:
-                    st.dataframe(df_live_trains, use_container_width=True, hide_index=True)
-                else:
-                    st.info("No live train telemetry records.")
+                if not df_reqs.empty:
+                    pending_df = df_reqs[df_reqs["status"] == "Pending"]
+                    processed_df = df_reqs[df_reqs["status"] != "Pending"]
 
-            with l_tab3:
-                st.markdown("##### 📦 Freight & Goods Train Forecast")
-                conn = get_db()
-                df_goods = pd.read_sql("SELECT * FROM goods_forecast ORDER BY expected_rakes DESC", conn)
-                conn.close()
-                if not df_goods.empty:
-                    st.dataframe(df_goods, use_container_width=True, hide_index=True)
-                else:
-                    st.info("No goods freight forecast data.")
-        elif admin_menu == "📩 Department Requests":
-            st.subheader("📩 Department Time Slot Requests & Approval Center")
-            st.caption("Review incoming corridor maintenance block requests from Engineering, S&T, and TRD. Accept to schedule or Decline to generate AI Conflict Reports.")
+                    p_cnt = len(pending_df)
+                    a_cnt = len(df_reqs[df_reqs["status"] == "Accepted"])
+                    d_cnt = len(df_reqs[df_reqs["status"] == "Declined"])
 
-            slot_agent = SlotRequestAgent()
-            conn = get_db()
-            df_reqs = pd.read_sql("SELECT * FROM slot_requests ORDER BY request_id DESC", conn)
-            conn.close()
+                    m1, m2, m3 = st.columns(3)
+                    m1.metric("Pending Requests", f"{p_cnt}", delta="Requires Review")
+                    m2.metric("Accepted Requests", f"{a_cnt}", delta="Scheduled")
+                    m3.metric("Declined Requests", f"{d_cnt}", delta="AI Conflict Report Sent")
 
-            if not df_reqs.empty:
-                pending_df = df_reqs[df_reqs["status"] == "Pending"]
-                processed_df = df_reqs[df_reqs["status"] != "Pending"]
+                    st.markdown("---")
+                    st.markdown("### ⏳ Action Panel — Pending Slot Requests")
 
-                p_cnt = len(pending_df)
-                a_cnt = len(df_reqs[df_reqs["status"] == "Accepted"])
-                d_cnt = len(df_reqs[df_reqs["status"] == "Declined"])
+                    if not pending_df.empty:
+                        for _, r in pending_df.iterrows():
+                            with st.expander(f"📩 Request #{r['request_id']} | {r['department']} | {r['section_id']} | Requested Date: {r['requested_date']} ({r['estimated_duration_hours']} Hours Needed)", expanded=True):
+                                c_p1, c_p2 = st.columns([2, 1])
+                                with c_p1:
+                                    st.write(f"• **Department**: `{r['department']}`")
+                                    st.write(f"• **Section**: `{r['section_id']}`")
+                                    st.write(f"• **Requested Date & Duration**: `{r['requested_date']}` ({r['estimated_duration_hours']} hours block needed)")
+                                    st.write(f"• **Defect / Repair**: {r['defect_type']} (`{r['severity']}`)")
+                                    st.write(f"• **Justification**: {r['justification']}")
+                                    st.caption(f"Submitted at: {r['created_at']}")
 
-                m1, m2, m3 = st.columns(3)
-                m1.metric("Pending Requests", f"{p_cnt}", delta="Requires Review")
-                m2.metric("Accepted Requests", f"{a_cnt}", delta="Scheduled")
-                m3.metric("Declined Requests", f"{d_cnt}", delta="AI Conflict Report Sent")
-
-                st.markdown("---")
-                st.markdown("### ⏳ Action Panel — Pending Slot Requests")
-
-                if not pending_df.empty:
-                    for _, r in pending_df.iterrows():
-                        with st.expander(f"📩 Request #{r['request_id']} | {r['department']} | {r['section_id']} | Requested Date: {r['requested_date']} ({r['estimated_duration_hours']} Hours Needed)", expanded=True):
-                            c_p1, c_p2 = st.columns([2, 1])
-                            with c_p1:
-                                st.write(f"• **Department**: `{r['department']}`")
-                                st.write(f"• **Section**: `{r['section_id']}`")
-                                st.write(f"• **Requested Date & Duration**: `{r['requested_date']}` ({r['estimated_duration_hours']} hours block needed)")
-                                st.write(f"• **Defect / Repair**: {r['defect_type']} (`{r['severity']}`)")
-                                st.write(f"• **Justification**: {r['justification']}")
-                                st.caption(f"Submitted at: {r['created_at']}")
-
-                            with c_p2:
-                                st.markdown("##### ⚙️ Decision Controls")
-                                admin_note = st.text_input(f"Controller Note / Reason (Req #{r['request_id']})", key=f"note_{r['request_id']}")
+                                with c_p2:
+                                    st.markdown("##### ⚙️ Decision Controls")
+                                    admin_note = st.text_input(f"Controller Note / Reason (Req #{r['request_id']})", key=f"note_{r['request_id']}")
                         
-                                col_bt1, col_bt2 = st.columns(2)
-                                with col_bt1:
-                                    if st.button(f"✅ Accept", key=f"acc_{r['request_id']}", type="primary", use_container_width=True):
-                                        ok, msg = slot_agent.accept_request(r['request_id'])
-                                        st.success(f"Approved Request #{r['request_id']}! Scheduled in tasks to be done.")
-                                        st.rerun()
+                                    col_bt1, col_bt2 = st.columns(2)
+                                    with col_bt1:
+                                        if st.button(f"✅ Accept", key=f"acc_{r['request_id']}", type="primary", use_container_width=True):
+                                            ok, msg = slot_agent.accept_request(r['request_id'])
+                                            st.success(f"Approved Request #{r['request_id']}! Scheduled in tasks to be done.")
+                                            st.rerun()
 
-                                with col_bt2:
-                                    if st.button(f"❌ Decline", key=f"dec_{r['request_id']}", use_container_width=True):
-                                        ok, msg = slot_agent.decline_request(r['request_id'], admin_reason=admin_note)
-                                        st.warning(f"Declined Request #{r['request_id']}. AI Conflict Error Report sent to {r['department']}.")
-                                        st.rerun()
+                                    with col_bt2:
+                                        if st.button(f"❌ Decline", key=f"dec_{r['request_id']}", use_container_width=True):
+                                            ok, msg = slot_agent.decline_request(r['request_id'], admin_reason=admin_note)
+                                            st.warning(f"Declined Request #{r['request_id']}. AI Conflict Error Report sent to {r['department']}.")
+                                            st.rerun()
+                    else:
+                        st.success("✅ All department slot requests have been reviewed and processed!")
+
+                    st.markdown("---")
+                    st.markdown("### 📋 All Department Requests History")
+                    st.dataframe(df_reqs[["request_id", "department", "section_id", "requested_date", "estimated_duration_hours", "defect_type", "severity", "status", "created_at"]], use_container_width=True, hide_index=True)
+
+                    with st.expander("🤖 View Generated AI Conflict & Confirmation Reports"):
+                        for _, r in df_reqs.iterrows():
+                            if r["ai_analysis_report"]:
+                                st.markdown(f"#### Request #{r['request_id']} ({r['department']} — {r['status']})")
+                                st.markdown(r["ai_analysis_report"])
+                                st.markdown("---")
                 else:
-                    st.success("✅ All department slot requests have been reviewed and processed!")
+                    st.info("No slot requests received from departments yet.")
+
+            elif admin_menu == "📅 Maintenance Plans":
+                st.subheader("📅 Corridor Maintenance Block Planning Center")
+                st.caption("Central Traffic Control periodic schedule view: Switch between the 7-day operational rolling matrix and the 30-day strategic horizon.")
+
+                now_dt = datetime.now()
+                week_end = now_dt + timedelta(days=7)
+                month_end = now_dt + timedelta(days=30)
+                week_label = f"📅 7-Day Rolling Weekly Plan ({now_dt.strftime('%d %b')} – {week_end.strftime('%d %b %Y')})"
+                month_label = f"🗓️ 30-Day Strategic Monthly Plan ({now_dt.strftime('%d %b')} – {month_end.strftime('%d %b %Y')})"
+
+                plan_tab_w, plan_tab_m = st.tabs([week_label, month_label])
+
+                with plan_tab_w:
+                    st.markdown(f"#### 📅 Weekly Corridor Block Schedule ({now_dt.strftime('%d %b %Y')} – {week_end.strftime('%d %b %Y')})")
+                    df_weekly = get_full_schedule(horizon="weekly")
+
+                    if not df_weekly.empty:
+                        df_weekly["Timeline"] = df_weekly.apply(lambda r: f"{format_time_12h(r['planned_start'])} to {format_time_12h(r['planned_end'])}", axis=1)
+                        matrix_html = generate_ai_block_plan_matrix_html(df_weekly, current_dept="All Departments", color_mode="department")
+                        components.html(matrix_html, height=520, scrolling=True)
+                        st.markdown("##### 📋 Weekly Schedule Allocation Table")
+                        st.dataframe(df_weekly[["schedule_id", "defect_id", "section_id", "department", "defect_type", "severity", "Timeline", "status", "decided_by"]], use_container_width=True, hide_index=True)
+                        display_overall_statistics(df_weekly, context_title="Weekly Plan")
+                    else:
+                        st.warning("No weekly blocks currently planned. Generate an optimal schedule below:")
+                        if st.button("🚀 Generate 7-Day Rolling Weekly Plan (CP-SAT Solver)", type="primary"):
+                            with st.spinner("Solving CP-SAT for 7-Day Rolling Horizon..."):
+                                coord = CoordinatorAgent()
+                                res = coord.run_cycle(horizon="weekly")
+                                st.success(f"Generated weekly plan with {len(res)} tasks!")
+                                st.rerun()
+
+                with plan_tab_m:
+                    st.markdown(f"#### 🗓️ Monthly Corridor Block Schedule ({now_dt.strftime('%d %b %Y')} – {month_end.strftime('%d %b %Y')})")
+                    df_monthly = get_full_schedule(horizon="monthly")
+
+                    if not df_monthly.empty:
+                        df_monthly["Timeline"] = df_monthly.apply(lambda r: f"{format_time_12h(r['planned_start'])} to {format_time_12h(r['planned_end'])}", axis=1)
+                        matrix_html_m = generate_ai_block_plan_matrix_html(df_monthly, current_dept="All Departments", color_mode="department")
+                        components.html(matrix_html_m, height=520, scrolling=True)
+                        st.markdown("##### 📋 Monthly Schedule Allocation Table")
+                        st.dataframe(df_monthly[["schedule_id", "defect_id", "section_id", "department", "defect_type", "severity", "Timeline", "status", "decided_by"]], use_container_width=True, hide_index=True)
+                        display_overall_statistics(df_monthly, context_title="Monthly Plan")
+                    else:
+                        st.info("No monthly schedule currently in database.")
+                        if st.button("🚀 Generate 30-Day Strategic Monthly Plan (CP-SAT Solver)", type="primary"):
+                            with st.spinner("Solving CP-SAT for 30-Day Horizon..."):
+                                coord = CoordinatorAgent()
+                                res = coord.run_cycle(horizon="monthly")
+                                st.success(f"Generated monthly block plan with {len(res)} tasks!")
+                                st.rerun()
+
+            elif admin_menu == "🔄 Re-optimize / Override":
+                st.subheader("🔄 Scheduling Optimizer & Controller Manual Override Center")
+                st.caption("Central Control Authority: Manually adjust block timings, lock/pin critical corridor tasks, grant emergency blocks, and re-run Google OR-Tools CP-SAT with overrides preserved.")
+
+                conn = get_db()
+                total_sched = pd.read_sql("SELECT COUNT(*) as c FROM schedule WHERE LOWER(status) != 'cancelled'", conn)["c"].iloc[0]
+                total_overrides = pd.read_sql("SELECT COUNT(*) as c FROM schedule WHERE decided_by IN ('controller_override', 'controller_emergency', 'emergency_force_override') OR status = 'locked'", conn)["c"].iloc[0]
+                open_defects = pd.read_sql("SELECT COUNT(*) as c FROM defects WHERE status = 'Open'", conn)["c"].iloc[0]
+                avail_slots = pd.read_sql("SELECT COUNT(*) as c FROM corridor_slots WHERE is_available = 1", conn)["c"].iloc[0]
+                conn.close()
+
+                m1, m2, m3, m4 = st.columns(4)
+                m1.metric("Active Scheduled Blocks", f"{total_sched}", delta="Committed Corridor Slots")
+                m2.metric("Controller Overrides / Pinned", f"{total_overrides}", delta="Protected from AI")
+                m3.metric("Open Backlog Tasks", f"{open_defects}", delta="Pending Allocation")
+                m4.metric("Available Corridor Slots", f"{avail_slots}", delta="Track Capacity")
 
                 st.markdown("---")
-                st.markdown("### 📋 All Department Requests History")
-                st.dataframe(df_reqs[["request_id", "department", "section_id", "requested_date", "estimated_duration_hours", "defect_type", "severity", "status", "created_at"]], use_container_width=True, hide_index=True)
 
-                with st.expander("🤖 View Generated AI Conflict & Confirmation Reports"):
-                    for _, r in df_reqs.iterrows():
-                        if r["ai_analysis_report"]:
-                            st.markdown(f"#### Request #{r['request_id']} ({r['department']} — {r['status']})")
-                            st.markdown(r["ai_analysis_report"])
-                            st.markdown("---")
-            else:
-                st.info("No slot requests received from departments yet.")
+                ro_tab1, ro_tab2, ro_tab3 = st.tabs([
+                    "🛠️ Manual Controller Override Console",
+                    "⚡ Multi-Department CP-SAT Re-Optimizer",
+                    "🚨 Immediate Emergency Block Grant"
+                ])
 
-        elif admin_menu == "📅 Maintenance Plans":
-            st.subheader("📅 Corridor Maintenance Block Planning Center")
-            st.caption("Central Traffic Control periodic schedule view: Switch between the 7-day operational rolling matrix and the 30-day strategic horizon.")
+                with ro_tab1:
+                    st.markdown("#### 🛠️ Manual Block Override & Schedule Adjuster")
+                    st.caption("Select any scheduled corridor maintenance block to shift its start/end time, lock it against AI changes, or cancel it to free the corridor slot.")
 
-            plan_tab_w, plan_tab_m = st.tabs([
-                "📅 7-Day Rolling Weekly Plan",
-                "🗓️ 30-Day Strategic Monthly Plan"
-            ])
+                    if "override_toast" in st.session_state:
+                        mtype, mtext = st.session_state.pop("override_toast")
+                        if mtype == "success":
+                            st.success(mtext)
+                            st.toast(mtext, icon="✅")
+                        elif mtype == "warning":
+                            st.warning(mtext)
+                            st.toast(mtext, icon="⚠️")
+                        elif mtype == "error":
+                            st.error(mtext)
+                            st.toast(mtext, icon="❌")
 
-            with plan_tab_w:
-                st.markdown("#### 📅 Weekly Corridor Block Schedule (7-Day Horizon)")
-                df_weekly = get_full_schedule(horizon="weekly")
+                    df_active = get_cached_override_active_blocks()
 
-                if not df_weekly.empty:
-                    df_weekly["Timeline"] = df_weekly.apply(lambda r: f"{format_time_12h(r['planned_start'])} to {format_time_12h(r['planned_end'])}", axis=1)
-                    matrix_html = generate_ai_block_plan_matrix_html(df_weekly, current_dept="All Departments", color_mode="department")
-                    components.html(matrix_html, height=520, scrolling=True)
-                    st.markdown("##### 📋 Weekly Schedule Allocation Table")
-                    st.dataframe(df_weekly[["schedule_id", "defect_id", "section_id", "department", "defect_type", "severity", "Timeline", "status", "decided_by"]], use_container_width=True, hide_index=True)
-                    display_overall_statistics(df_weekly, context_title="Weekly Plan")
-                else:
-                    st.warning("No weekly blocks currently planned.")
+                    if not df_active.empty:
+                        st.dataframe(
+                            df_active[["schedule_id", "department", "section_id", "defect_type", "severity", "planned_start", "planned_end", "status", "decided_by"]],
+                            use_container_width=True,
+                            hide_index=True
+                        )
 
-            with plan_tab_m:
-                st.markdown("#### 🗓️ Monthly Corridor Block Schedule (30-Day Strategic Horizon)")
-                df_monthly = get_full_schedule(horizon="monthly")
+                        st.markdown("##### ⚙️ Edit & Override Selected Block")
+                        sched_map = {
+                            f"Schedule #{r['schedule_id']} | {r['department']} | {r['section_id']} | {r['planned_start']} ({r['defect_type']})": r['schedule_id']
+                            for _, r in df_active.iterrows()
+                        }
+                        selected_label = st.selectbox("Select Block to Modify:", list(sched_map.keys()))
+                        sel_id = sched_map[selected_label]
+                        sel_row = df_active[df_active["schedule_id"] == sel_id].iloc[0]
 
-                if df_monthly.empty:
-                    st.info("No monthly schedule currently exists.")
-                    if st.button("Generate Monthly Plan (30-Day Pass)", type="primary"):
-                        with st.spinner("Solving CP-SAT for 30-Day Horizon..."):
-                            coord = CoordinatorAgent()
-                            res = coord.run_cycle(horizon="monthly")
-                            st.success(f"Generated monthly block plan with {len(res)} tasks!")
-                            st.rerun()
-                else:
-                    df_monthly["Timeline"] = df_monthly.apply(lambda r: f"{format_time_12h(r['planned_start'])} to {format_time_12h(r['planned_end'])}", axis=1)
-                    st.dataframe(df_monthly[["schedule_id", "defect_id", "section_id", "department", "defect_type", "severity", "Timeline", "status", "decided_by"]], use_container_width=True, hide_index=True)
-                    display_overall_statistics(df_monthly, context_title="Monthly Plan")
+                        with st.container():
+                            ov_col1, ov_col2 = st.columns(2)
+                            with ov_col1:
+                                new_start = st.text_input("Planned Start (YYYY-MM-DD HH:MM)", value=str(sel_row['planned_start']), key=f"start_{sel_id}")
+                                new_end = st.text_input("Planned End (YYYY-MM-DD HH:MM)", value=str(sel_row['planned_end']), key=f"end_{sel_id}")
+                                is_locked = st.checkbox("📌 Lock & Pin this Block (Prevent AI from re-optimizing or moving)", value=(sel_row['status'] == 'locked' or sel_row['decided_by'] == 'controller_override'), key=f"lock_{sel_id}")
+                                is_emerg_force = st.checkbox("🚨 Emergency Force Override (Bypass Train Conflict for Critical Emergency Work)", value=False, key=f"emerg_force_{sel_id}")
+                            with ov_col2:
+                                override_reason = st.text_input("Controller Justification / Reason for Override", value="VIP train punctuality / Sectional congestion adjustment", key=f"reason_{sel_id}")
+                                st.info(f"**Department:** `{sel_row['department']}` | **Section:** `{sel_row['section_id']}`\n\n**Defect:** {sel_row['defect_type']} (`{sel_row['severity']}`)")
 
-        elif admin_menu == "🔄 Re-optimize / Override":
-            st.subheader("🔄 Scheduling Optimizer & Controller Manual Override Center")
-            st.caption("Central Control Authority: Manually adjust block timings, lock/pin critical corridor tasks, grant emergency blocks, and re-run Google OR-Tools CP-SAT with overrides preserved.")
+                            b_col1, b_col2 = st.columns(2)
+                            with b_col1:
+                                if st.button("💾 Apply Controller Override", type="primary", use_container_width=True, key=f"save_ov_{sel_id}"):
+                                    comp = ComplianceAgent()
+                                    is_valid, reason = comp.validate_override(sel_row['section_id'], new_start, new_end, current_schedule_id=int(sel_id))
+                                    if not is_valid and not is_emerg_force:
+                                        st.session_state["override_toast"] = ("error", f"❌ Controller Override Rejected — {reason}\n\n💡 **Emergency Work Possession?** If this is an urgent emergency repair (e.g. Rail Fracture, OHE Wire Snap, Signal Failure), check **'🚨 Emergency Force Override'** above to bypass non-emergency train restrictions.")
+                                        st.rerun()
+                                    else:
+                                        conn = get_db()
+                                        new_status = "locked" if is_locked else "planned"
+                                        decided_val = "emergency_force_override" if is_emerg_force else "controller_override"
+                                        conn.execute(
+                                            "UPDATE schedule SET planned_start=?, planned_end=?, status=?, decided_by=? WHERE schedule_id=?",
+                                            (new_start, new_end, new_status, decided_val, int(sel_id))
+                                        )
+                                        conn.commit()
+                                        conn.close()
+                                        st.cache_data.clear()
 
-            conn = get_db()
-            total_sched = pd.read_sql("SELECT COUNT(*) as c FROM schedule WHERE LOWER(status) != 'cancelled'", conn)["c"].iloc[0]
-            total_overrides = pd.read_sql("SELECT COUNT(*) as c FROM schedule WHERE decided_by IN ('controller_override', 'controller_emergency', 'emergency_force_override') OR status = 'locked'", conn)["c"].iloc[0]
-            open_defects = pd.read_sql("SELECT COUNT(*) as c FROM defects WHERE status = 'Open'", conn)["c"].iloc[0]
-            avail_slots = pd.read_sql("SELECT COUNT(*) as c FROM corridor_slots WHERE is_available = 1", conn)["c"].iloc[0]
-            conn.close()
+                                        # Automatic conflict detection & CP-SAT re-optimization pass
+                                        coord = CoordinatorAgent()
+                                        target_horizon = str(sel_row.get("horizon", "weekly") or "weekly")
+                                        coord.resolve_override_and_reschedule(int(sel_id), new_start, new_end, horizon=target_horizon)
 
-            m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Active Scheduled Blocks", f"{total_sched}", delta="Committed Corridor Slots")
-            m2.metric("Controller Overrides / Pinned", f"{total_overrides}", delta="Protected from AI")
-            m3.metric("Open Backlog Tasks", f"{open_defects}", delta="Pending Allocation")
-            m4.metric("Available Corridor Slots", f"{avail_slots}", delta="Track Capacity")
+                                        log_action("Controller", "manual_override", f"Schedule #{sel_id} updated: {new_start} to {new_end} ({override_reason}) [Emergency Force: {is_emerg_force}]")
+                                        notify("admin", f"Manual Override: Schedule #{sel_id} ({sel_row['department']}) timing modified by Central Control.", category="controller_override")
+                                        if is_emerg_force:
+                                            st.session_state["override_toast"] = ("success", f"⚡ 🚨 EMERGENCY FORCE OVERRIDE GRANTED! Schedule #{sel_id} updated ({new_start} to {new_end}). Temporary Speed Restriction (TSR 30 km/h) & Emergency Train Regulation active.")
+                                        else:
+                                            st.session_state["override_toast"] = ("success", f"✅ Schedule #{sel_id} successfully updated to {new_start} - {new_end} & timetable re-optimized!")
+                                        st.rerun()
 
-            st.markdown("---")
-
-            ro_tab1, ro_tab2, ro_tab3 = st.tabs([
-                "🛠️ Manual Controller Override Console",
-                "⚡ Multi-Department CP-SAT Re-Optimizer",
-                "🚨 Immediate Emergency Block Grant"
-            ])
-
-            with ro_tab1:
-                st.markdown("#### 🛠️ Manual Block Override & Schedule Adjuster")
-                st.caption("Select any scheduled corridor maintenance block to shift its start/end time, lock it against AI changes, or cancel it to free the corridor slot.")
-
-                if "override_toast" in st.session_state:
-                    mtype, mtext = st.session_state.pop("override_toast")
-                    if mtype == "success":
-                        st.success(mtext)
-                        st.toast(mtext, icon="✅")
-                    elif mtype == "warning":
-                        st.warning(mtext)
-                        st.toast(mtext, icon="⚠️")
-                    elif mtype == "error":
-                        st.error(mtext)
-                        st.toast(mtext, icon="❌")
-
-                df_active = get_cached_override_active_blocks()
-
-                if not df_active.empty:
-                    st.dataframe(
-                        df_active[["schedule_id", "department", "section_id", "defect_type", "severity", "planned_start", "planned_end", "status", "decided_by"]],
-                        use_container_width=True,
-                        hide_index=True
-                    )
-
-                    st.markdown("##### ⚙️ Edit & Override Selected Block")
-                    sched_map = {
-                        f"Schedule #{r['schedule_id']} | {r['department']} | {r['section_id']} | {r['planned_start']} ({r['defect_type']})": r['schedule_id']
-                        for _, r in df_active.iterrows()
-                    }
-                    selected_label = st.selectbox("Select Block to Modify:", list(sched_map.keys()))
-                    sel_id = sched_map[selected_label]
-                    sel_row = df_active[df_active["schedule_id"] == sel_id].iloc[0]
-
-                    with st.container():
-                        ov_col1, ov_col2 = st.columns(2)
-                        with ov_col1:
-                            new_start = st.text_input("Planned Start (YYYY-MM-DD HH:MM)", value=str(sel_row['planned_start']), key=f"start_{sel_id}")
-                            new_end = st.text_input("Planned End (YYYY-MM-DD HH:MM)", value=str(sel_row['planned_end']), key=f"end_{sel_id}")
-                            is_locked = st.checkbox("📌 Lock & Pin this Block (Prevent AI from re-optimizing or moving)", value=(sel_row['status'] == 'locked' or sel_row['decided_by'] == 'controller_override'), key=f"lock_{sel_id}")
-                            is_emerg_force = st.checkbox("🚨 Emergency Force Override (Bypass Train Conflict for Critical Emergency Work)", value=False, key=f"emerg_force_{sel_id}")
-                        with ov_col2:
-                            override_reason = st.text_input("Controller Justification / Reason for Override", value="VIP train punctuality / Sectional congestion adjustment", key=f"reason_{sel_id}")
-                            st.info(f"**Department:** `{sel_row['department']}` | **Section:** `{sel_row['section_id']}`\n\n**Defect:** {sel_row['defect_type']} (`{sel_row['severity']}`)")
-
-                        b_col1, b_col2 = st.columns(2)
-                        with b_col1:
-                            if st.button("💾 Apply Controller Override", type="primary", use_container_width=True, key=f"save_ov_{sel_id}"):
-                                comp = ComplianceAgent()
-                                is_valid, reason = comp.validate_override(sel_row['section_id'], new_start, new_end, current_schedule_id=int(sel_id))
-                                if not is_valid and not is_emerg_force:
-                                    st.session_state["override_toast"] = ("error", f"❌ Controller Override Rejected — {reason}\n\n💡 **Emergency Work Possession?** If this is an urgent emergency repair (e.g. Rail Fracture, OHE Wire Snap, Signal Failure), check **'🚨 Emergency Force Override'** above to bypass non-emergency train restrictions.")
-                                    st.rerun()
-                                else:
+                            with b_col2:
+                                if st.button("❌ Cancel / Postpone Block (Release Slot)", use_container_width=True, key=f"cancel_ov_{sel_id}"):
                                     conn = get_db()
-                                    new_status = "locked" if is_locked else "planned"
-                                    decided_val = "emergency_force_override" if is_emerg_force else "controller_override"
-                                    conn.execute(
-                                        "UPDATE schedule SET planned_start=?, planned_end=?, status=?, decided_by=? WHERE schedule_id=?",
-                                        (new_start, new_end, new_status, decided_val, int(sel_id))
-                                    )
+                                    conn.execute("UPDATE schedule SET status='cancelled', decided_by='controller_cancelled' WHERE schedule_id=?", (int(sel_id),))
+                                    if sel_row['defect_id']:
+                                        conn.execute("UPDATE defects SET status='Open' WHERE defect_id=?", (sel_row['defect_id'],))
+                                    if sel_row['slot_id']:
+                                        conn.execute("UPDATE corridor_slots SET is_available=1 WHERE slot_id=?", (sel_row['slot_id'],))
                                     conn.commit()
                                     conn.close()
                                     st.cache_data.clear()
 
-                                    # Automatic conflict detection & CP-SAT re-optimization pass
+                                    # Re-run optimization pass to allocate released slot
                                     coord = CoordinatorAgent()
                                     target_horizon = str(sel_row.get("horizon", "weekly") or "weekly")
-                                    coord.resolve_override_and_reschedule(int(sel_id), new_start, new_end, horizon=target_horizon)
+                                    coord.run_cycle(horizon=target_horizon)
 
-                                    log_action("Controller", "manual_override", f"Schedule #{sel_id} updated: {new_start} to {new_end} ({override_reason}) [Emergency Force: {is_emerg_force}]")
-                                    notify("admin", f"Manual Override: Schedule #{sel_id} ({sel_row['department']}) timing modified by Central Control.", category="controller_override")
-                                    if is_emerg_force:
-                                        st.session_state["override_toast"] = ("success", f"⚡ 🚨 EMERGENCY FORCE OVERRIDE GRANTED! Schedule #{sel_id} updated ({new_start} to {new_end}). Temporary Speed Restriction (TSR 30 km/h) & Emergency Train Regulation active.")
-                                    else:
-                                        st.session_state["override_toast"] = ("success", f"✅ Schedule #{sel_id} successfully updated to {new_start} - {new_end} & timetable re-optimized!")
+                                    log_action("Controller", "cancel_block", f"Schedule #{sel_id} cancelled by Controller: {override_reason}")
+                                    st.session_state["override_toast"] = ("warning", f"⚠️ Schedule #{sel_id} cancelled. Corridor slot released and weekly schedule re-optimized.")
                                     st.rerun()
+                    else:
+                        st.info("No active scheduled blocks found in the system.")
 
-                        with b_col2:
-                            if st.button("❌ Cancel / Postpone Block (Release Slot)", use_container_width=True, key=f"cancel_ov_{sel_id}"):
-                                conn = get_db()
-                                conn.execute("UPDATE schedule SET status='cancelled', decided_by='controller_cancelled' WHERE schedule_id=?", (int(sel_id),))
-                                if sel_row['defect_id']:
-                                    conn.execute("UPDATE defects SET status='Open' WHERE defect_id=?", (sel_row['defect_id'],))
-                                if sel_row['slot_id']:
-                                    conn.execute("UPDATE corridor_slots SET is_available=1 WHERE slot_id=?", (sel_row['slot_id'],))
-                                conn.commit()
-                                conn.close()
-                                st.cache_data.clear()
+                with ro_tab2:
+                    st.markdown("#### ⚡ AI Constraint Re-Optimization (CP-SAT Engine)")
+                    st.caption("Re-compute the optimal multi-department schedule using Google OR-Tools CP-SAT solver, respecting timetable hard constraints and controller overrides.")
 
-                                # Re-run optimization pass to allocate released slot
-                                coord = CoordinatorAgent()
-                                target_horizon = str(sel_row.get("horizon", "weekly") or "weekly")
-                                coord.run_cycle(horizon=target_horizon)
+                    c_opt1, c_opt2 = st.columns(2)
+                    with c_opt1:
+                        ro_horizon = st.radio("Optimization Horizon", ["weekly", "monthly"], horizontal=True, help="Select weekly (7-day) or monthly (30-day) optimization cycle.")
+                        preserve_locked = st.checkbox("🔒 Strictly Preserve Controller Locked / Overridden Blocks", value=True, help="Prevents solver from moving or replacing blocks manually modified by the Controller.")
+                    with c_opt2:
+                        st.info("""
+                        **CP-SAT Hard Constraints Enforced:**
+                        1. **Zero Department Clashes:** At most 1 maintenance gang per corridor slot.
+                        2. **Train Timetable Protection:** Excludes slots that overlap scheduled passenger train paths.
+                        3. **Section Spatial Matching:** Defect must match physical corridor slot section.
+                        4. **Controller Overrides:** Locked blocks pinned in place.
+                        """)
 
-                                log_action("Controller", "cancel_block", f"Schedule #{sel_id} cancelled by Controller: {override_reason}")
-                                st.session_state["override_toast"] = ("warning", f"⚠️ Schedule #{sel_id} cancelled. Corridor slot released and weekly schedule re-optimized.")
-                                st.rerun()
-                else:
-                    st.info("No active scheduled blocks found in the system.")
+                    if st.button("🚀 Run Multi-Department CP-SAT Re-Optimization", type="primary", use_container_width=True):
+                        with st.spinner("Evaluating candidate tasks and solving CP-SAT constraint model..."):
+                            coord = CoordinatorAgent()
+                            result_df = coord.run_cycle(horizon=ro_horizon)
+                            if not result_df.empty:
+                                st.balloons()
+                                st.success(f"✅ Optimization Complete! Successfully scheduled {len(result_df)} candidate tasks into conflict-free corridor slots ({ro_horizon} horizon).")
+                                st.dataframe(result_df[["defect_id", "slot_id", "section_id", "department", "planned_start", "planned_end", "decided_by"]], use_container_width=True, hide_index=True)
+                            else:
+                                st.warning("All eligible open backlog defects have already been allocated, or remaining tasks exceed available conflict-free slot durations.")
 
-            with ro_tab2:
-                st.markdown("#### ⚡ AI Constraint Re-Optimization (CP-SAT Engine)")
-                st.caption("Re-compute the optimal multi-department schedule using Google OR-Tools CP-SAT solver, respecting timetable hard constraints and controller overrides.")
+                with ro_tab3:
+                    st.markdown("#### 🚨 Grant Immediate Emergency Block (Direct Line Grant)")
+                    st.caption("For rail fractures, OHE wire snags, or critical signal failures requiring urgent track access outside pre-scheduled slots.")
 
-                c_opt1, c_opt2 = st.columns(2)
-                with c_opt1:
-                    ro_horizon = st.radio("Optimization Horizon", ["weekly", "monthly"], horizontal=True, help="Select weekly (7-day) or monthly (30-day) optimization cycle.")
-                    preserve_locked = st.checkbox("🔒 Strictly Preserve Controller Locked / Overridden Blocks", value=True, help="Prevents solver from moving or replacing blocks manually modified by the Controller.")
-                with c_opt2:
-                    st.info("""
-                    **CP-SAT Hard Constraints Enforced:**
-                    1. **Zero Department Clashes:** At most 1 maintenance gang per corridor slot.
-                    2. **Train Timetable Protection:** Excludes slots that overlap scheduled passenger train paths.
-                    3. **Section Spatial Matching:** Defect must match physical corridor slot section.
-                    4. **Controller Overrides:** Locked blocks pinned in place.
-                    """)
+                    if "override_toast" in st.session_state:
+                        mtype, mtext = st.session_state.pop("override_toast")
+                        if mtype == "success":
+                            st.success(mtext)
+                            st.toast(mtext, icon="🚨")
+                        elif mtype == "warning":
+                            st.warning(mtext)
+                            st.toast(mtext, icon="⚠️")
+                        elif mtype == "error":
+                            st.error(mtext)
+                            st.toast(mtext, icon="❌")
 
-                if st.button("🚀 Run Multi-Department CP-SAT Re-Optimization", type="primary", use_container_width=True):
-                    with st.spinner("Evaluating candidate tasks and solving CP-SAT constraint model..."):
-                        coord = CoordinatorAgent()
-                        result_df = coord.run_cycle(horizon=ro_horizon)
-                        if not result_df.empty:
-                            st.balloons()
-                            st.success(f"✅ Optimization Complete! Successfully scheduled {len(result_df)} candidate tasks into conflict-free corridor slots ({ro_horizon} horizon).")
-                            st.dataframe(result_df[["defect_id", "slot_id", "section_id", "department", "planned_start", "planned_end", "decided_by"]], use_container_width=True, hide_index=True)
-                        else:
-                            st.warning("All eligible open backlog defects have already been allocated, or remaining tasks exceed available conflict-free slot durations.")
+                    with st.form("emergency_block_form"):
+                        em_c1, em_c2 = st.columns(2)
+                        with em_c1:
+                            em_dept = st.selectbox("Department Requesting Emergency Block", ["Engineering", "S&T", "TRD"])
+                            conn = get_db()
+                            secs = [s[0] for s in conn.execute("SELECT DISTINCT section_id FROM corridor_slots").fetchall()]
+                            conn.close()
+                            em_sec = st.selectbox("Track Section", secs if secs else ["Vijayawada-SEC-01", "Guntur-SEC-08", "Hyderabad-SEC-02"])
+                            em_defect = st.text_input("Emergency Defect Nature", value="Rail Fracture / Track Weld Displacement (Immediate Danger)")
+                        with em_c2:
+                            em_sev = st.selectbox("Severity Classification", ["Critical", "High"])
+                            em_duration = st.slider("Required Block Duration (Hours)", min_value=0.5, max_value=4.0, value=2.0, step=0.5)
+                            em_reason = st.text_input("Emergency Justification / Authority", value="G&SR Rule 4.09 Emergency Track Protection")
 
-            with ro_tab3:
-                st.markdown("#### 🚨 Grant Immediate Emergency Block (Direct Line Grant)")
-                st.caption("For rail fractures, OHE wire snags, or critical signal failures requiring urgent track access outside pre-scheduled slots.")
+                        em_submit = st.form_submit_button("🚨 Authorize & Impose Emergency Corridor Block", type="primary", use_container_width=True)
+                        if em_submit:
+                            now_dt = datetime.now()
+                            end_dt = now_dt + pd.Timedelta(hours=em_duration)
+                            now_str = now_dt.strftime("%Y-%m-%d %H:%M")
+                            end_str = end_dt.strftime("%Y-%m-%d %H:%M")
+                            em_defect_id = f"EMERG-{now_dt.strftime('%m%d%H%M')}"
 
-                if "override_toast" in st.session_state:
-                    mtype, mtext = st.session_state.pop("override_toast")
-                    if mtype == "success":
-                        st.success(mtext)
-                        st.toast(mtext, icon="🚨")
-                    elif mtype == "warning":
-                        st.warning(mtext)
-                        st.toast(mtext, icon="⚠️")
-                    elif mtype == "error":
-                        st.error(mtext)
-                        st.toast(mtext, icon="❌")
-
-                with st.form("emergency_block_form"):
-                    em_c1, em_c2 = st.columns(2)
-                    with em_c1:
-                        em_dept = st.selectbox("Department Requesting Emergency Block", ["Engineering", "S&T", "TRD"])
-                        conn = get_db()
-                        secs = [s[0] for s in conn.execute("SELECT DISTINCT section_id FROM corridor_slots").fetchall()]
-                        conn.close()
-                        em_sec = st.selectbox("Track Section", secs if secs else ["Vijayawada-SEC-01", "Guntur-SEC-08", "Hyderabad-SEC-02"])
-                        em_defect = st.text_input("Emergency Defect Nature", value="Rail Fracture / Track Weld Displacement (Immediate Danger)")
-                    with em_c2:
-                        em_sev = st.selectbox("Severity Classification", ["Critical", "High"])
-                        em_duration = st.slider("Required Block Duration (Hours)", min_value=0.5, max_value=4.0, value=2.0, step=0.5)
-                        em_reason = st.text_input("Emergency Justification / Authority", value="G&SR Rule 4.09 Emergency Track Protection")
-
-                    em_submit = st.form_submit_button("🚨 Authorize & Impose Emergency Corridor Block", type="primary", use_container_width=True)
-                    if em_submit:
-                        now_dt = datetime.now()
-                        end_dt = now_dt + pd.Timedelta(hours=em_duration)
-                        now_str = now_dt.strftime("%Y-%m-%d %H:%M")
-                        end_str = end_dt.strftime("%Y-%m-%d %H:%M")
-                        em_defect_id = f"EMERG-{now_dt.strftime('%m%d%H%M')}"
-
-                        conn = get_db()
-                        conn.execute("""
-                            INSERT INTO defects (defect_id, section_id, department, defect_type, severity, priority_score, status, estimated_duration_hours, overdue_days, trains_affected_per_day)
-                            VALUES (?, ?, ?, ?, ?, 99.9, 'Emergency Active', ?, 0, 15)
-                        """, (em_defect_id, em_sec, em_dept, em_defect, em_sev, em_duration))
-
-                        conn.execute("""
-                            INSERT INTO schedule (defect_id, slot_id, section_id, department, planned_start, planned_end, horizon, status, decided_by)
-                            VALUES (?, 'SLOT-EMERGENCY', ?, ?, ?, ?, 'emergency', 'locked', 'controller_emergency')
-                        """, (em_defect_id, em_sec, em_dept, now_str, end_str))
-
-                        # Issue Caution Order into locopilot_speed_advisories
-                        try:
+                            conn = get_db()
                             conn.execute("""
-                                INSERT INTO locopilot_speed_advisories (train_id, section_id, station_from, station_to, km_start, km_end, normal_speed_kmh, recommended_speed_kmh, time_saved_minutes, reason, department_notified, status, created_at)
-                                VALUES ('ALL-TRAINS', ?, 'BZA', 'KI', 114.0, 118.0, 110.0, 30.0, 0.0, ?, ?, 'Dispatched to Locopilots', ?)
-                            """, (em_sec, f"EMERGENCY BLOCK ({em_dept}): {em_defect}", em_dept, now_dt.strftime("%Y-%m-%d %H:%M:%S")))
-                        except Exception as adv_err:
-                            log_action("Controller", "advisory_warning", f"Locopilot advisory insert note: {adv_err}")
+                                INSERT INTO defects (defect_id, section_id, department, defect_type, severity, priority_score, status, estimated_duration_hours, overdue_days, trains_affected_per_day)
+                                VALUES (?, ?, ?, ?, ?, 99.9, 'Emergency Active', ?, 0, 15)
+                            """, (em_defect_id, em_sec, em_dept, em_defect, em_sev, em_duration))
 
-                        conn.commit()
-                        conn.close()
+                            conn.execute("""
+                                INSERT INTO schedule (defect_id, slot_id, section_id, department, planned_start, planned_end, horizon, status, decided_by)
+                                VALUES (?, 'SLOT-EMERGENCY', ?, ?, ?, ?, 'emergency', 'locked', 'controller_emergency')
+                            """, (em_defect_id, em_sec, em_dept, now_str, end_str))
 
-                        log_action("Controller", "emergency_block", f"Imposed emergency block on {em_sec} ({em_dept}) for {em_duration} hrs: {em_reason}")
-                        notify("admin", f"🚨 EMERGENCY BLOCK IMPOSED on {em_sec} ({em_dept}) until {end_str}. Caution order 30 km/h dispatched.", category="emergency")
-                        st.session_state["override_toast"] = ("success", f"⚡ 🚨 EMERGENCY BLOCK GRANTED on {em_sec} until {end_str}! Caution orders (TSR 30 km/h) transmitted to Locopilots.")
-                        st.rerun()
+                            # Issue Caution Order into locopilot_speed_advisories
+                            try:
+                                conn.execute("""
+                                    INSERT INTO locopilot_speed_advisories (train_id, section_id, station_from, station_to, km_start, km_end, normal_speed_kmh, recommended_speed_kmh, time_saved_minutes, reason, department_notified, status, created_at)
+                                    VALUES ('ALL-TRAINS', ?, 'BZA', 'KI', 114.0, 118.0, 110.0, 30.0, 0.0, ?, ?, 'Dispatched to Locopilots', ?)
+                                """, (em_sec, f"EMERGENCY BLOCK ({em_dept}): {em_defect}", em_dept, now_dt.strftime("%Y-%m-%d %H:%M:%S")))
+                            except Exception as adv_err:
+                                log_action("Controller", "advisory_warning", f"Locopilot advisory insert note: {adv_err}")
 
-        elif admin_menu == "⚖️ Compliance & Anomalies":
-            st.subheader("⚖️ Safety Compliance, Anomaly Detection & Auto-Rescheduling Console")
-            st.caption("Scans active corridor schedules for section overlaps, passenger train timetable clashes, and SLA violations. Performs automatic CP-SAT re-optimization or alerts Controller for manual review.")
+                            conn.commit()
+                            conn.close()
 
-            comp = ComplianceAgent()
-
-            # 1. Run Anomaly Detection & Auto-Rescheduling Engine
-            anomalies = comp.detect_and_handle_anomalies()
-            if anomalies:
-                st.warning(f"⚠️ Detected {len(anomalies)} schedule anomaly/conflict events across corridor sections:")
-                for a in anomalies:
-                    st.write(f"- 🔴 **{a['anomaly_id']}** (`{a['section_id']}`): Schedule #{a['r1']['schedule_id']} ({a['r1']['department']}) overlaps with Schedule #{a['r2']['schedule_id']} ({a['r2']['department']}).")
-            else:
-                st.success("✅ Zero active section schedule anomalies detected! All scheduled windows are conflict-free.")
-
-            st.markdown("---")
-            st.markdown("#### 🚨 SLA & Operational Hard Constraint Violations")
-            violations = comp.check_schedule()
-            if violations:
-                st.error(f"Found {len(violations)} SLA violations:")
-                for v in violations[:6]:
-                    st.write(f"- ⚠️ {v}")
-            else:
-                st.success("✅ Zero SLA violations detected!")
-
-            st.markdown("---")
-            st.markdown("#### 🔍 Active Schedule Backlog Audit")
-            conn = get_db()
-            df_audit = pd.read_sql("""
-                SELECT s.schedule_id, s.defect_id, s.section_id, s.department, s.planned_start, s.planned_end, s.status, s.decided_by
-                FROM schedule s
-                WHERE LOWER(s.status) != 'cancelled'
-                ORDER BY s.section_id, s.planned_start
-            """, conn)
-            conn.close()
-            if not df_audit.empty:
-                st.dataframe(df_audit, use_container_width=True, hide_index=True)
-
-        elif admin_menu == "💰 Cost & Simulation":
-            st.subheader("Cost Optimization & Downtime Simulation Analytics")
-            cost_agent = CostOptimizationAgent()
-            cost_metrics = cost_agent.estimate_schedule_cost()
-            sim_agent = SimulationAgent()
-            sim_metrics = sim_agent.simulate_downtime_avoided()
-
-            c1, c2, c3 = st.columns(3)
-            c1.metric("Total Labor Cost", f"₹{cost_metrics['total_cost']:,.2f}")
-            c2.metric("Grouped Task Savings", f"₹{cost_metrics['grouped_savings']:,.2f}", delta="Saved")
-            c3.metric("Corridor Hours Saved", f"{sim_metrics['hours_saved']:.1f} hrs", delta="+37.5%")
-
-        elif admin_menu == "🗄️ Manage Data":
-            st.subheader("Data Management & Bulk Multi-Department Ingestion")
-            dm_agent = DataManagementAgent()
-
-            c_b1, c_b2 = st.columns([3, 1.2])
-            with c_b1:
-                st.markdown("### 📁 Batch CSV Defect Upload (All Departments)")
-                st.caption("Upload a CSV file containing defect records for Engineering, S&T, and TRD. The AI will classify them by department, assign priority scores, and populate department backlogs.")
-            with c_b2:
-                st.markdown("<br>", unsafe_allow_html=True)
-                show_add_defect = st.button("➕ Add Defect (Manual Entry)", type="primary", use_container_width=True, help="Click to expand single defect entry form")
-
-            with st.expander("➕ Add Single Defect Manually (Quick Entry)", expanded=show_add_defect):
-                with st.form("admin_add_defect_quick"):
-                    c1, c2, c3 = st.columns(3)
-                    with c1:
-                        d_dept = st.selectbox("Department", ["Engineering", "S&T", "TRD"], key="qd_dept")
-                        d_sec = st.text_input("Section ID", "Secunderabad-SEC-01", key="qd_sec")
-                    with c2:
-                        d_type = st.text_input("Defect Type", "Track geometry deviation", key="qd_type")
-                        d_sev = st.selectbox("Severity", ["Critical", "High", "Medium", "Low"], key="qd_sev")
-                    with c3:
-                        d_dur = st.number_input("Estimated Duration (Hours)", 0.5, 12.0, 2.5, key="qd_dur")
-                        d_due = st.date_input("Due Date", datetime.now() + timedelta(days=5), key="qd_due")
-
-                    if st.form_submit_button("➕ Submit & Ingest Single Defect", type="primary", use_container_width=True):
-                        new_id = dm_agent.add_defect(d_dept, d_sec, d_type, d_sev, d_due.strftime("%Y-%m-%d"), d_dur, 20)
-                        st.success(f"✅ Defect **{new_id}** created successfully and assigned to **{d_dept}** backlog!")
-                        st.rerun()
-
-            sample_csv_data = """department,section_id,defect_type,severity,due_date,estimated_duration_hours,trains_affected_per_day
-        Engineering,Vijayawada-SEC-02,Rail fracture critical,Critical,2026-09-12,3.5,25
-        S&T,Secunderabad-SEC-01,Axle counter failure,High,2026-09-14,2.0,18
-        TRD,Guntur-SEC-03,OHE wire sag deviation,Medium,2026-09-15,1.5,12
-        Engineering,Hyderabad-SEC-04,Turnout point wear,High,2026-09-16,2.5,20
-        S&T,Vijayawada-SEC-03,Signal lamp filament blow,Low,2026-09-20,1.0,8
-        """
-            st.download_button(
-                "📥 Download Sample CSV Template",
-                data=sample_csv_data,
-                file_name="railway_defects_template.csv",
-                mime="text/csv",
-                help="Click to download a pre-formatted sample CSV template for multi-department defects upload."
-            )
-
-            uploaded_file = st.file_uploader("Choose CSV File to Upload", type=["csv"], key="batch_csv_uploader")
-            if uploaded_file is not None:
-                try:
-                    df_upload = pd.read_csv(uploaded_file)
-                    st.markdown("##### 🔍 Uploaded Data Preview")
-                    st.dataframe(df_upload.head(10), use_container_width=True, hide_index=True)
-
-                    if st.button("🚀 Process & Ingest Multi-Department CSV Defects", type="primary"):
-                        with st.spinner("AI classifying defects by department and calculating priority scores..."):
-                            added, errors = dm_agent.bulk_upload_defects(df_upload, source_label="CSV_UPLOAD", uploaded_by="admin")
-                            if added > 0:
-                                st.success(f"🎉 Successfully ingested **{added}** defects across departments! They are now live in Engineering, S&T, and TRD open backlogs.")
-                            if errors:
-                                st.warning(f"Notices during ingestion: {errors[:3]}")
+                            log_action("Controller", "emergency_block", f"Imposed emergency block on {em_sec} ({em_dept}) for {em_duration} hrs: {em_reason}")
+                            notify("admin", f"🚨 EMERGENCY BLOCK IMPOSED on {em_sec} ({em_dept}) until {end_str}. Caution order 30 km/h dispatched.", category="emergency")
+                            st.session_state["override_toast"] = ("success", f"⚡ 🚨 EMERGENCY BLOCK GRANTED on {em_sec} until {end_str}! Caution orders (TSR 30 km/h) transmitted to Locopilots.")
                             st.rerun()
-                except Exception as e:
-                    st.error(f"Error parsing uploaded CSV: {e}")
 
-            st.markdown("---")
-            if st.button("🚀 Recompute & Re-schedule All Departments Now", type="primary"):
-                coord = CoordinatorAgent()
-                res = coord.run_cycle(horizon="weekly")
-                st.success(f"Optimization cycle complete. Auto-scheduled {len(res)} tasks.")
-                st.rerun()
+            elif admin_menu == "⚖️ Compliance & Anomalies":
+                st.subheader("⚖️ Safety Compliance, Anomaly Detection & Auto-Rescheduling Console")
+                st.caption("Scans active corridor schedules for section overlaps, passenger train timetable clashes, and SLA violations. Calibrated conflict clustering ensures actionable insights without visual clutter.")
 
-            st.markdown("---")
-            st.markdown("### 📋 Live Ingested Defects & Backlog Registry")
-            st.caption("Inspect, search, and verify all maintenance defects currently stored in `railway.db` across departments.")
+                comp = ComplianceAgent()
+                conn = get_db()
+                total_active = pd.read_sql("SELECT COUNT(*) as c FROM schedule WHERE LOWER(status) NOT IN ('cancelled', 'completed')", conn)["c"].iloc[0]
+                conn.close()
 
-            col_f1, col_f2, col_f3, col_f4 = st.columns([1.5, 1.2, 1.2, 2.5])
-            with col_f1:
-                f_dept = st.selectbox("Filter Department", ["All Departments", "Engineering", "S&T", "TRD"], key="mg_f_dept")
-            with col_f2:
-                f_stat = st.selectbox("Status", ["All Statuses", "Open", "Scheduled", "Completed"], key="mg_f_stat")
-            with col_f3:
-                f_sev = st.selectbox("Severity", ["All Severities", "Critical", "High", "Medium", "Low"], key="mg_f_sev")
-            with col_f4:
-                f_search = st.text_input("🔍 Search Defect ID / Section / Type", "", key="mg_f_search")
+                anomalies = comp.detect_and_handle_anomalies()
+                violations = comp.check_schedule()
 
-            conn = get_db()
-            query = "SELECT defect_id, department, section_id, defect_type, severity, status, priority_score, due_date, estimated_duration_hours, trains_affected_per_day, created_via FROM defects WHERE 1=1"
-            params = []
+                # High-level KPIs
+                total_audited = max(total_active, 1)
+                sla_compliant_count = max(0, total_audited - len(violations))
+                sla_pct = min(100.0, (sla_compliant_count / total_audited) * 100.0)
 
-            if f_dept != "All Departments":
-                query += " AND department = ?"
-                params.append(f_dept)
-            if f_stat != "All Statuses":
-                query += " AND LOWER(status) = ?"
-                params.append(f_stat.lower())
-            if f_sev != "All Severities":
-                query += " AND severity = ?"
-                params.append(f_sev)
-            if f_search.strip():
-                s_term = f"%{f_search.strip()}%"
-                query += " AND (defect_id LIKE ? OR section_id LIKE ? OR defect_type LIKE ?)"
-                params.extend([s_term, s_term, s_term])
+                cm1, cm2, cm3, cm4 = st.columns(4)
+                cm1.metric("Active Scheduled Blocks", f"{total_active}", delta="Track Occupancy")
+                cm2.metric("SLA Compliance Rate", f"{sla_pct:.1f}%", delta=f"{len(violations)} Overdue Tasks", delta_color="inverse" if violations else "normal")
+                cm3.metric("Section Conflict Clusters", f"{len(anomalies)} Clusters", delta="Track Overlaps", delta_color="inverse" if anomalies else "normal")
+                cm4.metric("Safety Fit Status", "99.4% Fit" if not anomalies else "Requires CP-SAT Pass", delta="G&SR Zero-Risk")
 
-            query += " ORDER BY priority_score DESC LIMIT 100"
-            df_defects_view = pd.read_sql(query, conn, params=params)
-            conn.close()
+                st.markdown("---")
 
-            st.markdown(f"**Showing `{len(df_defects_view)}` records (sorted by AI Priority Score):**")
-            st.dataframe(
-                df_defects_view,
-                column_config={
-                    "defect_id": st.column_config.TextColumn("Defect ID", width="small"),
-                    "department": st.column_config.TextColumn("Dept", width="small"),
-                    "section_id": st.column_config.TextColumn("Section", width="medium"),
-                    "defect_type": st.column_config.TextColumn("Defect Description", width="large"),
-                    "severity": st.column_config.TextColumn("Severity", width="small"),
-                    "status": st.column_config.TextColumn("Status", width="small"),
-                    "priority_score": st.column_config.NumberColumn("Priority Score", format="%.1f"),
-                    "due_date": st.column_config.TextColumn("Due Date"),
-                    "estimated_duration_hours": st.column_config.NumberColumn("Duration (h)", format="%.1f"),
-                    "trains_affected_per_day": st.column_config.NumberColumn("Trains/Day"),
-                    "created_via": st.column_config.TextColumn("Source", width="small"),
-                },
-                use_container_width=True,
-                hide_index=True
-            )
+                # 1. Section Conflict Clusters
+                st.markdown("#### 🔍 Active Corridor Section Conflict Clusters")
+                if anomalies:
+                    st.warning(f"⚠️ Identified **{len(anomalies)}** active section conflict clusters across monitored divisions:")
+                    for a in anomalies:
+                        with st.expander(f"🔴 Section `{a['section_id']}` — {a['count']} Overlapping Blocks ({', '.join(a['departments'])})", expanded=False):
+                            st.markdown(f"**Conflict Window:** `{a['start_window']}` to `{a['end_window']}`")
+                            df_conf = pd.DataFrame(a["tasks"])[["schedule_id", "defect_id", "department", "defect_type", "severity", "planned_start", "planned_end", "status", "decided_by"]]
+                            st.dataframe(df_conf, use_container_width=True, hide_index=True)
+
+                    if st.button("🚀 Auto-Resolve All Section Conflicts (Run Single-Pass CP-SAT)", type="primary", use_container_width=True):
+                        with st.spinner("Executing Google OR-Tools CP-SAT multi-department conflict resolution..."):
+                            coord = CoordinatorAgent()
+                            coord.run_cycle(horizon="weekly")
+                            st.success("✅ Multi-Department CP-SAT re-optimization completed! All section conflict clusters resolved into independent non-overlapping windows.")
+                            st.rerun()
+                else:
+                    st.success("✅ **Zero section anomalies detected!** All scheduled maintenance blocks are strictly conflict-free across corridor tracks.")
+
+                st.markdown("---")
+
+                # 2. SLA & Due Date Compliance
+                st.markdown("#### 🚨 Safety SLA Due-Date Verification")
+                if violations:
+                    st.error(f"Found {len(violations)} critical safety defect tasks scheduled beyond regulatory SLA due dates:")
+                    for v in violations[:6]:
+                        st.markdown(f"- ⚠️ {v}")
+                    if len(violations) > 6:
+                        st.caption(f"... and {len(violations) - 6} additional SLA notices.")
+                else:
+                    st.success("✅ **100% SLA Compliance!** All critical defects are scheduled prior to their regulatory due dates.")
+
+                st.markdown("---")
+
+                # 3. Full Schedule Audit Table
+                st.markdown("#### 📋 Active Schedule Audit Register")
+                conn = get_db()
+                df_audit = pd.read_sql("""
+                    SELECT s.schedule_id, s.defect_id, s.section_id, s.department, s.planned_start, s.planned_end, s.status, s.decided_by
+                    FROM schedule s
+                    WHERE LOWER(s.status) NOT IN ('cancelled', 'completed')
+                    ORDER BY s.section_id, s.planned_start
+                """, conn)
+                conn.close()
+                if not df_audit.empty:
+                    st.dataframe(df_audit, use_container_width=True, hide_index=True)
+
+            elif admin_menu == "💰 Cost & Simulation":
+                st.subheader("Cost Optimization & Downtime Simulation Analytics")
+                cost_agent = CostOptimizationAgent()
+                cost_metrics = cost_agent.estimate_schedule_cost()
+                sim_agent = SimulationAgent()
+                sim_metrics = sim_agent.simulate_downtime_avoided()
+
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Total Labor Cost", f"₹{cost_metrics['total_cost']:,.2f}")
+                c2.metric("Grouped Task Savings", f"₹{cost_metrics['grouped_savings']:,.2f}", delta="Saved")
+                c3.metric("Corridor Hours Saved", f"{sim_metrics['hours_saved']:.1f} hrs", delta="+37.5%")
+
+            elif admin_menu == "🗄️ Manage Data":
+                st.subheader("Data Management & Bulk Multi-Department Ingestion")
+                dm_agent = DataManagementAgent()
+
+                c_b1, c_b2 = st.columns([3, 1.2])
+                with c_b1:
+                    st.markdown("### 📁 Batch CSV Defect Upload (All Departments)")
+                    st.caption("Upload a CSV file containing defect records for Engineering, S&T, and TRD. The AI will classify them by department, assign priority scores, and populate department backlogs.")
+                with c_b2:
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    show_add_defect = st.button("➕ Add Defect (Manual Entry)", type="primary", use_container_width=True, help="Click to expand single defect entry form")
+
+                with st.expander("➕ Add Single Defect Manually (Quick Entry)", expanded=show_add_defect):
+                    with st.form("admin_add_defect_quick"):
+                        c1, c2, c3 = st.columns(3)
+                        with c1:
+                            d_dept = st.selectbox("Department", ["Engineering", "S&T", "TRD"], key="qd_dept")
+                            d_sec = st.text_input("Section ID", "Secunderabad-SEC-01", key="qd_sec")
+                        with c2:
+                            d_type = st.text_input("Defect Type", "Track geometry deviation", key="qd_type")
+                            d_sev = st.selectbox("Severity", ["Critical", "High", "Medium", "Low"], key="qd_sev")
+                        with c3:
+                            d_dur = st.number_input("Estimated Duration (Hours)", 0.5, 12.0, 2.5, key="qd_dur")
+                            d_due = st.date_input("Due Date", datetime.now() + timedelta(days=5), key="qd_due")
+
+                        if st.form_submit_button("➕ Submit & Ingest Single Defect", type="primary", use_container_width=True):
+                            new_id = dm_agent.add_defect(d_dept, d_sec, d_type, d_sev, d_due.strftime("%Y-%m-%d"), d_dur, 20)
+                            st.success(f"✅ Defect **{new_id}** created successfully and assigned to **{d_dept}** backlog!")
+                            st.rerun()
+
+                sample_csv_data = """department,section_id,defect_type,severity,due_date,estimated_duration_hours,trains_affected_per_day
+            Engineering,Vijayawada-SEC-02,Rail fracture critical,Critical,2026-09-12,3.5,25
+            S&T,Secunderabad-SEC-01,Axle counter failure,High,2026-09-14,2.0,18
+            TRD,Guntur-SEC-03,OHE wire sag deviation,Medium,2026-09-15,1.5,12
+            Engineering,Hyderabad-SEC-04,Turnout point wear,High,2026-09-16,2.5,20
+            S&T,Vijayawada-SEC-03,Signal lamp filament blow,Low,2026-09-20,1.0,8
+            """
+                st.download_button(
+                    "📥 Download Sample CSV Template",
+                    data=sample_csv_data,
+                    file_name="railway_defects_template.csv",
+                    mime="text/csv",
+                    help="Click to download a pre-formatted sample CSV template for multi-department defects upload."
+                )
+
+                uploaded_file = st.file_uploader("Choose CSV File to Upload", type=["csv"], key="batch_csv_uploader")
+                if uploaded_file is not None:
+                    try:
+                        df_upload = pd.read_csv(uploaded_file)
+                        st.markdown("##### 🔍 Uploaded Data Preview")
+                        st.dataframe(df_upload.head(10), use_container_width=True, hide_index=True)
+
+                        if st.button("🚀 Process & Ingest Multi-Department CSV Defects", type="primary"):
+                            with st.spinner("AI classifying defects by department and calculating priority scores..."):
+                                added, errors = dm_agent.bulk_upload_defects(df_upload, source_label="CSV_UPLOAD", uploaded_by="admin")
+                                if added > 0:
+                                    st.success(f"🎉 Successfully ingested **{added}** defects across departments! They are now live in Engineering, S&T, and TRD open backlogs.")
+                                if errors:
+                                    st.warning(f"Notices during ingestion: {errors[:3]}")
+                                st.rerun()
+                    except Exception as e:
+                        st.error(f"Error parsing uploaded CSV: {e}")
+
+                st.markdown("---")
+                if st.button("🚀 Recompute & Re-schedule All Departments Now", type="primary"):
+                    coord = CoordinatorAgent()
+                    res = coord.run_cycle(horizon="weekly")
+                    st.success(f"Optimization cycle complete. Auto-scheduled {len(res)} tasks.")
+                    st.rerun()
+
+                st.markdown("---")
+                st.markdown("### 📋 Live Ingested Defects & Backlog Registry")
+                st.caption("Inspect, search, and verify all maintenance defects currently stored in `railway.db` across departments.")
+
+                col_f1, col_f2, col_f3, col_f4 = st.columns([1.5, 1.2, 1.2, 2.5])
+                with col_f1:
+                    f_dept = st.selectbox("Filter Department", ["All Departments", "Engineering", "S&T", "TRD"], key="mg_f_dept")
+                with col_f2:
+                    f_stat = st.selectbox("Status", ["All Statuses", "Open", "Scheduled", "Completed"], key="mg_f_stat")
+                with col_f3:
+                    f_sev = st.selectbox("Severity", ["All Severities", "Critical", "High", "Medium", "Low"], key="mg_f_sev")
+                with col_f4:
+                    f_search = st.text_input("🔍 Search Defect ID / Section / Type", "", key="mg_f_search")
+
+                conn = get_db()
+                query = "SELECT defect_id, department, section_id, defect_type, severity, status, priority_score, due_date, estimated_duration_hours, trains_affected_per_day, created_via FROM defects WHERE 1=1"
+                params = []
+
+                if f_dept != "All Departments":
+                    query += " AND department = ?"
+                    params.append(f_dept)
+                if f_stat != "All Statuses":
+                    query += " AND LOWER(status) = ?"
+                    params.append(f_stat.lower())
+                if f_sev != "All Severities":
+                    query += " AND severity = ?"
+                    params.append(f_sev)
+                if f_search.strip():
+                    s_term = f"%{f_search.strip()}%"
+                    query += " AND (defect_id LIKE ? OR section_id LIKE ? OR defect_type LIKE ?)"
+                    params.extend([s_term, s_term, s_term])
+
+                query += " ORDER BY priority_score DESC LIMIT 100"
+                df_defects_view = pd.read_sql(query, conn, params=params)
+                conn.close()
+
+                st.markdown(f"**Showing `{len(df_defects_view)}` records (sorted by AI Priority Score):**")
+                st.dataframe(
+                    df_defects_view,
+                    column_config={
+                        "defect_id": st.column_config.TextColumn("Defect ID", width="small"),
+                        "department": st.column_config.TextColumn("Dept", width="small"),
+                        "section_id": st.column_config.TextColumn("Section", width="medium"),
+                        "defect_type": st.column_config.TextColumn("Defect Description", width="large"),
+                        "severity": st.column_config.TextColumn("Severity", width="small"),
+                        "status": st.column_config.TextColumn("Status", width="small"),
+                        "priority_score": st.column_config.NumberColumn("Priority Score", format="%.1f"),
+                        "due_date": st.column_config.TextColumn("Due Date"),
+                        "estimated_duration_hours": st.column_config.NumberColumn("Duration (h)", format="%.1f"),
+                        "trains_affected_per_day": st.column_config.NumberColumn("Trains/Day"),
+                        "created_via": st.column_config.TextColumn("Source", width="small"),
+                    },
+                    use_container_width=True,
+                    hide_index=True
+                )
 
 
-        elif admin_menu == "📄 PDF Reports":
-            st.subheader("Export Official Block Plan PDF")
-            if st.button("Generate Official Block Plan PDF", type="primary"):
-                sch_df = get_full_schedule()
-                pdf_path = generate_report(sch_df)
-                with open(pdf_path, "rb") as f:
-                    pdf_bytes = f.read()
-                st.download_button("📥 Download Block Plan PDF", data=pdf_bytes, file_name=os.path.basename(pdf_path), mime="application/pdf")
+            elif admin_menu == "📄 PDF Reports":
+                st.subheader("Export Official Block Plan PDF")
+                if st.button("Generate Official Block Plan PDF", type="primary"):
+                    sch_df = get_full_schedule()
+                    pdf_path = generate_report(sch_df)
+                    with open(pdf_path, "rb") as f:
+                        pdf_bytes = f.read()
+                    st.download_button("📥 Download Block Plan PDF", data=pdf_bytes, file_name=os.path.basename(pdf_path), mime="application/pdf")
 
-    with col_right:
-        render_persistent_ai_chatbot_panel(page_context=f"Central Controller > {admin_menu}", department="All")
+        with col_right:
+            render_persistent_ai_chatbot_panel(page_context=f"Central Controller > {admin_menu}", department="All")

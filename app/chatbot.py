@@ -810,7 +810,7 @@ def _parse_time_range(query: str):
 
 
 def find_particular_data(query: str, department: str = None, page_context: str = None) -> list:
-    """Directly queries railway.db for defect IDs, section names, time intervals, or metric statistics."""
+    """Directly queries railway.db for defect IDs, section names, time intervals, live train tracking, or metric statistics."""
     conn = sqlite3.connect(DB_PATH, timeout=30.0)
     try:
         conn.execute("PRAGMA journal_mode=WAL;")
@@ -822,6 +822,33 @@ def find_particular_data(query: str, department: str = None, page_context: str =
 
     results = []
     clean_q = query.strip()
+
+    # Search for Live Train Telemetry / Locopilot Speed / Active Block queries
+    live_keywords = ["train", "locopilot", "stopped", "slowing", "approaching", "running", "speed", "delayed", "live", "tracking", "corridor", "bza", "godavari", "charminar", "vande"]
+    if any(kw in clean_q.lower() for kw in live_keywords):
+        div_filter = None
+        for div in ["Vijayawada", "Secunderabad", "Guntakal", "Guntur", "Hyderabad", "BZA", "SC", "GTL", "GNT", "HYB"]:
+            if div.lower() in clean_q.lower():
+                div_filter = div
+                break
+        
+        sql_live = "SELECT train_id, train_name, train_type, division_id, section_id, current_km, speed_kmh, delay_minutes, status, last_updated FROM live_train_status"
+        params_live = []
+        if div_filter:
+            sql_live += " WHERE division_id LIKE ?"
+            params_live.append(f"%{div_filter}%")
+        sql_live += " ORDER BY delay_minutes DESC LIMIT 10"
+        
+        try:
+            cur.execute(sql_live, params_live)
+            rows = cur.fetchall()
+            if rows:
+                for row in rows:
+                    results.append(dict(row))
+                conn.close()
+                return results
+        except Exception:
+            pass
 
     # Search by Defect ID across ALL departments (TMS-*, SMMS-*, TDMS-*, etc.)
     defect_matches = re.findall(r'(?:TMS|SMMS|TDMS|MAN|BLK)-\d+', clean_q, re.IGNORECASE)
@@ -979,6 +1006,17 @@ def _synthesize_railway_ai_response(question: str, department: str = None, page_
             return res
 
     if db_matches:
+        if db_matches and "train_id" in db_matches[0]:
+            res = "### 🚆 Live Operational Train Tracking & Status (`live_train_status`):\n\n"
+            for tr in db_matches[:6]:
+                speed = float(tr.get('speed_kmh', 0))
+                delay = float(tr.get('delay_minutes', 0))
+                status = tr.get('status', 'RUNNING')
+                res += f"• **Train {tr.get('train_id')} — {tr.get('train_name')}** ({tr.get('train_type', 'Express')})\n"
+                res += f"  - **Division**: `{tr.get('division_id', 'BZA')}` | **Section**: `{tr.get('section_id', 'SEC')}` (KM {float(tr.get('current_km', 0)):.1f})\n"
+                res += f"  - **Speed**: `{speed:.0f} km/h` | **Status**: `{status}` | **Delay**: `+{delay:.0f} min`\n\n"
+            return res
+
         res = "### 🔍 Matching Database Records (`railway.db`):\n\n"
         for item in db_matches[:6]:
             win = f"{item.get('planned_start', 'N/A')} to {item.get('planned_end', 'N/A')}"

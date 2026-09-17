@@ -322,11 +322,11 @@ class AnomalyDetectionAgent:
 class ComplianceAgent:
     """Blocks approval if SLA, safety-gap rules, or timetable constraints are violated."""
 
-    def check_schedule(self, schedule_df=None):
+    def check_schedule(self, schedule_df=None, send_notifications=False):
         conn = get_agent_db()
         if schedule_df is None:
             schedule_df = pd.read_sql(
-                "SELECT s.*, d.severity, d.due_date FROM schedule s "
+                "SELECT s.*, d.severity, d.due_date, d.defect_type FROM schedule s "
                 "JOIN defects d ON s.defect_id = d.defect_id "
                 "WHERE LOWER(s.status) != 'cancelled'", conn)
         conn.close()
@@ -337,14 +337,16 @@ class ComplianceAgent:
                 planned = datetime.strptime(str(row["planned_start"])[:16], "%Y-%m-%d %H:%M")
                 due = datetime.strptime(str(row["due_date"])[:10], "%Y-%m-%d")
                 if str(row["severity"]).capitalize() == "Critical" and planned > due:
+                    d_type = row.get("defect_type", "Defect")
                     violations.append(
-                        f"SLA VIOLATION: Critical task {row['defect_id']} scheduled after its due date ({row['due_date']})."
+                        f"Critical task #{row['defect_id']} ({d_type}) on section `{row['section_id']}` planned {planned.strftime('%d %b %H:%M')} after due date ({due.strftime('%d %b %Y')})."
                     )
             except (ValueError, TypeError):
                 continue
 
-        for v in violations:
-            notify("admin", v, category="conflict")
+        if send_notifications:
+            for v in violations[:5]:
+                notify("admin", v, category="conflict")
         return violations
 
     def validate_override(self, section_id, new_start, new_end, current_schedule_id=None):
@@ -413,13 +415,11 @@ class ComplianceAgent:
 
         return True, "Valid Override — Zero Constraints Violated"
 
-    def detect_and_handle_anomalies(self):
+    def detect_and_handle_anomalies(self, max_clusters=8):
         """
         Scans system for active schedule overlaps / anomalies:
-        1. Identifies conflicting schedule entries on same section.
-        2. Attempts automatic rescheduling via CP-SAT optimizer.
-        3. If successful: persists new schedule, logs audit, and sends detailed Controller bulletin.
-        4. If failed: marks task awaiting manual Controller intervention and alerts Controller.
+        Clusters conflicting schedules by section_id to provide a calibrated, deduplicated list.
+        Avoids excessive repetitive anomaly cards and prevents solver thrashing during UI inspection.
         """
         conn = get_agent_db()
         df_sched = pd.read_sql("""
@@ -431,70 +431,51 @@ class ComplianceAgent:
         """, conn)
         conn.close()
 
-        anomalies_detected = []
+        clusters = []
         if df_sched.empty:
-            return anomalies_detected
+            return clusters
 
         df_sched["start_dt"] = pd.to_datetime(df_sched["planned_start"], errors="coerce")
         df_sched["end_dt"] = pd.to_datetime(df_sched["planned_end"], errors="coerce")
         df_sched = df_sched.dropna(subset=["start_dt", "end_dt"])
 
-        # Check section overlaps
+        # Group by section and identify distinct conflict clusters
         grouped = df_sched.groupby("section_id")
         for sec_id, group in grouped:
             if len(group) < 2:
                 continue
-            rows = group.to_dict(orient="records")
+            rows = group.sort_values("start_dt").to_dict(orient="records")
+            conflicting_task_ids = set()
+            c_start = None
+            c_end = None
+
             for i in range(len(rows)):
                 for j in range(i + 1, len(rows)):
                     r1, r2 = rows[i], rows[j]
                     if (r1["start_dt"] < r2["end_dt"]) and (r1["end_dt"] > r2["start_dt"]):
-                        anom_id = f"ANOM-{sec_id}-{r1['schedule_id']}-{r2['schedule_id']}"
-                        anomalies_detected.append({
-                            "anomaly_id": anom_id,
-                            "section_id": sec_id,
-                            "r1": r1,
-                            "r2": r2,
-                            "conflict_type": "Corridor Section Schedule Overlap"
-                        })
+                        conflicting_task_ids.add(r1["schedule_id"])
+                        conflicting_task_ids.add(r2["schedule_id"])
+                        if c_start is None or r1["start_dt"] < c_start:
+                            c_start = r1["start_dt"]
+                        if c_end is None or max(r1["end_dt"], r2["end_dt"]) > c_end:
+                            c_end = max(r1["end_dt"], r2["end_dt"])
 
-                        target_r = r2 if r2["status"] != "locked" else r1
-                        coord = CoordinatorAgent()
-                        res = coord.resolve_override_and_reschedule(
-                            target_r["schedule_id"],
-                            target_r["planned_start"],
-                            target_r["planned_end"],
-                            horizon="weekly"
-                        )
+            if conflicting_task_ids:
+                task_items = [r for r in rows if r["schedule_id"] in conflicting_task_ids]
+                depts = list(set([r["department"] for r in task_items if r.get("department")]))
+                clusters.append({
+                    "anomaly_id": f"CLUSTER-{sec_id}",
+                    "section_id": sec_id,
+                    "departments": depts,
+                    "count": len(task_items),
+                    "start_window": c_start.strftime("%Y-%m-%d %H:%M") if c_start else "N/A",
+                    "end_window": c_end.strftime("%Y-%m-%d %H:%M") if c_end else "N/A",
+                    "tasks": task_items
+                })
+                if len(clusters) >= max_clusters:
+                    break
 
-                        if not res.empty:
-                            msg = (
-                                f"⚡ Timetable Anomaly Detected & Automatically Resolved.\n\n"
-                                f"• **Type**: Corridor Section Overlap on `{sec_id}`\n"
-                                f"• **Affected Tasks**: #{r1['schedule_id']} ({r1['department']}) & #{r2['schedule_id']} ({r2['department']})\n"
-                                f"• **Automatic Rescheduling**: Successful\n"
-                                f"• **Resolution**: Conflicting task moved to a valid non-overlapping corridor slot.\n"
-                                f"• **Action Required**: Controller Review Optional."
-                            )
-                            notify("admin", msg, category="auto_rescheduled")
-                            log_action("ComplianceAgent", "auto_reschedule_success", f"Resolved anomaly on {sec_id} between #{r1['schedule_id']} and #{r2['schedule_id']}")
-                        else:
-                            conn = get_agent_db()
-                            conn.execute("UPDATE schedule SET status='pending_approval', decided_by='auto_reschedule_failed' WHERE schedule_id=?", (target_r["schedule_id"],))
-                            conn.commit()
-                            conn.close()
-
-                            msg = (
-                                f"🔴 Timetable Anomaly Detected — MANUAL CONTROLLER INTERVENTION REQUIRED.\n\n"
-                                f"• **Type**: Unresolvable Corridor Clash on `{sec_id}`\n"
-                                f"• **Affected Tasks**: #{r1['schedule_id']} ({r1['department']}) & #{r2['schedule_id']} ({r2['department']})\n"
-                                f"• **Automatic Rescheduling**: Failed (No available conflict-free slot in horizon)\n"
-                                f"• **Action Required**: Manual Controller Review & Override Mandatory."
-                            )
-                            notify("admin", msg, category="conflict")
-                            log_action("ComplianceAgent", "auto_reschedule_failed", f"Failed auto-reschedule on {sec_id} for #{target_r['schedule_id']}")
-
-        return anomalies_detected
+        return clusters
 
 
 # ---------------------------------------------------------------------------
@@ -1476,45 +1457,49 @@ class TelemetrySimulatorAgent:
             conn.close()
             return 0
 
-        # Sort trains by current_km ascending to compute relative spacing
-        live_trains["current_km"] = pd.to_numeric(live_trains["current_km"], errors="coerce").fillna(0.0)
-        df_sorted = live_trains.sort_values("current_km")
-
         updated_rows = []
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        train_records = df_sorted.to_dict(orient="records")
-        for i, tr in enumerate(train_records):
-            curr_km = float(tr["current_km"])
-            
+        for _, tr in live_trains.iterrows():
+            t_id = tr["train_id"]
+            curr_km = float(tr.get("current_km", 25.0))
+            direction = str(tr.get("direction", "EB"))
+            speed = float(tr.get("speed_kmh", 110.0))
+            delay = float(tr.get("delay_minutes", 0.0))
+            w_start, w_end = 35.0, 48.0
+
             # Step forward
-            new_km = curr_km + delta_km
-            if new_km > 45.0:  # Loop back section length (45 km)
-                new_km = round(new_km - 45.0, 1)
+            if direction == "EB":
+                new_km = curr_km + delta_km
+                if new_km > 160.0: new_km = 5.0
             else:
-                new_km = round(new_km, 1)
+                new_km = curr_km - delta_km
+                if new_km < 5.0: new_km = 150.0
 
-            # Compute proximity to train ahead
-            dist_to_ahead = 999.0
-            if i < len(train_records) - 1:
-                dist_to_ahead = abs(float(train_records[i+1]["current_km"]) - new_km)
+            new_km = round(new_km, 1)
 
-            # Dynamic Signal Aspect & Status Rules
-            if dist_to_ahead > 8.0:
-                train_status = "Cruising 🟢 (Green)"
-            elif dist_to_ahead > 4.0:
-                train_status = "Caution 🟡 (Double Yellow)"
-            elif dist_to_ahead > 2.0:
-                train_status = "Regulated 🟠 (Yellow)"
+            # Proximity to active block (KM 35-48)
+            dist_to_block = w_start - new_km if direction == "EB" else new_km - w_end
+
+            if w_start <= new_km <= w_end:
+                new_speed = 0.0
+                new_status = "STOPPED"
+                delay = min(60.0, delay + 2.0)
+            elif 0 < dist_to_block <= 8.0:
+                new_speed = 60.0
+                new_status = "SLOWING"
             else:
-                train_status = "Held 🔴 (Red Signal)"
+                new_speed = 110.0
+                new_status = "RUNNING"
+                if delay > 0:
+                    delay = max(0.0, delay - 1.0)
 
             conn.execute("""
                 UPDATE live_train_status 
-                SET current_km=?, status=?, last_updated=?
+                SET current_km=?, speed_kmh=?, delay_minutes=?, status=?, last_updated=?
                 WHERE train_id=?
-            """, (new_km, train_status, now_str, tr["train_id"]))
-            updated_rows.append(tr["train_id"])
+            """, (new_km, new_speed, delay, new_status, now_str, t_id))
+            updated_rows.append(t_id)
 
         conn.commit()
         conn.close()
