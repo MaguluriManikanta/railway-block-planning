@@ -1,0 +1,226 @@
+/* ============================================================
+   Login Page Styles
+   ============================================================ */
+
+.login-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.login-page-body {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px 32px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 680px;
+}
+
+/* ---- Login Card ---- */
+.login-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.login-card-header {
+  margin-bottom: 24px;
+}
+
+.login-card-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.login-card-header p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.login-card-footer {
+  margin-top: 20px;
+}
+
+/* ---- Role Grid ---- */
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+/* Role Card */
+.role-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 8px;
+  background: #ffffff;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  text-align: center;
+}
+
+.role-card:hover {
+  border-color: var(--navy-light);
+}
+
+.role-card--selected {
+  border-color: var(--navy);
+  background: #eef2f9;
+}
+
+.role-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--navy);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 800;
+  border-radius: 50%;
+  letter-spacing: 0;
+}
+
+.role-card--selected .role-icon {
+  background: var(--navy-dark);
+}
+
+.role-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.role-desc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+/* ---- Password field ---- */
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap .form-input {
+  padding-right: 42px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  padding: 4px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  color: var(--navy);
+}
+
+/* ---- Locopilot form ---- */
+.loco-notice {
+  background: #eef2f9;
+  border: 1px solid #c3d0e8;
+  color: var(--navy);
+  font-size: 0.8rem;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-fieldset {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.form-legend {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0 6px;
+}
+
+/* ---- Utility ---- */
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--navy-light);
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.link-btn:hover {
+  color: var(--navy);
+}
+
+.login-back-link {
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* ---- Footer ---- */
+.login-footer {
+  background: var(--navy);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 12px;
+  border-top: 3px solid #d4a017;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 600px) {
+  .login-card {
+    padding: 20px 16px;
+  }
+
+  .role-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .role-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

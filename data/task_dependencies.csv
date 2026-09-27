@@ -1,0 +1,131 @@
+dependency_id,predecessor_task,successor_task,dependency_type,mandatory,minimum_gap_minutes,reason
+DEP-0001,Track Inspection,Rail Replacement,Pre-requisite Inspection,1,30,USFD inspection or track patrol must verify fracture severity before replacement
+DEP-0002,Track Inspection,Sleeper Replacement,Defect Confirmation,1,20,Inspection team marks defective concrete sleepers and sleeper count
+DEP-0003,Track Inspection,Track Tamping,Geometry Survey,1,45,Track geometry car survey outputs realignment parameters for tamping machine
+DEP-0004,Track Inspection,Ballast Cleaning,Screening Audit,1,60,Ballast sampling determines fouled ballast percentage before BCM deployment
+DEP-0005,Rail Replacement,Track Tamping,Post-Renewal Stabilization,1,60,Tamping and dynamic track stabilization required immediately after rail insertion
+DEP-0006,Sleeper Replacement,Track Tamping,Ballast Bed Packing,1,45,Tamping machine must pack ballast under freshly inserted PSC sleepers
+DEP-0007,Ballast Cleaning,Track Tamping,Post-Screening Tamping,1,60,Tamping required to lift and align track after ballast screening
+DEP-0008,Track Tamping,Points & Crossing Maintenance,Turnout Lead Alignment,0,30,Turnout approach tamping should precede precision switch adjustment
+DEP-0009,Rail Replacement,Points & Crossing Maintenance,Switch Rail Reconditioning,0,45,Stock rail replacement must precede tongue rail fitting
+DEP-0010,Rail Grinding,Track Inspection,Post-Grind Quality Check,1,15,Miniprof optical rail profile measurement immediately post-grinding
+DEP-0011,Ballast Cleaning,Rail Grinding,Integrated Corridor Overhaul,0,90,Ballast cleaning followed by rail grinding during major block
+DEP-0012,OHE Inspection,OHE Wire Maintenance,Defect Localization,1,20,Inspection identifies exact mast location and span of catenary kink
+DEP-0013,OHE Inspection,Contact Wire Replacement,Wear Measurement,1,45,Micrometer measurement verifies residual contact wire cross-section < 74 sq mm
+DEP-0014,OHE Inspection,OHE Component Replacement,Flashover Identification,1,30,Thermo-vision / visual check locates cracked porcelain or polymer insulator
+DEP-0015,OHE Wire Maintenance,Contact Wire Replacement,Splice Failure Escalation,0,60,"If wire splicing is inadequate, full contact wire renewal is triggered"
+DEP-0016,OHE Component Replacement,OHE Inspection,Post-Installation Clearance,1,15,Tower wagon verifies cantilever bracket height and stagger post-replacement
+DEP-0017,Tower Wagon Inspection,OHE Component Replacement,Audit Finding Rectification,1,30,Routine tower wagon survey flags defective droppers or section insulators
+DEP-0018,Signal Inspection,Signal Maintenance,Fault Confirmation,1,15,Lux and voltage testing confirms degraded aspect before replacement
+DEP-0019,Signal Inspection,Point Machine Maintenance,Obstruction Failure Audit,1,20,Failed 5mm obstruction test necessitates point machine recalibration
+DEP-0020,Signal Inspection,Track Circuit Maintenance,Drop Voltage Verification,1,15,Track circuit relay drop voltage check verifies ballast leakage or bond failure
+DEP-0021,Signal Inspection,Axle Counter Maintenance,Sensor Calibration Check,1,30,Phase distortion survey flags wheel sensor re-alignment need
+DEP-0022,Point Machine Maintenance,Points & Crossing Maintenance,Joint P-Way & S&T Disconnection,1,30,Point machine disconnection requires joint attendance of Signal & P-Way
+DEP-0023,Track Circuit Maintenance,Rail Replacement,Glued Joint Bonding,1,45,"Post rail replacement, glued insulated joint and bond wires must be re-bonded"
+DEP-0024,Axle Counter Maintenance,Signal Maintenance,Interlocking Proving,1,20,Reset of axle counter must be proved in Electronic Interlocking before signal clearance
+DEP-0025,Signal Maintenance,Signal Inspection,Aspect Sighting Verification,1,15,Driver sighting distance and aspect color verification post-lamp change
+DEP-0026,OHE Inspection,Rail Replacement,OHE Slew Verification,0,30,Verify overhead wire alignment before track slew / heavy rail replacement
+DEP-0027,Track Tamping,Axle Counter Maintenance,Sensor Protection,1,15,Axle counter sensors must be demounted or marked before tamping machine passes
+DEP-0028,Ballast Cleaning,Track Circuit Maintenance,Bond Wire Protection,1,30,Track circuit jumper cables removed and protected before BCM cutter bar enters
+DEP-0029,Ballast Cleaning,OHE Wire Maintenance,OHE Height Preservation,0,45,Ballast excavating must maintain mandated minimum 5.5m contact wire height
+DEP-0030,Points & Crossing Maintenance,Point Machine Maintenance,Joint Switch & Motor Recommissioning,1,30,Joint sign-off between SSE/P-Way and SSE/Signal before reconnecting point
+DEP-0031,OHE Inspection,Track Inspection,Sequential Safety Protocol,1,60,Operational safety sequence: OHE Inspection establishes verified site clearance before Track Inspection.
+DEP-0032,OHE Component Replacement,Sleeper Replacement,Sequential Safety Protocol,1,90,Operational safety sequence: OHE Component Replacement establishes verified site clearance before Sleeper Replacement.
+DEP-0033,Track Tamping,Tower Wagon Inspection,Sequential Safety Protocol,1,45,Operational safety sequence: Track Tamping establishes verified site clearance before Tower Wagon Inspection.
+DEP-0034,Axle Counter Maintenance,Sleeper Replacement,Sequential Safety Protocol,0,60,Operational safety sequence: Axle Counter Maintenance establishes verified site clearance before Sleeper Replacement.
+DEP-0035,Telecom Equipment Maintenance,Ballast Cleaning,Sequential Safety Protocol,1,30,Operational safety sequence: Telecom Equipment Maintenance establishes verified site clearance before Ballast Cleaning.
+DEP-0036,Point Machine Maintenance,Sleeper Replacement,Sequential Safety Protocol,0,30,Operational safety sequence: Point Machine Maintenance establishes verified site clearance before Sleeper Replacement.
+DEP-0037,OHE Component Replacement,Point Machine Maintenance,Sequential Safety Protocol,0,30,Operational safety sequence: OHE Component Replacement establishes verified site clearance before Point Machine Maintenance.
+DEP-0038,Telecom Equipment Maintenance,OHE Component Replacement,Sequential Safety Protocol,1,60,Operational safety sequence: Telecom Equipment Maintenance establishes verified site clearance before OHE Component Replacement.
+DEP-0039,Points & Crossing Maintenance,OHE Wire Maintenance,Sequential Safety Protocol,1,60,Operational safety sequence: Points & Crossing Maintenance establishes verified site clearance before OHE Wire Maintenance.
+DEP-0040,Signal Inspection,OHE Component Replacement,Sequential Safety Protocol,1,120,Operational safety sequence: Signal Inspection establishes verified site clearance before OHE Component Replacement.
+DEP-0041,Axle Counter Maintenance,Point Machine Maintenance,Sequential Safety Protocol,0,90,Operational safety sequence: Axle Counter Maintenance establishes verified site clearance before Point Machine Maintenance.
+DEP-0042,Points & Crossing Maintenance,Track Tamping,Sequential Safety Protocol,0,30,Operational safety sequence: Points & Crossing Maintenance establishes verified site clearance before Track Tamping.
+DEP-0043,Points & Crossing Maintenance,Tower Wagon Inspection,Sequential Safety Protocol,1,30,Operational safety sequence: Points & Crossing Maintenance establishes verified site clearance before Tower Wagon Inspection.
+DEP-0044,Point Machine Maintenance,Rail Replacement,Sequential Safety Protocol,0,120,Operational safety sequence: Point Machine Maintenance establishes verified site clearance before Rail Replacement.
+DEP-0045,Rail Replacement,Axle Counter Maintenance,Sequential Safety Protocol,0,45,Operational safety sequence: Rail Replacement establishes verified site clearance before Axle Counter Maintenance.
+DEP-0046,Sleeper Replacement,OHE Inspection,Sequential Safety Protocol,0,120,Operational safety sequence: Sleeper Replacement establishes verified site clearance before OHE Inspection.
+DEP-0047,Contact Wire Replacement,Track Inspection,Sequential Safety Protocol,0,90,Operational safety sequence: Contact Wire Replacement establishes verified site clearance before Track Inspection.
+DEP-0048,Track Inspection,Contact Wire Replacement,Sequential Safety Protocol,0,30,Operational safety sequence: Track Inspection establishes verified site clearance before Contact Wire Replacement.
+DEP-0049,Points & Crossing Maintenance,Axle Counter Maintenance,Sequential Safety Protocol,0,45,Operational safety sequence: Points & Crossing Maintenance establishes verified site clearance before Axle Counter Maintenance.
+DEP-0050,OHE Inspection,Ballast Cleaning,Sequential Safety Protocol,0,15,Operational safety sequence: OHE Inspection establishes verified site clearance before Ballast Cleaning.
+DEP-0051,Rail Grinding,Telecom Equipment Maintenance,Sequential Safety Protocol,1,15,Operational safety sequence: Rail Grinding establishes verified site clearance before Telecom Equipment Maintenance.
+DEP-0052,Track Inspection,Point Machine Maintenance,Sequential Safety Protocol,1,45,Operational safety sequence: Track Inspection establishes verified site clearance before Point Machine Maintenance.
+DEP-0053,Track Circuit Maintenance,Track Tamping,Sequential Safety Protocol,0,30,Operational safety sequence: Track Circuit Maintenance establishes verified site clearance before Track Tamping.
+DEP-0054,OHE Inspection,Signal Inspection,Sequential Safety Protocol,0,90,Operational safety sequence: OHE Inspection establishes verified site clearance before Signal Inspection.
+DEP-0055,OHE Component Replacement,OHE Wire Maintenance,Sequential Safety Protocol,0,30,Operational safety sequence: OHE Component Replacement establishes verified site clearance before OHE Wire Maintenance.
+DEP-0056,OHE Component Replacement,Contact Wire Replacement,Sequential Safety Protocol,0,60,Operational safety sequence: OHE Component Replacement establishes verified site clearance before Contact Wire Replacement.
+DEP-0057,Rail Grinding,OHE Inspection,Sequential Safety Protocol,1,15,Operational safety sequence: Rail Grinding establishes verified site clearance before OHE Inspection.
+DEP-0058,Track Inspection,Telecom Equipment Maintenance,Sequential Safety Protocol,1,45,Operational safety sequence: Track Inspection establishes verified site clearance before Telecom Equipment Maintenance.
+DEP-0059,Sleeper Replacement,Ballast Cleaning,Sequential Safety Protocol,1,15,Operational safety sequence: Sleeper Replacement establishes verified site clearance before Ballast Cleaning.
+DEP-0060,Rail Grinding,Signal Maintenance,Sequential Safety Protocol,0,60,Operational safety sequence: Rail Grinding establishes verified site clearance before Signal Maintenance.
+DEP-0061,Track Tamping,Track Circuit Maintenance,Sequential Safety Protocol,0,30,Operational safety sequence: Track Tamping establishes verified site clearance before Track Circuit Maintenance.
+DEP-0062,Rail Replacement,Rail Grinding,Sequential Safety Protocol,1,90,Operational safety sequence: Rail Replacement establishes verified site clearance before Rail Grinding.
+DEP-0063,Tower Wagon Inspection,Sleeper Replacement,Sequential Safety Protocol,0,45,Operational safety sequence: Tower Wagon Inspection establishes verified site clearance before Sleeper Replacement.
+DEP-0064,OHE Inspection,Rail Grinding,Sequential Safety Protocol,0,60,Operational safety sequence: OHE Inspection establishes verified site clearance before Rail Grinding.
+DEP-0065,Tower Wagon Inspection,Track Tamping,Sequential Safety Protocol,1,15,Operational safety sequence: Tower Wagon Inspection establishes verified site clearance before Track Tamping.
+DEP-0066,Telecom Equipment Maintenance,Track Inspection,Sequential Safety Protocol,0,15,Operational safety sequence: Telecom Equipment Maintenance establishes verified site clearance before Track Inspection.
+DEP-0067,Track Tamping,OHE Component Replacement,Sequential Safety Protocol,0,45,Operational safety sequence: Track Tamping establishes verified site clearance before OHE Component Replacement.
+DEP-0068,Ballast Cleaning,Sleeper Replacement,Sequential Safety Protocol,1,30,Operational safety sequence: Ballast Cleaning establishes verified site clearance before Sleeper Replacement.
+DEP-0069,Rail Replacement,OHE Inspection,Sequential Safety Protocol,0,45,Operational safety sequence: Rail Replacement establishes verified site clearance before OHE Inspection.
+DEP-0070,Contact Wire Replacement,Tower Wagon Inspection,Sequential Safety Protocol,1,60,Operational safety sequence: Contact Wire Replacement establishes verified site clearance before Tower Wagon Inspection.
+DEP-0071,Sleeper Replacement,Track Inspection,Sequential Safety Protocol,1,90,Operational safety sequence: Sleeper Replacement establishes verified site clearance before Track Inspection.
+DEP-0072,Rail Replacement,Track Inspection,Sequential Safety Protocol,0,30,Operational safety sequence: Rail Replacement establishes verified site clearance before Track Inspection.
+DEP-0073,Track Tamping,Signal Maintenance,Sequential Safety Protocol,1,15,Operational safety sequence: Track Tamping establishes verified site clearance before Signal Maintenance.
+DEP-0074,Contact Wire Replacement,Point Machine Maintenance,Sequential Safety Protocol,0,30,Operational safety sequence: Contact Wire Replacement establishes verified site clearance before Point Machine Maintenance.
+DEP-0075,Track Circuit Maintenance,Points & Crossing Maintenance,Sequential Safety Protocol,0,60,Operational safety sequence: Track Circuit Maintenance establishes verified site clearance before Points & Crossing Maintenance.
+DEP-0076,Track Tamping,Contact Wire Replacement,Sequential Safety Protocol,0,60,Operational safety sequence: Track Tamping establishes verified site clearance before Contact Wire Replacement.
+DEP-0077,Ballast Cleaning,Point Machine Maintenance,Sequential Safety Protocol,0,15,Operational safety sequence: Ballast Cleaning establishes verified site clearance before Point Machine Maintenance.
+DEP-0078,Tower Wagon Inspection,Point Machine Maintenance,Sequential Safety Protocol,1,60,Operational safety sequence: Tower Wagon Inspection establishes verified site clearance before Point Machine Maintenance.
+DEP-0079,Axle Counter Maintenance,Track Circuit Maintenance,Sequential Safety Protocol,0,45,Operational safety sequence: Axle Counter Maintenance establishes verified site clearance before Track Circuit Maintenance.
+DEP-0080,OHE Wire Maintenance,Track Tamping,Sequential Safety Protocol,1,60,Operational safety sequence: OHE Wire Maintenance establishes verified site clearance before Track Tamping.
+DEP-0081,OHE Wire Maintenance,OHE Component Replacement,Sequential Safety Protocol,1,15,Operational safety sequence: OHE Wire Maintenance establishes verified site clearance before OHE Component Replacement.
+DEP-0082,Track Circuit Maintenance,Signal Inspection,Sequential Safety Protocol,0,120,Operational safety sequence: Track Circuit Maintenance establishes verified site clearance before Signal Inspection.
+DEP-0083,Signal Maintenance,Tower Wagon Inspection,Sequential Safety Protocol,1,15,Operational safety sequence: Signal Maintenance establishes verified site clearance before Tower Wagon Inspection.
+DEP-0084,Sleeper Replacement,Track Circuit Maintenance,Sequential Safety Protocol,1,30,Operational safety sequence: Sleeper Replacement establishes verified site clearance before Track Circuit Maintenance.
+DEP-0085,Axle Counter Maintenance,OHE Inspection,Sequential Safety Protocol,1,15,Operational safety sequence: Axle Counter Maintenance establishes verified site clearance before OHE Inspection.
+DEP-0086,Ballast Cleaning,Signal Maintenance,Sequential Safety Protocol,1,60,Operational safety sequence: Ballast Cleaning establishes verified site clearance before Signal Maintenance.
+DEP-0087,Points & Crossing Maintenance,OHE Component Replacement,Sequential Safety Protocol,1,60,Operational safety sequence: Points & Crossing Maintenance establishes verified site clearance before OHE Component Replacement.
+DEP-0088,Axle Counter Maintenance,Rail Grinding,Sequential Safety Protocol,0,30,Operational safety sequence: Axle Counter Maintenance establishes verified site clearance before Rail Grinding.
+DEP-0089,OHE Inspection,Track Circuit Maintenance,Sequential Safety Protocol,0,45,Operational safety sequence: OHE Inspection establishes verified site clearance before Track Circuit Maintenance.
+DEP-0090,Point Machine Maintenance,Tower Wagon Inspection,Sequential Safety Protocol,0,30,Operational safety sequence: Point Machine Maintenance establishes verified site clearance before Tower Wagon Inspection.
+DEP-0091,Rail Replacement,Point Machine Maintenance,Sequential Safety Protocol,0,15,Operational safety sequence: Rail Replacement establishes verified site clearance before Point Machine Maintenance.
+DEP-0092,Track Inspection,OHE Wire Maintenance,Sequential Safety Protocol,0,120,Operational safety sequence: Track Inspection establishes verified site clearance before OHE Wire Maintenance.
+DEP-0093,Rail Replacement,Tower Wagon Inspection,Sequential Safety Protocol,1,45,Operational safety sequence: Rail Replacement establishes verified site clearance before Tower Wagon Inspection.
+DEP-0094,Signal Maintenance,Rail Replacement,Sequential Safety Protocol,1,120,Operational safety sequence: Signal Maintenance establishes verified site clearance before Rail Replacement.
+DEP-0095,Rail Replacement,OHE Component Replacement,Sequential Safety Protocol,0,90,Operational safety sequence: Rail Replacement establishes verified site clearance before OHE Component Replacement.
+DEP-0096,Ballast Cleaning,OHE Component Replacement,Sequential Safety Protocol,1,60,Operational safety sequence: Ballast Cleaning establishes verified site clearance before OHE Component Replacement.
+DEP-0097,Rail Replacement,Telecom Equipment Maintenance,Sequential Safety Protocol,0,60,Operational safety sequence: Rail Replacement establishes verified site clearance before Telecom Equipment Maintenance.
+DEP-0098,Axle Counter Maintenance,Telecom Equipment Maintenance,Sequential Safety Protocol,1,90,Operational safety sequence: Axle Counter Maintenance establishes verified site clearance before Telecom Equipment Maintenance.
+DEP-0099,Tower Wagon Inspection,Ballast Cleaning,Sequential Safety Protocol,0,60,Operational safety sequence: Tower Wagon Inspection establishes verified site clearance before Ballast Cleaning.
+DEP-0100,Track Circuit Maintenance,Point Machine Maintenance,Sequential Safety Protocol,1,45,Operational safety sequence: Track Circuit Maintenance establishes verified site clearance before Point Machine Maintenance.
+DEP-0101,Ballast Cleaning,Rail Replacement,Sequential Safety Protocol,0,90,Operational safety sequence: Ballast Cleaning establishes verified site clearance before Rail Replacement.
+DEP-0102,Tower Wagon Inspection,Signal Maintenance,Sequential Safety Protocol,0,120,Operational safety sequence: Tower Wagon Inspection establishes verified site clearance before Signal Maintenance.
+DEP-0103,Points & Crossing Maintenance,Contact Wire Replacement,Sequential Safety Protocol,0,60,Operational safety sequence: Points & Crossing Maintenance establishes verified site clearance before Contact Wire Replacement.
+DEP-0104,OHE Inspection,Telecom Equipment Maintenance,Sequential Safety Protocol,0,120,Operational safety sequence: OHE Inspection establishes verified site clearance before Telecom Equipment Maintenance.
+DEP-0105,Ballast Cleaning,Telecom Equipment Maintenance,Sequential Safety Protocol,1,60,Operational safety sequence: Ballast Cleaning establishes verified site clearance before Telecom Equipment Maintenance.
+DEP-0106,Telecom Equipment Maintenance,Signal Maintenance,Sequential Safety Protocol,0,30,Operational safety sequence: Telecom Equipment Maintenance establishes verified site clearance before Signal Maintenance.
+DEP-0107,Axle Counter Maintenance,Rail Replacement,Sequential Safety Protocol,1,90,Operational safety sequence: Axle Counter Maintenance establishes verified site clearance before Rail Replacement.
+DEP-0108,Track Tamping,Rail Grinding,Sequential Safety Protocol,0,90,Operational safety sequence: Track Tamping establishes verified site clearance before Rail Grinding.
+DEP-0109,OHE Component Replacement,Telecom Equipment Maintenance,Sequential Safety Protocol,1,120,Operational safety sequence: OHE Component Replacement establishes verified site clearance before Telecom Equipment Maintenance.
+DEP-0110,Contact Wire Replacement,Sleeper Replacement,Sequential Safety Protocol,0,15,Operational safety sequence: Contact Wire Replacement establishes verified site clearance before Sleeper Replacement.
+DEP-0111,Tower Wagon Inspection,Points & Crossing Maintenance,Sequential Safety Protocol,0,120,Operational safety sequence: Tower Wagon Inspection establishes verified site clearance before Points & Crossing Maintenance.
+DEP-0112,Track Tamping,Signal Inspection,Sequential Safety Protocol,0,30,Operational safety sequence: Track Tamping establishes verified site clearance before Signal Inspection.
+DEP-0113,Ballast Cleaning,Points & Crossing Maintenance,Sequential Safety Protocol,0,120,Operational safety sequence: Ballast Cleaning establishes verified site clearance before Points & Crossing Maintenance.
+DEP-0114,Track Inspection,Axle Counter Maintenance,Sequential Safety Protocol,0,120,Operational safety sequence: Track Inspection establishes verified site clearance before Axle Counter Maintenance.
+DEP-0115,OHE Wire Maintenance,Signal Inspection,Sequential Safety Protocol,1,45,Operational safety sequence: OHE Wire Maintenance establishes verified site clearance before Signal Inspection.
+DEP-0116,Signal Maintenance,Points & Crossing Maintenance,Sequential Safety Protocol,1,15,Operational safety sequence: Signal Maintenance establishes verified site clearance before Points & Crossing Maintenance.
+DEP-0117,Track Tamping,Point Machine Maintenance,Sequential Safety Protocol,0,60,Operational safety sequence: Track Tamping establishes verified site clearance before Point Machine Maintenance.
+DEP-0118,Track Circuit Maintenance,OHE Inspection,Sequential Safety Protocol,1,30,Operational safety sequence: Track Circuit Maintenance establishes verified site clearance before OHE Inspection.
+DEP-0119,Tower Wagon Inspection,Rail Grinding,Sequential Safety Protocol,0,60,Operational safety sequence: Tower Wagon Inspection establishes verified site clearance before Rail Grinding.
+DEP-0120,Points & Crossing Maintenance,Signal Inspection,Sequential Safety Protocol,0,120,Operational safety sequence: Points & Crossing Maintenance establishes verified site clearance before Signal Inspection.
+DEP-0121,Point Machine Maintenance,Axle Counter Maintenance,Sequential Safety Protocol,1,30,Operational safety sequence: Point Machine Maintenance establishes verified site clearance before Axle Counter Maintenance.
+DEP-0122,Rail Grinding,Track Tamping,Sequential Safety Protocol,1,60,Operational safety sequence: Rail Grinding establishes verified site clearance before Track Tamping.
+DEP-0123,OHE Wire Maintenance,OHE Inspection,Sequential Safety Protocol,0,120,Operational safety sequence: OHE Wire Maintenance establishes verified site clearance before OHE Inspection.
+DEP-0124,Ballast Cleaning,Track Inspection,Sequential Safety Protocol,1,60,Operational safety sequence: Ballast Cleaning establishes verified site clearance before Track Inspection.
+DEP-0125,Point Machine Maintenance,OHE Component Replacement,Sequential Safety Protocol,0,15,Operational safety sequence: Point Machine Maintenance establishes verified site clearance before OHE Component Replacement.
+DEP-0126,Signal Inspection,Tower Wagon Inspection,Sequential Safety Protocol,1,45,Operational safety sequence: Signal Inspection establishes verified site clearance before Tower Wagon Inspection.
+DEP-0127,OHE Inspection,Tower Wagon Inspection,Sequential Safety Protocol,0,30,Operational safety sequence: OHE Inspection establishes verified site clearance before Tower Wagon Inspection.
+DEP-0128,Ballast Cleaning,Axle Counter Maintenance,Sequential Safety Protocol,1,30,Operational safety sequence: Ballast Cleaning establishes verified site clearance before Axle Counter Maintenance.
+DEP-0129,Ballast Cleaning,Contact Wire Replacement,Sequential Safety Protocol,1,60,Operational safety sequence: Ballast Cleaning establishes verified site clearance before Contact Wire Replacement.
+DEP-0130,Signal Maintenance,OHE Component Replacement,Sequential Safety Protocol,0,90,Operational safety sequence: Signal Maintenance establishes verified site clearance before OHE Component Replacement.

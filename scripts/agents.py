@@ -42,15 +42,16 @@ def log_action(actor, action, details=""):
     conn.close()
 
 
-def notify(recipient_role, message, category="general", audience="internal", conn=None):
+def notify(recipient_role, message, category="general", audience="internal", conn=None, **kwargs):
     close_after = False
     if conn is None:
         conn = get_agent_db()
         close_after = True
+    cat = kwargs.get("msg_type", category)
     conn.execute(
         "INSERT INTO notifications (recipient_role, message, created_at, category, audience) "
         "VALUES (?, ?, ?, ?, ?)",
-        (recipient_role, message, datetime.now().isoformat(), category, audience)
+        (recipient_role, message, datetime.now().isoformat(), cat, audience)
     )
     conn.commit()
     if close_after:

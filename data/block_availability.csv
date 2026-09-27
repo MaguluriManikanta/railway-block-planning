@@ -1,0 +1,651 @@
+block_id,section_id,date,start_time,end_time,block_type,available_duration_minutes,existing_status,source,remarks
+BLK-00001,Secunderabad-SEC-05,2026-10-02,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00002,Vijayawada-SEC-04,2026-10-11,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Sunday Mega Integrated Block).
+BLK-00003,Vijayawada-SEC-06,2026-09-10,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00004,Guntakal-SEC-07,2026-10-21,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00005,Guntur-SEC-07,2026-09-28,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-07 (Traction Power Block Window).
+BLK-00006,Hyderabad-SEC-05,2026-10-09,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Night Maintenance Window).
+BLK-00007,Guntur-SEC-05,2026-09-06,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00008,Guntur-SEC-06,2026-10-01,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-06 (Sunday Mega Integrated Block).
+BLK-00009,Vijayawada-SEC-07,2026-09-04,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-07 (Mid-Day Integrated Window).
+BLK-00010,Guntakal-SEC-05,2026-09-17,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-05 (Mid-Day Integrated Window).
+BLK-00011,Hyderabad-SEC-08,2026-10-11,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-08 (Sunday Mega Integrated Block).
+BLK-00012,Guntakal-SEC-04,2026-09-16,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-04 (Mid-Day Integrated Window).
+BLK-00013,Hyderabad-SEC-04,2026-09-17,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-04 (Sunday Mega Integrated Block).
+BLK-00014,Secunderabad-SEC-01,2026-09-08,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-01 (Night Maintenance Window).
+BLK-00015,Vijayawada-SEC-01,2026-09-19,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00016,Secunderabad-SEC-08,2026-10-06,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-08 (Traction Power Block Window).
+BLK-00017,Guntur-SEC-07,2026-10-09,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-07 (Sunday Mega Integrated Block).
+BLK-00018,Guntur-SEC-05,2026-10-06,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-05 (Sunday Mega Integrated Block).
+BLK-00019,Guntakal-SEC-05,2026-09-04,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-05 (Mid-Day Integrated Window).
+BLK-00020,Secunderabad-SEC-08,2026-09-02,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-08 (Early Morning Routine Block).
+BLK-00021,Hyderabad-SEC-06,2026-09-29,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-06 (Mid-Day Integrated Window).
+BLK-00022,Guntakal-SEC-08,2026-10-16,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-08 (Early Morning Routine Block).
+BLK-00023,Guntakal-SEC-02,2026-10-17,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00024,Vijayawada-SEC-04,2026-10-11,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-04 (Night Maintenance Window).
+BLK-00025,Secunderabad-SEC-01,2026-09-04,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-01 (Mid-Day Integrated Window).
+BLK-00026,Hyderabad-SEC-08,2026-09-07,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-08 (Mid-Day Integrated Window).
+BLK-00027,Guntur-SEC-03,2026-09-08,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-03 (Traction Power Block Window).
+BLK-00028,Secunderabad-SEC-05,2026-09-13,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-05 (Mid-Day Integrated Window).
+BLK-00029,Hyderabad-SEC-05,2026-10-03,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Night Maintenance Window).
+BLK-00030,Vijayawada-SEC-08,2026-10-19,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-08 (Night Maintenance Window).
+BLK-00031,Hyderabad-SEC-02,2026-10-10,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-02 (Traction Power Block Window).
+BLK-00032,Guntur-SEC-08,2026-10-12,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00033,Secunderabad-SEC-02,2026-10-02,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-02 (Sunday Mega Integrated Block).
+BLK-00034,Secunderabad-SEC-05,2026-10-10,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-05 (Night Maintenance Window).
+BLK-00035,Secunderabad-SEC-03,2026-09-30,01:00,04:30,LINE_BLOCK,210,Cancelled,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-03 (Night Maintenance Window).
+BLK-00036,Guntakal-SEC-02,2026-09-06,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00037,Vijayawada-SEC-02,2026-09-17,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-02 (Mid-Day Integrated Window).
+BLK-00038,Guntur-SEC-07,2026-10-05,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-07 (Mid-Day Integrated Window).
+BLK-00039,Guntakal-SEC-06,2026-09-13,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00040,Vijayawada-SEC-01,2026-09-29,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-01 (Traction Power Block Window).
+BLK-00041,Guntakal-SEC-05,2026-09-05,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-05 (Early Morning Routine Block).
+BLK-00042,Guntur-SEC-03,2026-09-11,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-03 (Early Morning Routine Block).
+BLK-00043,Secunderabad-SEC-08,2026-10-16,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-08 (Traction Power Block Window).
+BLK-00044,Vijayawada-SEC-05,2026-09-12,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-05 (Sunday Mega Integrated Block).
+BLK-00045,Guntur-SEC-02,2026-09-02,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-02 (Sunday Mega Integrated Block).
+BLK-00046,Guntur-SEC-07,2026-10-04,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-07 (Early Morning Routine Block).
+BLK-00047,Hyderabad-SEC-07,2026-10-19,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-07 (Night Maintenance Window).
+BLK-00048,Guntakal-SEC-02,2026-09-16,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00049,Secunderabad-SEC-07,2026-09-03,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-07 (Early Morning Routine Block).
+BLK-00050,Vijayawada-SEC-03,2026-09-16,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Sunday Mega Integrated Block).
+BLK-00051,Guntakal-SEC-07,2026-10-12,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-07 (Traction Power Block Window).
+BLK-00052,Secunderabad-SEC-06,2026-10-10,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-06 (Traction Power Block Window).
+BLK-00053,Secunderabad-SEC-01,2026-10-07,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00054,Guntur-SEC-05,2026-09-05,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-05 (Mid-Day Integrated Window).
+BLK-00055,Vijayawada-SEC-04,2026-10-06,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Mid-Day Integrated Window).
+BLK-00056,Hyderabad-SEC-02,2026-10-21,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-02 (Sunday Mega Integrated Block).
+BLK-00057,Guntur-SEC-07,2026-10-04,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00058,Guntur-SEC-05,2026-10-05,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00059,Vijayawada-SEC-04,2026-09-14,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Mid-Day Integrated Window).
+BLK-00060,Vijayawada-SEC-06,2026-09-15,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-06 (Night Maintenance Window).
+BLK-00061,Vijayawada-SEC-01,2026-10-18,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-01 (Traction Power Block Window).
+BLK-00062,Secunderabad-SEC-08,2026-10-13,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-08 (Traction Power Block Window).
+BLK-00063,Vijayawada-SEC-07,2026-10-20,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-07 (Night Maintenance Window).
+BLK-00064,Guntakal-SEC-07,2026-09-07,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-07 (Mid-Day Integrated Window).
+BLK-00065,Guntur-SEC-08,2026-09-10,09:00,14:00,INTEGRATED_BLOCK,300,Utilized,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-08 (Sunday Mega Integrated Block).
+BLK-00066,Guntur-SEC-07,2026-09-25,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-07 (Night Maintenance Window).
+BLK-00067,Secunderabad-SEC-04,2026-10-11,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-04 (Night Maintenance Window).
+BLK-00068,Vijayawada-SEC-01,2026-09-30,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-01 (Mid-Day Integrated Window).
+BLK-00069,Guntur-SEC-01,2026-09-02,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-01 (Night Maintenance Window).
+BLK-00070,Hyderabad-SEC-07,2026-10-02,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-07 (Sunday Mega Integrated Block).
+BLK-00071,Guntur-SEC-04,2026-09-09,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-04 (Traction Power Block Window).
+BLK-00072,Guntakal-SEC-05,2026-09-29,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-05 (Traction Power Block Window).
+BLK-00073,Guntur-SEC-02,2026-10-14,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-02 (Night Maintenance Window).
+BLK-00074,Guntakal-SEC-01,2026-09-19,09:00,14:00,INTEGRATED_BLOCK,300,Utilized,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-01 (Sunday Mega Integrated Block).
+BLK-00075,Guntur-SEC-05,2026-10-15,09:00,14:00,INTEGRATED_BLOCK,300,Cancelled,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-05 (Sunday Mega Integrated Block).
+BLK-00076,Secunderabad-SEC-03,2026-09-04,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-03 (Afternoon Freight Gap Shadow).
+BLK-00077,Secunderabad-SEC-04,2026-10-08,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-04 (Night Maintenance Window).
+BLK-00078,Vijayawada-SEC-04,2026-09-06,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00079,Guntur-SEC-01,2026-09-14,11:30,14:00,POWER_BLOCK,150,Utilized,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-01 (Traction Power Block Window).
+BLK-00080,Guntakal-SEC-06,2026-09-22,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-06 (Sunday Mega Integrated Block).
+BLK-00081,Hyderabad-SEC-08,2026-09-28,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-08 (Sunday Mega Integrated Block).
+BLK-00082,Guntakal-SEC-06,2026-10-14,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-06 (Night Maintenance Window).
+BLK-00083,Secunderabad-SEC-04,2026-10-05,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-04 (Traction Power Block Window).
+BLK-00084,Guntur-SEC-01,2026-10-05,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-01 (Traction Power Block Window).
+BLK-00085,Guntur-SEC-08,2026-09-02,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-08 (Sunday Mega Integrated Block).
+BLK-00086,Hyderabad-SEC-01,2026-09-01,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-01 (Night Maintenance Window).
+BLK-00087,Vijayawada-SEC-07,2026-09-28,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00088,Vijayawada-SEC-03,2026-10-05,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-03 (Traction Power Block Window).
+BLK-00089,Vijayawada-SEC-04,2026-09-22,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00090,Guntur-SEC-05,2026-10-19,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-05 (Traction Power Block Window).
+BLK-00091,Hyderabad-SEC-03,2026-09-29,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-03 (Traction Power Block Window).
+BLK-00092,Guntur-SEC-07,2026-09-01,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-07 (Night Maintenance Window).
+BLK-00093,Secunderabad-SEC-02,2026-09-17,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00094,Vijayawada-SEC-05,2026-10-06,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00095,Hyderabad-SEC-08,2026-10-03,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-08 (Sunday Mega Integrated Block).
+BLK-00096,Secunderabad-SEC-07,2026-09-17,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-07 (Mid-Day Integrated Window).
+BLK-00097,Guntur-SEC-07,2026-09-28,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00098,Hyderabad-SEC-08,2026-10-03,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-08 (Night Maintenance Window).
+BLK-00099,Guntur-SEC-01,2026-09-11,14:00,16:30,SHADOW_BLOCK,150,Cancelled,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00100,Guntakal-SEC-03,2026-09-18,02:00,05:00,LINE_BLOCK,180,Utilized,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-03 (Early Morning Routine Block).
+BLK-00101,Guntur-SEC-08,2026-09-28,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-08 (Early Morning Routine Block).
+BLK-00102,Secunderabad-SEC-04,2026-09-04,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00103,Secunderabad-SEC-03,2026-09-15,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-03 (Mid-Day Integrated Window).
+BLK-00104,Vijayawada-SEC-07,2026-10-18,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-07 (Early Morning Routine Block).
+BLK-00105,Guntur-SEC-07,2026-09-26,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-07 (Night Maintenance Window).
+BLK-00106,Hyderabad-SEC-07,2026-10-20,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-07 (Night Maintenance Window).
+BLK-00107,Vijayawada-SEC-05,2026-09-14,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-05 (Mid-Day Integrated Window).
+BLK-00108,Hyderabad-SEC-02,2026-09-15,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-02 (Mid-Day Integrated Window).
+BLK-00109,Vijayawada-SEC-07,2026-09-22,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-07 (Early Morning Routine Block).
+BLK-00110,Guntur-SEC-02,2026-09-20,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-02 (Mid-Day Integrated Window).
+BLK-00111,Guntur-SEC-05,2026-10-07,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00112,Guntakal-SEC-06,2026-09-13,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-06 (Sunday Mega Integrated Block).
+BLK-00113,Guntakal-SEC-08,2026-09-20,01:00,04:30,LINE_BLOCK,210,Utilized,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-08 (Night Maintenance Window).
+BLK-00114,Guntur-SEC-05,2026-09-09,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-05 (Sunday Mega Integrated Block).
+BLK-00115,Guntakal-SEC-04,2026-09-23,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00116,Hyderabad-SEC-05,2026-10-18,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Early Morning Routine Block).
+BLK-00117,Secunderabad-SEC-01,2026-09-09,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-01 (Early Morning Routine Block).
+BLK-00118,Vijayawada-SEC-01,2026-09-12,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-01 (Night Maintenance Window).
+BLK-00119,Guntur-SEC-07,2026-10-02,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-07 (Sunday Mega Integrated Block).
+BLK-00120,Guntakal-SEC-07,2026-10-20,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-07 (Mid-Day Integrated Window).
+BLK-00121,Vijayawada-SEC-03,2026-09-04,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Mid-Day Integrated Window).
+BLK-00122,Hyderabad-SEC-07,2026-10-17,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-07 (Sunday Mega Integrated Block).
+BLK-00123,Secunderabad-SEC-01,2026-09-23,02:00,05:00,LINE_BLOCK,180,Cancelled,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-01 (Early Morning Routine Block).
+BLK-00124,Vijayawada-SEC-05,2026-09-26,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-05 (Sunday Mega Integrated Block).
+BLK-00125,Hyderabad-SEC-04,2026-10-04,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-04 (Sunday Mega Integrated Block).
+BLK-00126,Hyderabad-SEC-03,2026-09-15,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-03 (Early Morning Routine Block).
+BLK-00127,Hyderabad-SEC-04,2026-10-06,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-04 (Early Morning Routine Block).
+BLK-00128,Guntur-SEC-06,2026-09-25,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-06 (Early Morning Routine Block).
+BLK-00129,Guntakal-SEC-03,2026-09-13,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-03 (Mid-Day Integrated Window).
+BLK-00130,Secunderabad-SEC-01,2026-10-17,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00131,Vijayawada-SEC-08,2026-10-12,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-08 (Mid-Day Integrated Window).
+BLK-00132,Guntur-SEC-05,2026-10-04,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00133,Hyderabad-SEC-06,2026-09-19,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-06 (Early Morning Routine Block).
+BLK-00134,Guntur-SEC-05,2026-10-06,11:30,14:00,POWER_BLOCK,150,Cancelled,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-05 (Traction Power Block Window).
+BLK-00135,Secunderabad-SEC-07,2026-09-24,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-07 (Night Maintenance Window).
+BLK-00136,Hyderabad-SEC-06,2026-09-13,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-06 (Night Maintenance Window).
+BLK-00137,Secunderabad-SEC-08,2026-09-15,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-08 (Traction Power Block Window).
+BLK-00138,Hyderabad-SEC-03,2026-09-18,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-03 (Afternoon Freight Gap Shadow).
+BLK-00139,Secunderabad-SEC-03,2026-10-07,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-03 (Traction Power Block Window).
+BLK-00140,Vijayawada-SEC-07,2026-09-25,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-07 (Early Morning Routine Block).
+BLK-00141,Secunderabad-SEC-02,2026-09-14,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-02 (Sunday Mega Integrated Block).
+BLK-00142,Secunderabad-SEC-03,2026-09-14,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-03 (Sunday Mega Integrated Block).
+BLK-00143,Guntakal-SEC-08,2026-09-06,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-08 (Early Morning Routine Block).
+BLK-00144,Secunderabad-SEC-05,2026-09-14,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-05 (Night Maintenance Window).
+BLK-00145,Secunderabad-SEC-03,2026-09-22,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-03 (Mid-Day Integrated Window).
+BLK-00146,Guntur-SEC-05,2026-09-21,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00147,Guntakal-SEC-03,2026-09-07,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-03 (Sunday Mega Integrated Block).
+BLK-00148,Vijayawada-SEC-06,2026-09-03,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-06 (Sunday Mega Integrated Block).
+BLK-00149,Guntakal-SEC-07,2026-09-22,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-07 (Night Maintenance Window).
+BLK-00150,Guntur-SEC-08,2026-09-13,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-08 (Traction Power Block Window).
+BLK-00151,Secunderabad-SEC-02,2026-09-28,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-02 (Mid-Day Integrated Window).
+BLK-00152,Vijayawada-SEC-05,2026-09-26,14:00,16:30,SHADOW_BLOCK,150,Cancelled,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00153,Guntur-SEC-01,2026-09-15,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-01 (Traction Power Block Window).
+BLK-00154,Guntakal-SEC-03,2026-10-19,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-03 (Sunday Mega Integrated Block).
+BLK-00155,Vijayawada-SEC-04,2026-10-15,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-04 (Traction Power Block Window).
+BLK-00156,Vijayawada-SEC-07,2026-10-11,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-07 (Night Maintenance Window).
+BLK-00157,Guntur-SEC-06,2026-09-15,14:00,16:30,SHADOW_BLOCK,150,Utilized,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00158,Guntakal-SEC-02,2026-10-07,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-02 (Traction Power Block Window).
+BLK-00159,Secunderabad-SEC-08,2026-10-03,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-08 (Mid-Day Integrated Window).
+BLK-00160,Secunderabad-SEC-05,2026-09-24,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-05 (Mid-Day Integrated Window).
+BLK-00161,Guntur-SEC-02,2026-10-17,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-02 (Night Maintenance Window).
+BLK-00162,Guntakal-SEC-03,2026-09-29,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-03 (Mid-Day Integrated Window).
+BLK-00163,Hyderabad-SEC-01,2026-10-01,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-01 (Sunday Mega Integrated Block).
+BLK-00164,Hyderabad-SEC-03,2026-09-23,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-03 (Early Morning Routine Block).
+BLK-00165,Secunderabad-SEC-03,2026-10-05,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-03 (Mid-Day Integrated Window).
+BLK-00166,Guntur-SEC-02,2026-10-04,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-02 (Early Morning Routine Block).
+BLK-00167,Guntur-SEC-07,2026-09-16,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-07 (Early Morning Routine Block).
+BLK-00168,Vijayawada-SEC-04,2026-10-17,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00169,Guntur-SEC-01,2026-09-26,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-01 (Sunday Mega Integrated Block).
+BLK-00170,Guntakal-SEC-04,2026-10-08,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-04 (Traction Power Block Window).
+BLK-00171,Secunderabad-SEC-04,2026-10-02,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-04 (Night Maintenance Window).
+BLK-00172,Guntur-SEC-04,2026-10-18,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-04 (Sunday Mega Integrated Block).
+BLK-00173,Guntur-SEC-07,2026-10-08,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-07 (Night Maintenance Window).
+BLK-00174,Guntur-SEC-08,2026-09-09,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-08 (Sunday Mega Integrated Block).
+BLK-00175,Hyderabad-SEC-03,2026-09-15,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-03 (Early Morning Routine Block).
+BLK-00176,Guntur-SEC-08,2026-10-09,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-08 (Early Morning Routine Block).
+BLK-00177,Secunderabad-SEC-05,2026-10-17,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-05 (Early Morning Routine Block).
+BLK-00178,Hyderabad-SEC-04,2026-09-24,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-04 (Sunday Mega Integrated Block).
+BLK-00179,Hyderabad-SEC-05,2026-10-07,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-05 (Mid-Day Integrated Window).
+BLK-00180,Guntur-SEC-05,2026-09-22,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-05 (Early Morning Routine Block).
+BLK-00181,Guntur-SEC-02,2026-09-27,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-02 (Early Morning Routine Block).
+BLK-00182,Vijayawada-SEC-03,2026-09-21,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Sunday Mega Integrated Block).
+BLK-00183,Guntakal-SEC-03,2026-10-07,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-03 (Night Maintenance Window).
+BLK-00184,Hyderabad-SEC-06,2026-09-30,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-06 (Traction Power Block Window).
+BLK-00185,Guntur-SEC-08,2026-10-11,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00186,Vijayawada-SEC-05,2026-09-21,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-05 (Mid-Day Integrated Window).
+BLK-00187,Secunderabad-SEC-04,2026-09-25,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-04 (Mid-Day Integrated Window).
+BLK-00188,Secunderabad-SEC-04,2026-09-05,11:30,14:00,POWER_BLOCK,150,Cancelled,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-04 (Traction Power Block Window).
+BLK-00189,Hyderabad-SEC-03,2026-09-07,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-03 (Afternoon Freight Gap Shadow).
+BLK-00190,Vijayawada-SEC-06,2026-10-17,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-06 (Traction Power Block Window).
+BLK-00191,Secunderabad-SEC-01,2026-09-02,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00192,Hyderabad-SEC-02,2026-09-11,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-02 (Mid-Day Integrated Window).
+BLK-00193,Guntakal-SEC-01,2026-10-02,14:00,16:30,SHADOW_BLOCK,150,Utilized,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00194,Secunderabad-SEC-07,2026-09-13,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-07 (Night Maintenance Window).
+BLK-00195,Hyderabad-SEC-02,2026-09-19,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-02 (Traction Power Block Window).
+BLK-00196,Hyderabad-SEC-04,2026-10-10,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-04 (Night Maintenance Window).
+BLK-00197,Guntakal-SEC-04,2026-10-02,01:00,04:30,LINE_BLOCK,210,Utilized,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-04 (Night Maintenance Window).
+BLK-00198,Guntakal-SEC-05,2026-10-05,11:30,14:00,POWER_BLOCK,150,Cancelled,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-05 (Traction Power Block Window).
+BLK-00199,Guntur-SEC-02,2026-10-19,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00200,Vijayawada-SEC-04,2026-09-20,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-04 (Early Morning Routine Block).
+BLK-00201,Guntur-SEC-07,2026-09-24,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-07 (Night Maintenance Window).
+BLK-00202,Guntakal-SEC-01,2026-09-17,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-01 (Night Maintenance Window).
+BLK-00203,Vijayawada-SEC-07,2026-09-18,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-07 (Early Morning Routine Block).
+BLK-00204,Hyderabad-SEC-03,2026-09-16,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-03 (Traction Power Block Window).
+BLK-00205,Hyderabad-SEC-04,2026-09-26,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-04 (Night Maintenance Window).
+BLK-00206,Hyderabad-SEC-05,2026-10-01,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-05 (Mid-Day Integrated Window).
+BLK-00207,Guntur-SEC-04,2026-10-17,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-04 (Night Maintenance Window).
+BLK-00208,Guntur-SEC-01,2026-10-17,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-01 (Night Maintenance Window).
+BLK-00209,Vijayawada-SEC-05,2026-10-15,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-05 (Early Morning Routine Block).
+BLK-00210,Guntur-SEC-08,2026-09-06,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-08 (Traction Power Block Window).
+BLK-00211,Hyderabad-SEC-03,2026-09-08,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-03 (Traction Power Block Window).
+BLK-00212,Guntakal-SEC-01,2026-09-20,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-01 (Sunday Mega Integrated Block).
+BLK-00213,Guntur-SEC-05,2026-10-02,02:00,05:00,LINE_BLOCK,180,Utilized,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-05 (Early Morning Routine Block).
+BLK-00214,Hyderabad-SEC-04,2026-09-24,01:00,04:30,LINE_BLOCK,210,Utilized,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-04 (Night Maintenance Window).
+BLK-00215,Guntur-SEC-07,2026-09-01,14:00,16:30,SHADOW_BLOCK,150,Cancelled,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00216,Guntakal-SEC-05,2026-10-13,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00217,Guntur-SEC-02,2026-10-15,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-02 (Night Maintenance Window).
+BLK-00218,Guntur-SEC-07,2026-09-22,09:00,14:00,INTEGRATED_BLOCK,300,Cancelled,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-07 (Sunday Mega Integrated Block).
+BLK-00219,Hyderabad-SEC-08,2026-09-10,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-08 (Early Morning Routine Block).
+BLK-00220,Vijayawada-SEC-05,2026-10-11,01:00,04:30,LINE_BLOCK,210,Cancelled,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-05 (Night Maintenance Window).
+BLK-00221,Vijayawada-SEC-03,2026-10-17,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-03 (Traction Power Block Window).
+BLK-00222,Vijayawada-SEC-07,2026-09-12,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-07 (Sunday Mega Integrated Block).
+BLK-00223,Vijayawada-SEC-01,2026-09-20,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-01 (Traction Power Block Window).
+BLK-00224,Hyderabad-SEC-05,2026-10-08,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00225,Guntur-SEC-01,2026-09-29,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00226,Secunderabad-SEC-02,2026-09-13,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-02 (Night Maintenance Window).
+BLK-00227,Hyderabad-SEC-01,2026-09-03,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00228,Guntakal-SEC-02,2026-10-05,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-02 (Traction Power Block Window).
+BLK-00229,Guntakal-SEC-04,2026-10-17,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-04 (Sunday Mega Integrated Block).
+BLK-00230,Secunderabad-SEC-06,2026-10-11,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-06 (Night Maintenance Window).
+BLK-00231,Guntakal-SEC-08,2026-09-18,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-08 (Traction Power Block Window).
+BLK-00232,Guntakal-SEC-07,2026-09-18,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-07 (Traction Power Block Window).
+BLK-00233,Hyderabad-SEC-05,2026-10-08,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Night Maintenance Window).
+BLK-00234,Guntur-SEC-04,2026-09-06,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-04 (Night Maintenance Window).
+BLK-00235,Secunderabad-SEC-03,2026-09-11,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-03 (Mid-Day Integrated Window).
+BLK-00236,Guntur-SEC-07,2026-09-25,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-07 (Early Morning Routine Block).
+BLK-00237,Vijayawada-SEC-05,2026-09-01,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-05 (Traction Power Block Window).
+BLK-00238,Vijayawada-SEC-07,2026-09-02,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-07 (Mid-Day Integrated Window).
+BLK-00239,Guntur-SEC-01,2026-10-19,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-01 (Sunday Mega Integrated Block).
+BLK-00240,Guntakal-SEC-02,2026-09-28,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-02 (Early Morning Routine Block).
+BLK-00241,Guntakal-SEC-05,2026-10-02,09:00,14:00,INTEGRATED_BLOCK,300,Utilized,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-05 (Sunday Mega Integrated Block).
+BLK-00242,Secunderabad-SEC-06,2026-09-06,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00243,Vijayawada-SEC-04,2026-10-19,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Mid-Day Integrated Window).
+BLK-00244,Vijayawada-SEC-08,2026-10-12,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-08 (Early Morning Routine Block).
+BLK-00245,Guntur-SEC-03,2026-09-07,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-03 (Sunday Mega Integrated Block).
+BLK-00246,Vijayawada-SEC-04,2026-09-20,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-04 (Night Maintenance Window).
+BLK-00247,Guntur-SEC-02,2026-09-29,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-02 (Sunday Mega Integrated Block).
+BLK-00248,Guntakal-SEC-07,2026-09-12,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00249,Guntur-SEC-05,2026-09-04,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-05 (Night Maintenance Window).
+BLK-00250,Secunderabad-SEC-02,2026-10-15,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-02 (Early Morning Routine Block).
+BLK-00251,Hyderabad-SEC-02,2026-09-22,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-02 (Sunday Mega Integrated Block).
+BLK-00252,Hyderabad-SEC-02,2026-10-07,11:30,14:00,POWER_BLOCK,150,Utilized,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-02 (Traction Power Block Window).
+BLK-00253,Secunderabad-SEC-02,2026-09-26,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-02 (Mid-Day Integrated Window).
+BLK-00254,Vijayawada-SEC-03,2026-09-06,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Mid-Day Integrated Window).
+BLK-00255,Guntur-SEC-06,2026-10-08,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-06 (Mid-Day Integrated Window).
+BLK-00256,Hyderabad-SEC-04,2026-09-02,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-04 (Night Maintenance Window).
+BLK-00257,Guntakal-SEC-03,2026-10-20,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-03 (Traction Power Block Window).
+BLK-00258,Vijayawada-SEC-02,2026-10-14,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-02 (Sunday Mega Integrated Block).
+BLK-00259,Vijayawada-SEC-03,2026-09-15,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-03 (Night Maintenance Window).
+BLK-00260,Vijayawada-SEC-04,2026-09-12,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Mid-Day Integrated Window).
+BLK-00261,Secunderabad-SEC-07,2026-09-23,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-07 (Mid-Day Integrated Window).
+BLK-00262,Guntakal-SEC-04,2026-09-23,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-04 (Sunday Mega Integrated Block).
+BLK-00263,Hyderabad-SEC-06,2026-10-10,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-06 (Mid-Day Integrated Window).
+BLK-00264,Guntakal-SEC-03,2026-10-03,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-03 (Early Morning Routine Block).
+BLK-00265,Guntakal-SEC-08,2026-09-10,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00266,Guntur-SEC-04,2026-10-21,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-04 (Traction Power Block Window).
+BLK-00267,Guntakal-SEC-05,2026-09-25,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-05 (Night Maintenance Window).
+BLK-00268,Secunderabad-SEC-07,2026-09-06,14:00,16:30,SHADOW_BLOCK,150,Utilized,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00269,Secunderabad-SEC-05,2026-10-17,01:00,04:30,LINE_BLOCK,210,Utilized,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-05 (Night Maintenance Window).
+BLK-00270,Hyderabad-SEC-07,2026-09-28,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00271,Guntakal-SEC-05,2026-09-21,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-05 (Night Maintenance Window).
+BLK-00272,Guntur-SEC-05,2026-09-08,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-05 (Night Maintenance Window).
+BLK-00273,Guntur-SEC-07,2026-09-08,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-07 (Early Morning Routine Block).
+BLK-00274,Secunderabad-SEC-02,2026-10-15,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00275,Secunderabad-SEC-07,2026-10-14,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-07 (Sunday Mega Integrated Block).
+BLK-00276,Vijayawada-SEC-05,2026-09-29,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-05 (Sunday Mega Integrated Block).
+BLK-00277,Vijayawada-SEC-02,2026-09-09,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00278,Vijayawada-SEC-04,2026-10-09,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-04 (Early Morning Routine Block).
+BLK-00279,Secunderabad-SEC-07,2026-09-09,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-07 (Early Morning Routine Block).
+BLK-00280,Secunderabad-SEC-06,2026-09-06,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-06 (Night Maintenance Window).
+BLK-00281,Hyderabad-SEC-02,2026-09-14,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-02 (Sunday Mega Integrated Block).
+BLK-00282,Secunderabad-SEC-06,2026-10-13,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-06 (Mid-Day Integrated Window).
+BLK-00283,Secunderabad-SEC-01,2026-09-17,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-01 (Early Morning Routine Block).
+BLK-00284,Guntur-SEC-06,2026-09-24,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-06 (Mid-Day Integrated Window).
+BLK-00285,Hyderabad-SEC-01,2026-09-17,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-01 (Night Maintenance Window).
+BLK-00286,Vijayawada-SEC-01,2026-09-10,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-01 (Traction Power Block Window).
+BLK-00287,Vijayawada-SEC-07,2026-09-19,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-07 (Mid-Day Integrated Window).
+BLK-00288,Hyderabad-SEC-07,2026-09-25,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-07 (Night Maintenance Window).
+BLK-00289,Vijayawada-SEC-03,2026-09-29,09:00,14:00,INTEGRATED_BLOCK,300,Utilized,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Sunday Mega Integrated Block).
+BLK-00290,Secunderabad-SEC-06,2026-09-02,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-06 (Traction Power Block Window).
+BLK-00291,Guntur-SEC-04,2026-10-06,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00292,Vijayawada-SEC-02,2026-09-21,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-02 (Early Morning Routine Block).
+BLK-00293,Vijayawada-SEC-05,2026-10-04,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-05 (Night Maintenance Window).
+BLK-00294,Guntur-SEC-07,2026-10-18,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-07 (Traction Power Block Window).
+BLK-00295,Guntur-SEC-04,2026-09-27,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00296,Secunderabad-SEC-01,2026-10-02,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-01 (Traction Power Block Window).
+BLK-00297,Guntur-SEC-07,2026-09-17,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-07 (Mid-Day Integrated Window).
+BLK-00298,Hyderabad-SEC-04,2026-10-03,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00299,Guntakal-SEC-06,2026-09-03,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-06 (Early Morning Routine Block).
+BLK-00300,Hyderabad-SEC-07,2026-10-13,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-07 (Sunday Mega Integrated Block).
+BLK-00301,Secunderabad-SEC-04,2026-09-19,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-04 (Early Morning Routine Block).
+BLK-00302,Guntakal-SEC-08,2026-09-01,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-08 (Mid-Day Integrated Window).
+BLK-00303,Secunderabad-SEC-03,2026-09-13,01:00,04:30,LINE_BLOCK,210,Utilized,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-03 (Night Maintenance Window).
+BLK-00304,Secunderabad-SEC-01,2026-10-21,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00305,Vijayawada-SEC-08,2026-10-08,09:00,14:00,INTEGRATED_BLOCK,300,Utilized,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-08 (Sunday Mega Integrated Block).
+BLK-00306,Hyderabad-SEC-05,2026-09-21,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Early Morning Routine Block).
+BLK-00307,Guntakal-SEC-01,2026-10-02,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-01 (Sunday Mega Integrated Block).
+BLK-00308,Guntakal-SEC-01,2026-09-09,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00309,Guntur-SEC-01,2026-09-16,14:00,16:30,SHADOW_BLOCK,150,Cancelled,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00310,Guntakal-SEC-01,2026-10-17,11:30,14:00,POWER_BLOCK,150,Cancelled,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-01 (Traction Power Block Window).
+BLK-00311,Secunderabad-SEC-02,2026-09-14,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-02 (Night Maintenance Window).
+BLK-00312,Vijayawada-SEC-07,2026-09-06,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00313,Vijayawada-SEC-01,2026-10-10,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-01 (Early Morning Routine Block).
+BLK-00314,Hyderabad-SEC-03,2026-10-06,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-03 (Night Maintenance Window).
+BLK-00315,Guntur-SEC-04,2026-09-09,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-04 (Mid-Day Integrated Window).
+BLK-00316,Vijayawada-SEC-08,2026-09-23,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-08 (Traction Power Block Window).
+BLK-00317,Vijayawada-SEC-03,2026-09-09,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-03 (Night Maintenance Window).
+BLK-00318,Hyderabad-SEC-05,2026-09-10,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Early Morning Routine Block).
+BLK-00319,Guntakal-SEC-04,2026-10-10,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-04 (Traction Power Block Window).
+BLK-00320,Hyderabad-SEC-05,2026-09-29,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-05 (Traction Power Block Window).
+BLK-00321,Secunderabad-SEC-01,2026-09-18,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-01 (Mid-Day Integrated Window).
+BLK-00322,Guntur-SEC-06,2026-10-12,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-06 (Night Maintenance Window).
+BLK-00323,Guntur-SEC-01,2026-10-06,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00324,Secunderabad-SEC-06,2026-10-06,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-06 (Traction Power Block Window).
+BLK-00325,Guntur-SEC-02,2026-09-25,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-02 (Night Maintenance Window).
+BLK-00326,Vijayawada-SEC-04,2026-09-01,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Sunday Mega Integrated Block).
+BLK-00327,Vijayawada-SEC-05,2026-09-10,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-05 (Night Maintenance Window).
+BLK-00328,Guntakal-SEC-03,2026-09-29,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-03 (Night Maintenance Window).
+BLK-00329,Hyderabad-SEC-07,2026-10-16,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-07 (Early Morning Routine Block).
+BLK-00330,Guntakal-SEC-03,2026-09-09,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-03 (Sunday Mega Integrated Block).
+BLK-00331,Hyderabad-SEC-06,2026-09-17,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-06 (Sunday Mega Integrated Block).
+BLK-00332,Hyderabad-SEC-06,2026-10-14,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-06 (Sunday Mega Integrated Block).
+BLK-00333,Secunderabad-SEC-07,2026-09-04,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-07 (Early Morning Routine Block).
+BLK-00334,Guntur-SEC-06,2026-09-03,14:00,16:30,SHADOW_BLOCK,150,Cancelled,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00335,Guntur-SEC-05,2026-09-15,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00336,Secunderabad-SEC-03,2026-10-01,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-03 (Sunday Mega Integrated Block).
+BLK-00337,Guntakal-SEC-08,2026-09-25,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-08 (Early Morning Routine Block).
+BLK-00338,Guntakal-SEC-05,2026-09-21,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-05 (Traction Power Block Window).
+BLK-00339,Secunderabad-SEC-02,2026-10-16,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-02 (Traction Power Block Window).
+BLK-00340,Secunderabad-SEC-05,2026-10-18,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-05 (Night Maintenance Window).
+BLK-00341,Guntur-SEC-01,2026-10-02,09:00,14:00,INTEGRATED_BLOCK,300,Cancelled,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-01 (Sunday Mega Integrated Block).
+BLK-00342,Vijayawada-SEC-08,2026-10-17,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-08 (Traction Power Block Window).
+BLK-00343,Secunderabad-SEC-07,2026-09-29,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-07 (Early Morning Routine Block).
+BLK-00344,Secunderabad-SEC-02,2026-09-15,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-02 (Traction Power Block Window).
+BLK-00345,Vijayawada-SEC-03,2026-09-01,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Mid-Day Integrated Window).
+BLK-00346,Guntur-SEC-02,2026-09-14,09:00,14:00,INTEGRATED_BLOCK,300,Utilized,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-02 (Sunday Mega Integrated Block).
+BLK-00347,Guntakal-SEC-02,2026-09-03,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-02 (Sunday Mega Integrated Block).
+BLK-00348,Secunderabad-SEC-02,2026-10-15,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-02 (Early Morning Routine Block).
+BLK-00349,Vijayawada-SEC-01,2026-09-24,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-01 (Sunday Mega Integrated Block).
+BLK-00350,Guntakal-SEC-03,2026-10-07,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-03 (Traction Power Block Window).
+BLK-00351,Guntur-SEC-04,2026-10-06,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-04 (Night Maintenance Window).
+BLK-00352,Hyderabad-SEC-08,2026-09-30,01:00,04:30,LINE_BLOCK,210,Cancelled,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-08 (Night Maintenance Window).
+BLK-00353,Vijayawada-SEC-03,2026-10-01,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-03 (Afternoon Freight Gap Shadow).
+BLK-00354,Secunderabad-SEC-03,2026-09-08,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-03 (Mid-Day Integrated Window).
+BLK-00355,Guntur-SEC-07,2026-09-24,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00356,Guntakal-SEC-08,2026-09-02,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-08 (Traction Power Block Window).
+BLK-00357,Secunderabad-SEC-08,2026-09-29,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00358,Guntakal-SEC-06,2026-10-17,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-06 (Early Morning Routine Block).
+BLK-00359,Guntur-SEC-04,2026-10-03,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-04 (Night Maintenance Window).
+BLK-00360,Secunderabad-SEC-04,2026-10-15,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-04 (Traction Power Block Window).
+BLK-00361,Guntur-SEC-06,2026-09-08,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-06 (Sunday Mega Integrated Block).
+BLK-00362,Hyderabad-SEC-03,2026-09-19,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-03 (Night Maintenance Window).
+BLK-00363,Guntur-SEC-05,2026-09-28,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-05 (Sunday Mega Integrated Block).
+BLK-00364,Hyderabad-SEC-03,2026-09-25,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-03 (Mid-Day Integrated Window).
+BLK-00365,Guntakal-SEC-02,2026-09-22,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-02 (Night Maintenance Window).
+BLK-00366,Guntakal-SEC-07,2026-10-07,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-07 (Early Morning Routine Block).
+BLK-00367,Hyderabad-SEC-08,2026-09-08,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-08 (Night Maintenance Window).
+BLK-00368,Secunderabad-SEC-08,2026-09-14,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-08 (Early Morning Routine Block).
+BLK-00369,Hyderabad-SEC-08,2026-09-14,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-08 (Early Morning Routine Block).
+BLK-00370,Vijayawada-SEC-03,2026-10-13,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-03 (Afternoon Freight Gap Shadow).
+BLK-00371,Guntakal-SEC-03,2026-09-28,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-03 (Night Maintenance Window).
+BLK-00372,Secunderabad-SEC-05,2026-09-04,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00373,Guntakal-SEC-06,2026-10-02,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-06 (Mid-Day Integrated Window).
+BLK-00374,Vijayawada-SEC-05,2026-10-13,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00375,Hyderabad-SEC-06,2026-09-27,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-06 (Mid-Day Integrated Window).
+BLK-00376,Secunderabad-SEC-06,2026-09-15,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-06 (Traction Power Block Window).
+BLK-00377,Guntur-SEC-03,2026-09-01,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-03 (Sunday Mega Integrated Block).
+BLK-00378,Vijayawada-SEC-06,2026-09-14,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-06 (Sunday Mega Integrated Block).
+BLK-00379,Secunderabad-SEC-07,2026-10-09,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-07 (Mid-Day Integrated Window).
+BLK-00380,Guntur-SEC-02,2026-09-25,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00381,Guntakal-SEC-08,2026-10-18,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-08 (Traction Power Block Window).
+BLK-00382,Guntur-SEC-02,2026-09-18,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00383,Hyderabad-SEC-04,2026-10-11,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-04 (Early Morning Routine Block).
+BLK-00384,Vijayawada-SEC-03,2026-09-04,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Mid-Day Integrated Window).
+BLK-00385,Hyderabad-SEC-04,2026-09-30,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-04 (Sunday Mega Integrated Block).
+BLK-00386,Hyderabad-SEC-03,2026-10-06,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-03 (Mid-Day Integrated Window).
+BLK-00387,Guntur-SEC-02,2026-09-27,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-02 (Night Maintenance Window).
+BLK-00388,Hyderabad-SEC-02,2026-10-01,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-02 (Night Maintenance Window).
+BLK-00389,Guntakal-SEC-08,2026-10-21,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-08 (Mid-Day Integrated Window).
+BLK-00390,Guntur-SEC-01,2026-09-21,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00391,Hyderabad-SEC-08,2026-09-08,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-08 (Early Morning Routine Block).
+BLK-00392,Hyderabad-SEC-05,2026-09-02,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-05 (Mid-Day Integrated Window).
+BLK-00393,Guntur-SEC-02,2026-09-23,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-02 (Early Morning Routine Block).
+BLK-00394,Guntakal-SEC-02,2026-09-18,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00395,Guntur-SEC-05,2026-10-08,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-05 (Mid-Day Integrated Window).
+BLK-00396,Hyderabad-SEC-07,2026-09-16,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-07 (Traction Power Block Window).
+BLK-00397,Guntakal-SEC-05,2026-09-16,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-05 (Mid-Day Integrated Window).
+BLK-00398,Vijayawada-SEC-04,2026-09-15,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-04 (Early Morning Routine Block).
+BLK-00399,Vijayawada-SEC-08,2026-09-15,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-08 (Early Morning Routine Block).
+BLK-00400,Guntur-SEC-08,2026-09-22,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-08 (Early Morning Routine Block).
+BLK-00401,Guntakal-SEC-07,2026-09-30,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00402,Guntakal-SEC-01,2026-09-28,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00403,Hyderabad-SEC-05,2026-09-14,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Night Maintenance Window).
+BLK-00404,Secunderabad-SEC-05,2026-10-19,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-05 (Mid-Day Integrated Window).
+BLK-00405,Hyderabad-SEC-02,2026-10-03,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-02 (Night Maintenance Window).
+BLK-00406,Guntur-SEC-04,2026-10-14,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-04 (Night Maintenance Window).
+BLK-00407,Vijayawada-SEC-03,2026-10-21,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-03 (Night Maintenance Window).
+BLK-00408,Secunderabad-SEC-05,2026-09-21,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-05 (Traction Power Block Window).
+BLK-00409,Guntur-SEC-06,2026-10-11,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-06 (Sunday Mega Integrated Block).
+BLK-00410,Guntur-SEC-03,2026-10-20,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-03 (Sunday Mega Integrated Block).
+BLK-00411,Secunderabad-SEC-05,2026-09-19,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-05 (Night Maintenance Window).
+BLK-00412,Secunderabad-SEC-02,2026-10-04,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-02 (Mid-Day Integrated Window).
+BLK-00413,Guntur-SEC-01,2026-10-12,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-01 (Mid-Day Integrated Window).
+BLK-00414,Hyderabad-SEC-01,2026-10-03,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-01 (Night Maintenance Window).
+BLK-00415,Guntakal-SEC-06,2026-10-06,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-06 (Sunday Mega Integrated Block).
+BLK-00416,Secunderabad-SEC-07,2026-09-02,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00417,Vijayawada-SEC-07,2026-09-18,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-07 (Traction Power Block Window).
+BLK-00418,Guntur-SEC-07,2026-10-16,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-07 (Early Morning Routine Block).
+BLK-00419,Vijayawada-SEC-01,2026-09-23,09:00,14:00,INTEGRATED_BLOCK,300,Cancelled,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-01 (Sunday Mega Integrated Block).
+BLK-00420,Secunderabad-SEC-04,2026-10-11,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-04 (Night Maintenance Window).
+BLK-00421,Guntur-SEC-05,2026-10-13,14:00,16:30,SHADOW_BLOCK,150,Utilized,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00422,Hyderabad-SEC-04,2026-10-19,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-04 (Traction Power Block Window).
+BLK-00423,Hyderabad-SEC-02,2026-09-26,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-02 (Early Morning Routine Block).
+BLK-00424,Vijayawada-SEC-04,2026-10-10,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-04 (Early Morning Routine Block).
+BLK-00425,Guntur-SEC-01,2026-09-25,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-01 (Early Morning Routine Block).
+BLK-00426,Hyderabad-SEC-03,2026-09-21,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-03 (Traction Power Block Window).
+BLK-00427,Guntakal-SEC-05,2026-10-03,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-05 (Early Morning Routine Block).
+BLK-00428,Guntur-SEC-06,2026-09-29,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00429,Guntakal-SEC-02,2026-09-27,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-02 (Mid-Day Integrated Window).
+BLK-00430,Hyderabad-SEC-04,2026-10-16,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-04 (Early Morning Routine Block).
+BLK-00431,Guntur-SEC-04,2026-10-16,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-04 (Mid-Day Integrated Window).
+BLK-00432,Hyderabad-SEC-06,2026-10-21,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-06 (Night Maintenance Window).
+BLK-00433,Secunderabad-SEC-02,2026-09-15,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-02 (Traction Power Block Window).
+BLK-00434,Guntur-SEC-03,2026-10-18,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-03 (Traction Power Block Window).
+BLK-00435,Secunderabad-SEC-07,2026-10-04,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-07 (Sunday Mega Integrated Block).
+BLK-00436,Vijayawada-SEC-03,2026-10-06,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Mid-Day Integrated Window).
+BLK-00437,Hyderabad-SEC-08,2026-09-06,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-08 (Traction Power Block Window).
+BLK-00438,Guntakal-SEC-04,2026-10-20,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00439,Secunderabad-SEC-01,2026-10-12,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-01 (Night Maintenance Window).
+BLK-00440,Vijayawada-SEC-05,2026-10-11,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-05 (Mid-Day Integrated Window).
+BLK-00441,Guntakal-SEC-03,2026-09-19,01:00,04:30,LINE_BLOCK,210,Cancelled,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-03 (Night Maintenance Window).
+BLK-00442,Vijayawada-SEC-07,2026-10-12,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-07 (Mid-Day Integrated Window).
+BLK-00443,Guntur-SEC-02,2026-10-01,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-02 (Early Morning Routine Block).
+BLK-00444,Guntakal-SEC-08,2026-10-16,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00445,Hyderabad-SEC-03,2026-09-27,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-03 (Early Morning Routine Block).
+BLK-00446,Vijayawada-SEC-01,2026-10-13,11:30,14:00,POWER_BLOCK,150,Cancelled,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-01 (Traction Power Block Window).
+BLK-00447,Guntakal-SEC-01,2026-10-20,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-01 (Mid-Day Integrated Window).
+BLK-00448,Vijayawada-SEC-03,2026-10-05,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Mid-Day Integrated Window).
+BLK-00449,Hyderabad-SEC-01,2026-10-13,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-01 (Sunday Mega Integrated Block).
+BLK-00450,Hyderabad-SEC-01,2026-09-21,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-01 (Sunday Mega Integrated Block).
+BLK-00451,Guntur-SEC-08,2026-10-20,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-08 (Traction Power Block Window).
+BLK-00452,Secunderabad-SEC-06,2026-09-12,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-06 (Early Morning Routine Block).
+BLK-00453,Guntur-SEC-06,2026-10-21,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00454,Guntur-SEC-01,2026-09-29,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-01 (Night Maintenance Window).
+BLK-00455,Guntakal-SEC-01,2026-09-11,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-01 (Early Morning Routine Block).
+BLK-00456,Vijayawada-SEC-03,2026-09-26,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-03 (Traction Power Block Window).
+BLK-00457,Guntur-SEC-04,2026-10-03,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-04 (Sunday Mega Integrated Block).
+BLK-00458,Hyderabad-SEC-05,2026-10-17,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-05 (Traction Power Block Window).
+BLK-00459,Guntakal-SEC-04,2026-09-04,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-04 (Traction Power Block Window).
+BLK-00460,Guntur-SEC-05,2026-09-21,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00461,Vijayawada-SEC-02,2026-10-19,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-02 (Sunday Mega Integrated Block).
+BLK-00462,Guntur-SEC-08,2026-10-08,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-08 (Night Maintenance Window).
+BLK-00463,Guntakal-SEC-03,2026-09-22,12:00,15:30,INTEGRATED_BLOCK,210,Cancelled,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-03 (Mid-Day Integrated Window).
+BLK-00464,Vijayawada-SEC-05,2026-09-12,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-05 (Night Maintenance Window).
+BLK-00465,Guntur-SEC-04,2026-09-20,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-04 (Mid-Day Integrated Window).
+BLK-00466,Secunderabad-SEC-08,2026-10-19,11:30,14:00,POWER_BLOCK,150,Utilized,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-08 (Traction Power Block Window).
+BLK-00467,Guntur-SEC-04,2026-09-16,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00468,Hyderabad-SEC-04,2026-10-07,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00469,Hyderabad-SEC-08,2026-09-23,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-08 (Early Morning Routine Block).
+BLK-00470,Secunderabad-SEC-06,2026-10-14,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-06 (Traction Power Block Window).
+BLK-00471,Vijayawada-SEC-08,2026-10-10,01:00,04:30,LINE_BLOCK,210,Utilized,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-08 (Night Maintenance Window).
+BLK-00472,Guntur-SEC-04,2026-10-12,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-04 (Early Morning Routine Block).
+BLK-00473,Hyderabad-SEC-01,2026-09-21,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00474,Secunderabad-SEC-08,2026-10-15,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-08 (Early Morning Routine Block).
+BLK-00475,Guntakal-SEC-02,2026-09-29,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-02 (Mid-Day Integrated Window).
+BLK-00476,Guntur-SEC-01,2026-09-26,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-01 (Night Maintenance Window).
+BLK-00477,Vijayawada-SEC-02,2026-10-04,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-02 (Night Maintenance Window).
+BLK-00478,Secunderabad-SEC-08,2026-09-20,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-08 (Early Morning Routine Block).
+BLK-00479,Guntur-SEC-03,2026-10-20,02:00,05:00,LINE_BLOCK,180,Utilized,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-03 (Early Morning Routine Block).
+BLK-00480,Secunderabad-SEC-08,2026-10-18,02:00,05:00,LINE_BLOCK,180,Utilized,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-08 (Early Morning Routine Block).
+BLK-00481,Guntakal-SEC-01,2026-09-26,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-01 (Traction Power Block Window).
+BLK-00482,Secunderabad-SEC-08,2026-09-13,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-08 (Night Maintenance Window).
+BLK-00483,Vijayawada-SEC-03,2026-09-12,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Sunday Mega Integrated Block).
+BLK-00484,Hyderabad-SEC-06,2026-09-26,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-06 (Night Maintenance Window).
+BLK-00485,Guntur-SEC-08,2026-10-20,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00486,Vijayawada-SEC-07,2026-09-03,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-07 (Mid-Day Integrated Window).
+BLK-00487,Guntur-SEC-06,2026-10-20,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-06 (Sunday Mega Integrated Block).
+BLK-00488,Guntakal-SEC-05,2026-09-06,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-05 (Mid-Day Integrated Window).
+BLK-00489,Guntakal-SEC-01,2026-10-13,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-01 (Mid-Day Integrated Window).
+BLK-00490,Hyderabad-SEC-05,2026-10-03,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Early Morning Routine Block).
+BLK-00491,Guntur-SEC-08,2026-10-04,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-08 (Sunday Mega Integrated Block).
+BLK-00492,Hyderabad-SEC-02,2026-10-14,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-02 (Early Morning Routine Block).
+BLK-00493,Secunderabad-SEC-07,2026-10-14,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-07 (Mid-Day Integrated Window).
+BLK-00494,Secunderabad-SEC-08,2026-10-05,01:00,04:30,LINE_BLOCK,210,Cancelled,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-08 (Night Maintenance Window).
+BLK-00495,Guntur-SEC-07,2026-09-14,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-07 (Sunday Mega Integrated Block).
+BLK-00496,Hyderabad-SEC-05,2026-09-03,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-05 (Traction Power Block Window).
+BLK-00497,Hyderabad-SEC-01,2026-09-21,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-01 (Early Morning Routine Block).
+BLK-00498,Guntur-SEC-05,2026-10-05,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-05 (Sunday Mega Integrated Block).
+BLK-00499,Hyderabad-SEC-04,2026-09-03,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-04 (Sunday Mega Integrated Block).
+BLK-00500,Guntakal-SEC-08,2026-10-16,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-08 (Traction Power Block Window).
+BLK-00501,Vijayawada-SEC-05,2026-10-18,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-05 (Mid-Day Integrated Window).
+BLK-00502,Vijayawada-SEC-03,2026-10-20,01:00,04:30,LINE_BLOCK,210,Utilized,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-03 (Night Maintenance Window).
+BLK-00503,Guntakal-SEC-04,2026-09-19,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-04 (Traction Power Block Window).
+BLK-00504,Guntakal-SEC-08,2026-10-11,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00505,Guntakal-SEC-02,2026-10-06,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-02 (Sunday Mega Integrated Block).
+BLK-00506,Guntur-SEC-03,2026-09-29,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-03 (Traction Power Block Window).
+BLK-00507,Guntakal-SEC-08,2026-10-13,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-08 (Early Morning Routine Block).
+BLK-00508,Hyderabad-SEC-05,2026-10-16,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Night Maintenance Window).
+BLK-00509,Secunderabad-SEC-01,2026-09-05,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00510,Guntakal-SEC-06,2026-10-07,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-06 (Mid-Day Integrated Window).
+BLK-00511,Guntakal-SEC-08,2026-10-08,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-08 (Mid-Day Integrated Window).
+BLK-00512,Guntur-SEC-03,2026-09-26,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-03 (Traction Power Block Window).
+BLK-00513,Guntakal-SEC-05,2026-09-30,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-05 (Traction Power Block Window).
+BLK-00514,Vijayawada-SEC-01,2026-09-12,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-01 (Mid-Day Integrated Window).
+BLK-00515,Secunderabad-SEC-02,2026-09-21,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-02 (Sunday Mega Integrated Block).
+BLK-00516,Guntur-SEC-05,2026-09-05,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-05 (Mid-Day Integrated Window).
+BLK-00517,Secunderabad-SEC-05,2026-09-07,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-05 (Traction Power Block Window).
+BLK-00518,Vijayawada-SEC-04,2026-10-08,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Sunday Mega Integrated Block).
+BLK-00519,Vijayawada-SEC-05,2026-09-20,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00520,Secunderabad-SEC-08,2026-09-04,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-08 (Sunday Mega Integrated Block).
+BLK-00521,Guntakal-SEC-03,2026-10-21,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-03 (Sunday Mega Integrated Block).
+BLK-00522,Secunderabad-SEC-06,2026-09-17,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-06 (Early Morning Routine Block).
+BLK-00523,Guntakal-SEC-03,2026-09-27,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-03 (Sunday Mega Integrated Block).
+BLK-00524,Guntakal-SEC-07,2026-10-16,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-07 (Mid-Day Integrated Window).
+BLK-00525,Vijayawada-SEC-03,2026-10-08,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-03 (Traction Power Block Window).
+BLK-00526,Hyderabad-SEC-03,2026-09-23,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-03 (Traction Power Block Window).
+BLK-00527,Secunderabad-SEC-04,2026-09-18,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-04 (Mid-Day Integrated Window).
+BLK-00528,Vijayawada-SEC-08,2026-09-01,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-08 (Sunday Mega Integrated Block).
+BLK-00529,Guntakal-SEC-07,2026-10-10,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-07 (Early Morning Routine Block).
+BLK-00530,Vijayawada-SEC-02,2026-10-03,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-02 (Night Maintenance Window).
+BLK-00531,Guntakal-SEC-06,2026-10-13,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-06 (Early Morning Routine Block).
+BLK-00532,Vijayawada-SEC-03,2026-09-04,01:00,04:30,LINE_BLOCK,210,Cancelled,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-03 (Night Maintenance Window).
+BLK-00533,Vijayawada-SEC-04,2026-09-09,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Mid-Day Integrated Window).
+BLK-00534,Hyderabad-SEC-02,2026-09-19,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Hyderabad-SEC-02 (Early Morning Routine Block).
+BLK-00535,Vijayawada-SEC-03,2026-09-26,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Sunday Mega Integrated Block).
+BLK-00536,Hyderabad-SEC-01,2026-09-28,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-01 (Night Maintenance Window).
+BLK-00537,Guntakal-SEC-03,2026-09-09,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-03 (Night Maintenance Window).
+BLK-00538,Guntur-SEC-02,2026-09-27,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00539,Guntur-SEC-08,2026-09-01,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-08 (Early Morning Routine Block).
+BLK-00540,Vijayawada-SEC-06,2026-09-30,09:00,14:00,INTEGRATED_BLOCK,300,Utilized,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-06 (Sunday Mega Integrated Block).
+BLK-00541,Guntur-SEC-01,2026-09-19,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00542,Secunderabad-SEC-01,2026-09-05,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-01 (Traction Power Block Window).
+BLK-00543,Secunderabad-SEC-07,2026-09-06,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-07 (Early Morning Routine Block).
+BLK-00544,Guntur-SEC-07,2026-10-03,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-07 (Sunday Mega Integrated Block).
+BLK-00545,Vijayawada-SEC-01,2026-10-03,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-01 (Afternoon Freight Gap Shadow).
+BLK-00546,Secunderabad-SEC-01,2026-09-12,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-01 (Early Morning Routine Block).
+BLK-00547,Secunderabad-SEC-01,2026-10-03,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-01 (Traction Power Block Window).
+BLK-00548,Guntakal-SEC-05,2026-10-08,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-05 (Sunday Mega Integrated Block).
+BLK-00549,Vijayawada-SEC-01,2026-10-06,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-01 (Mid-Day Integrated Window).
+BLK-00550,Guntakal-SEC-06,2026-10-17,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-06 (Night Maintenance Window).
+BLK-00551,Hyderabad-SEC-06,2026-09-30,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00552,Guntur-SEC-07,2026-10-18,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-07 (Early Morning Routine Block).
+BLK-00553,Guntakal-SEC-01,2026-09-19,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-01 (Sunday Mega Integrated Block).
+BLK-00554,Guntakal-SEC-07,2026-10-01,01:00,04:30,LINE_BLOCK,210,Utilized,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-07 (Night Maintenance Window).
+BLK-00555,Secunderabad-SEC-03,2026-10-06,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-03 (Early Morning Routine Block).
+BLK-00556,Guntakal-SEC-06,2026-10-17,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-06 (Mid-Day Integrated Window).
+BLK-00557,Vijayawada-SEC-01,2026-10-03,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Vijayawada-SEC-01 (Early Morning Routine Block).
+BLK-00558,Guntakal-SEC-07,2026-10-19,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-07 (Night Maintenance Window).
+BLK-00559,Secunderabad-SEC-03,2026-09-23,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-03 (Early Morning Routine Block).
+BLK-00560,Guntur-SEC-06,2026-10-19,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00561,Hyderabad-SEC-06,2026-09-08,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-06 (Night Maintenance Window).
+BLK-00562,Vijayawada-SEC-08,2026-09-13,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-08 (Traction Power Block Window).
+BLK-00563,Vijayawada-SEC-06,2026-10-20,01:00,04:30,LINE_BLOCK,210,Utilized,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-06 (Night Maintenance Window).
+BLK-00564,Secunderabad-SEC-04,2026-09-26,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-04 (Sunday Mega Integrated Block).
+BLK-00565,Guntakal-SEC-05,2026-09-08,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntakal-SEC-05 (Night Maintenance Window).
+BLK-00566,Vijayawada-SEC-07,2026-09-03,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00567,Vijayawada-SEC-05,2026-10-09,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-05 (Traction Power Block Window).
+BLK-00568,Hyderabad-SEC-02,2026-10-19,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-02 (Mid-Day Integrated Window).
+BLK-00569,Vijayawada-SEC-03,2026-09-24,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-03 (Sunday Mega Integrated Block).
+BLK-00570,Vijayawada-SEC-04,2026-09-27,09:00,14:00,INTEGRATED_BLOCK,300,Utilized,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Sunday Mega Integrated Block).
+BLK-00571,Guntur-SEC-04,2026-10-19,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00572,Guntur-SEC-07,2026-10-03,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-07 (Mid-Day Integrated Window).
+BLK-00573,Guntakal-SEC-06,2026-09-08,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-06 (Mid-Day Integrated Window).
+BLK-00574,Guntakal-SEC-06,2026-09-07,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00575,Hyderabad-SEC-08,2026-09-28,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00576,Vijayawada-SEC-05,2026-09-04,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-05 (Afternoon Freight Gap Shadow).
+BLK-00577,Vijayawada-SEC-03,2026-10-21,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-03 (Afternoon Freight Gap Shadow).
+BLK-00578,Secunderabad-SEC-04,2026-10-15,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-04 (Mid-Day Integrated Window).
+BLK-00579,Secunderabad-SEC-08,2026-10-20,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-08 (Sunday Mega Integrated Block).
+BLK-00580,Guntur-SEC-08,2026-09-28,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-08 (Sunday Mega Integrated Block).
+BLK-00581,Vijayawada-SEC-02,2026-10-02,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-02 (Sunday Mega Integrated Block).
+BLK-00582,Guntur-SEC-07,2026-09-25,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-07 (Traction Power Block Window).
+BLK-00583,Guntur-SEC-07,2026-10-07,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00584,Guntur-SEC-01,2026-09-11,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-01 (Mid-Day Integrated Window).
+BLK-00585,Guntur-SEC-07,2026-09-27,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-07 (Traction Power Block Window).
+BLK-00586,Secunderabad-SEC-02,2026-09-20,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-02 (Mid-Day Integrated Window).
+BLK-00587,Hyderabad-SEC-03,2026-09-24,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-03 (Mid-Day Integrated Window).
+BLK-00588,Vijayawada-SEC-07,2026-10-09,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00589,Vijayawada-SEC-05,2026-10-11,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-05 (Sunday Mega Integrated Block).
+BLK-00590,Hyderabad-SEC-08,2026-10-02,12:00,15:30,INTEGRATED_BLOCK,210,Reserved,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-08 (Mid-Day Integrated Window).
+BLK-00591,Guntur-SEC-02,2026-09-04,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-02 (Sunday Mega Integrated Block).
+BLK-00592,Guntur-SEC-04,2026-10-11,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-04 (Early Morning Routine Block).
+BLK-00593,Guntur-SEC-07,2026-10-09,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-07 (Night Maintenance Window).
+BLK-00594,Guntur-SEC-05,2026-09-25,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntur-SEC-05 (Early Morning Routine Block).
+BLK-00595,Guntur-SEC-07,2026-10-15,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-07 (Traction Power Block Window).
+BLK-00596,Hyderabad-SEC-08,2026-10-20,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-08 (Mid-Day Integrated Window).
+BLK-00597,Guntakal-SEC-03,2026-09-08,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-03 (Traction Power Block Window).
+BLK-00598,Hyderabad-SEC-06,2026-09-23,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Hyderabad-SEC-06 (Traction Power Block Window).
+BLK-00599,Secunderabad-SEC-03,2026-10-02,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-03 (Night Maintenance Window).
+BLK-00600,Guntakal-SEC-07,2026-09-27,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-07 (Mid-Day Integrated Window).
+BLK-00601,Hyderabad-SEC-08,2026-10-03,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-08 (Sunday Mega Integrated Block).
+BLK-00602,Hyderabad-SEC-02,2026-10-02,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-02 (Night Maintenance Window).
+BLK-00603,Secunderabad-SEC-04,2026-09-20,14:00,16:30,SHADOW_BLOCK,150,Reserved,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00604,Guntakal-SEC-02,2026-09-16,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-02 (Traction Power Block Window).
+BLK-00605,Secunderabad-SEC-08,2026-09-04,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-08 (Sunday Mega Integrated Block).
+BLK-00606,Vijayawada-SEC-04,2026-09-27,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-04 (Mid-Day Integrated Window).
+BLK-00607,Guntur-SEC-07,2026-10-15,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-07 (Traction Power Block Window).
+BLK-00608,Vijayawada-SEC-02,2026-09-04,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-02 (Night Maintenance Window).
+BLK-00609,Guntur-SEC-02,2026-09-18,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-02 (Afternoon Freight Gap Shadow).
+BLK-00610,Hyderabad-SEC-08,2026-09-20,12:00,15:30,INTEGRATED_BLOCK,210,Utilized,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-08 (Mid-Day Integrated Window).
+BLK-00611,Vijayawada-SEC-06,2026-10-14,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00612,Vijayawada-SEC-04,2026-09-02,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Vijayawada-SEC-04 (Afternoon Freight Gap Shadow).
+BLK-00613,Guntur-SEC-03,2026-09-07,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntur-SEC-03 (Afternoon Freight Gap Shadow).
+BLK-00614,Guntur-SEC-05,2026-09-24,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-05 (Night Maintenance Window).
+BLK-00615,Vijayawada-SEC-02,2026-10-08,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-02 (Traction Power Block Window).
+BLK-00616,Vijayawada-SEC-06,2026-09-19,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Vijayawada-SEC-06 (Mid-Day Integrated Window).
+BLK-00617,Hyderabad-SEC-07,2026-10-04,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Hyderabad-SEC-07 (Afternoon Freight Gap Shadow).
+BLK-00618,Guntur-SEC-03,2026-10-10,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-03 (Night Maintenance Window).
+BLK-00619,Secunderabad-SEC-01,2026-09-27,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-01 (Night Maintenance Window).
+BLK-00620,Secunderabad-SEC-01,2026-09-19,11:30,14:00,POWER_BLOCK,150,Reserved,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-01 (Traction Power Block Window).
+BLK-00621,Guntakal-SEC-05,2026-09-16,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-05 (Early Morning Routine Block).
+BLK-00622,Guntakal-SEC-07,2026-10-17,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-07 (Mid-Day Integrated Window).
+BLK-00623,Hyderabad-SEC-07,2026-09-05,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-07 (Mid-Day Integrated Window).
+BLK-00624,Secunderabad-SEC-02,2026-10-07,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-02 (Early Morning Routine Block).
+BLK-00625,Secunderabad-SEC-05,2026-10-15,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-05 (Early Morning Routine Block).
+BLK-00626,Hyderabad-SEC-02,2026-10-15,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-02 (Sunday Mega Integrated Block).
+BLK-00627,Secunderabad-SEC-08,2026-10-05,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00628,Secunderabad-SEC-03,2026-09-29,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Secunderabad-SEC-03 (Sunday Mega Integrated Block).
+BLK-00629,Secunderabad-SEC-08,2026-09-01,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-08 (Early Morning Routine Block).
+BLK-00630,Guntur-SEC-01,2026-10-17,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntur-SEC-01 (Traction Power Block Window).
+BLK-00631,Guntakal-SEC-07,2026-09-10,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-07 (Mid-Day Integrated Window).
+BLK-00632,Guntakal-SEC-04,2026-10-18,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-04 (Traction Power Block Window).
+BLK-00633,Vijayawada-SEC-08,2026-10-06,11:30,14:00,POWER_BLOCK,150,Cancelled,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Vijayawada-SEC-08 (Traction Power Block Window).
+BLK-00634,Guntakal-SEC-05,2026-10-12,02:00,05:00,LINE_BLOCK,180,Reserved,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-05 (Early Morning Routine Block).
+BLK-00635,Guntakal-SEC-04,2026-10-07,09:00,14:00,INTEGRATED_BLOCK,300,Reserved,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntakal-SEC-04 (Sunday Mega Integrated Block).
+BLK-00636,Hyderabad-SEC-05,2026-10-12,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-05 (Night Maintenance Window).
+BLK-00637,Guntur-SEC-04,2026-09-11,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Guntur-SEC-04 (Night Maintenance Window).
+BLK-00638,Secunderabad-SEC-07,2026-10-08,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Secunderabad-SEC-07 (Early Morning Routine Block).
+BLK-00639,Guntakal-SEC-05,2026-09-07,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Guntakal-SEC-05 (Traction Power Block Window).
+BLK-00640,Guntur-SEC-04,2026-09-06,12:00,15:30,INTEGRATED_BLOCK,210,Cancelled,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Guntur-SEC-04 (Mid-Day Integrated Window).
+BLK-00641,Hyderabad-SEC-03,2026-10-17,12:00,15:30,INTEGRATED_BLOCK,210,Available,Non-peak Freight Gap Possession,Candidate INTEGRATED_BLOCK window on Hyderabad-SEC-03 (Mid-Day Integrated Window).
+BLK-00642,Guntakal-SEC-04,2026-09-06,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-04 (Early Morning Routine Block).
+BLK-00643,Guntakal-SEC-06,2026-09-13,02:00,05:00,LINE_BLOCK,180,Available,Pre-cleared section block window,Candidate LINE_BLOCK window on Guntakal-SEC-06 (Early Morning Routine Block).
+BLK-00644,Guntur-SEC-02,2026-09-19,09:00,14:00,INTEGRATED_BLOCK,300,Available,Divisional Sunday Mega-Block Window,Candidate INTEGRATED_BLOCK window on Guntur-SEC-02 (Sunday Mega Integrated Block).
+BLK-00645,Guntakal-SEC-06,2026-09-17,14:00,16:30,SHADOW_BLOCK,150,Utilized,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Guntakal-SEC-06 (Afternoon Freight Gap Shadow).
+BLK-00646,Secunderabad-SEC-08,2026-09-09,14:00,16:30,SHADOW_BLOCK,150,Available,Coordinated between twin passenger services,Candidate SHADOW_BLOCK window on Secunderabad-SEC-08 (Afternoon Freight Gap Shadow).
+BLK-00647,Secunderabad-SEC-03,2026-10-06,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Secunderabad-SEC-03 (Night Maintenance Window).
+BLK-00648,Vijayawada-SEC-08,2026-09-11,01:00,04:30,LINE_BLOCK,210,Reserved,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Vijayawada-SEC-08 (Night Maintenance Window).
+BLK-00649,Secunderabad-SEC-01,2026-10-04,11:30,14:00,POWER_BLOCK,150,Available,Substation Feeder Scheduled Cut,Candidate POWER_BLOCK window on Secunderabad-SEC-01 (Traction Power Block Window).
+BLK-00650,Hyderabad-SEC-03,2026-09-10,01:00,04:30,LINE_BLOCK,210,Available,COA Scheduled Night Corridor,Candidate LINE_BLOCK window on Hyderabad-SEC-03 (Night Maintenance Window).

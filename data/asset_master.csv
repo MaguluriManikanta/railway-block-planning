@@ -1,0 +1,601 @@
+asset_id,asset_type,department,section_id,location_km,asset_description,installation_date,commissioned_year,current_condition,health_score,last_inspection_date,last_maintenance_date,next_due_date,criticality,active_status
+AST-ENG-0001,Rail,Engineering,Secunderabad-SEC-08,45.41,Welded Long Rail (LWR/CWR) at Km 45.41 [Secunderabad-SEC-08],2022-02-08,2022,Fair,77.1,2026-07-19,2026-02-12,2026-09-28,Medium,Active
+AST-ENG-0002,Track,Engineering,Hyderabad-SEC-04,118.09,Curved Track Transition Segment at Km 118.09 [Hyderabad-SEC-04],2024-10-15,2024,Good,91.8,2026-07-19,2026-06-14,2026-09-09,High,Active
+AST-ENG-0003,Ballast,Engineering,Secunderabad-SEC-07,63.5,Deep Ballast Cushion Bed at Km 63.50 [Secunderabad-SEC-07],2019-11-11,2019,Fair,71.8,2026-08-11,2026-04-29,2026-09-24,Medium,Active
+AST-ENG-0004,Ballast,Engineering,Hyderabad-SEC-01,89.64,Deep Ballast Cushion Bed at Km 89.64 [Hyderabad-SEC-01],2017-02-18,2017,Fair,56.4,2026-08-09,2026-03-30,2026-09-11,Low,Active
+AST-ENG-0005,Ballast,Engineering,Hyderabad-SEC-05,43.95,Deep Ballast Cushion Bed at Km 43.95 [Hyderabad-SEC-05],2017-06-15,2017,Fair,59.0,2026-08-02,2026-02-19,2026-10-07,Medium,Active
+AST-ENG-0006,Rail,Engineering,Secunderabad-SEC-08,60.14,Welded Long Rail (LWR/CWR) at Km 60.14 [Secunderabad-SEC-08],2019-07-17,2019,Fair,71.0,2026-08-01,2026-02-23,2026-10-02,Medium,Active
+AST-ENG-0007,Sleeper,Engineering,Secunderabad-SEC-02,81.0,Pre-stressed Concrete Sleeper Bed at Km 81.00 [Secunderabad-SEC-02],2012-12-17,2012,Critical,30.0,2026-08-21,2026-02-28,2026-09-29,Medium,Active
+AST-ENG-0008,Track,Engineering,Guntur-SEC-07,123.92,Track Section (60kg 90UTS Rail) at Km 123.92 [Guntur-SEC-07],2022-12-15,2022,Fair,79.3,2026-07-13,2026-02-09,2026-09-18,Medium,Active
+AST-ENG-0009,Ballast,Engineering,Guntakal-SEC-04,77.19,Deep Ballast Cushion Bed at Km 77.19 [Guntakal-SEC-04],2020-12-16,2020,Fair,66.9,2026-08-02,2026-03-30,2026-09-14,High,Active
+AST-ENG-0010,Sleeper,Engineering,Guntakal-SEC-02,2.29,Pre-stressed Concrete Sleeper Bed at Km 2.29 [Guntakal-SEC-02],2022-10-15,2022,Fair,78.0,2026-07-27,2026-04-11,2026-09-14,High,Active
+AST-ENG-0011,Track,Engineering,Guntur-SEC-08,65.87,Curved Track Transition Segment at Km 65.87 [Guntur-SEC-08],2024-07-18,2024,Good,89.7,2026-08-25,2026-05-28,2026-09-22,Medium,Active
+AST-ENG-0012,Ballast,Engineering,Secunderabad-SEC-07,61.94,Deep Ballast Cushion Bed at Km 61.94 [Secunderabad-SEC-07],2024-09-09,2024,Good,90.7,2026-08-16,2026-04-15,2026-10-02,Low,Active
+AST-ENG-0013,Points & Crossing,Engineering,Guntakal-SEC-02,126.55,1-in-12 Turnout Point & Crossing at Km 126.55 [Guntakal-SEC-02],2013-04-24,2013,Critical,30.0,2026-08-18,2026-04-10,2026-09-02,High,Active
+AST-ENG-0014,Track,Engineering,Guntur-SEC-05,81.71,Track Section (60kg 90UTS Rail) at Km 81.71 [Guntur-SEC-05],2021-04-08,2021,Good,81.0,2026-08-25,2026-03-24,2026-09-19,Medium,Active
+AST-ENG-0015,Points & Crossing,Engineering,Guntakal-SEC-07,22.51,1-in-12 Turnout Point & Crossing at Km 22.51 [Guntakal-SEC-07],2022-10-19,2022,Fair,78.3,2026-07-03,2026-02-13,2026-10-16,Medium,Active
+AST-ENG-0016,Track,Engineering,Vijayawada-SEC-01,76.87,Curved Track Transition Segment at Km 76.87 [Vijayawada-SEC-01],2021-03-20,2021,Fair,71.6,2026-07-26,2026-04-28,2026-09-07,High,Active
+AST-ENG-0017,Rail,Engineering,Vijayawada-SEC-03,130.97,Welded Long Rail (LWR/CWR) at Km 130.97 [Vijayawada-SEC-03],2016-09-14,2016,Fair,55.2,2026-08-18,2026-03-23,2026-09-14,High,Active
+AST-ENG-0018,Track,Engineering,Secunderabad-SEC-07,55.12,Track Section (60kg 90UTS Rail) at Km 55.12 [Secunderabad-SEC-07],2012-06-21,2012,Critical,38.6,2026-07-09,2026-06-18,2026-09-03,Medium,Active
+AST-ENG-0019,Track,Engineering,Guntakal-SEC-05,95.91,Curved Track Transition Segment at Km 95.91 [Guntakal-SEC-05],2017-02-16,2017,Poor,47.2,2026-07-22,2026-01-30,2026-09-12,High,Active
+AST-ENG-0020,Rail,Engineering,Hyderabad-SEC-02,29.77,Welded Long Rail (LWR/CWR) at Km 29.77 [Hyderabad-SEC-02],2017-08-20,2017,Fair,63.3,2026-07-13,2026-06-11,2026-10-07,High,Active
+AST-ENG-0021,Sleeper,Engineering,Vijayawada-SEC-05,90.97,Pre-stressed Concrete Sleeper Bed at Km 90.97 [Vijayawada-SEC-05],2012-11-18,2012,Critical,30.0,2026-08-24,2026-04-16,2026-10-13,High,Active
+AST-ENG-0022,Rail,Engineering,Secunderabad-SEC-02,18.95,Welded Long Rail (LWR/CWR) at Km 18.95 [Secunderabad-SEC-02],2015-09-05,2015,Fair,57.1,2026-07-04,2026-05-03,2026-09-26,High,Active
+AST-ENG-0023,Track,Engineering,Hyderabad-SEC-03,58.56,Track Section (60kg 90UTS Rail) at Km 58.56 [Hyderabad-SEC-03],2018-05-06,2018,Fair,65.1,2026-08-11,2026-03-31,2026-10-03,Low,Active
+AST-ENG-0024,Sleeper,Engineering,Guntur-SEC-03,40.99,Pre-stressed Concrete Sleeper Bed at Km 40.99 [Guntur-SEC-03],2017-09-16,2017,Fair,58.5,2026-07-25,2026-02-26,2026-09-19,Medium,Active
+AST-ENG-0025,Track,Engineering,Vijayawada-SEC-06,33.16,Track Section (60kg 90UTS Rail) at Km 33.16 [Vijayawada-SEC-06],2019-11-11,2019,Fair,68.4,2026-07-08,2026-05-08,2026-09-03,High,Active
+AST-ENG-0026,Ballast,Engineering,Vijayawada-SEC-03,49.89,Deep Ballast Cushion Bed at Km 49.89 [Vijayawada-SEC-03],2021-09-07,2021,Good,81.1,2026-07-13,2026-04-18,2026-10-07,Medium,Active
+AST-ENG-0027,Rail,Engineering,Vijayawada-SEC-06,80.21,Welded Long Rail (LWR/CWR) at Km 80.21 [Vijayawada-SEC-06],2016-11-18,2016,Fair,61.7,2026-07-08,2026-04-17,2026-09-08,Low,Active
+AST-ENG-0028,Track,Engineering,Vijayawada-SEC-03,15.74,Track Section (60kg 90UTS Rail) at Km 15.74 [Vijayawada-SEC-03],2024-06-24,2024,Good,89.0,2026-07-17,2026-01-22,2026-09-08,Medium,Active
+AST-ENG-0029,Track,Engineering,Guntakal-SEC-02,82.75,Track Section (60kg 90UTS Rail) at Km 82.75 [Guntakal-SEC-02],2016-06-06,2016,Fair,58.5,2026-08-23,2026-08-05,2026-09-28,Low,Active
+AST-ENG-0030,Track,Engineering,Guntakal-SEC-01,58.62,Track Section (60kg 90UTS Rail) at Km 58.62 [Guntakal-SEC-01],2012-02-08,2012,Poor,50.2,2026-08-20,2026-07-12,2026-10-15,Medium,Active
+AST-ENG-0031,Track,Engineering,Guntakal-SEC-07,44.78,Curved Track Transition Segment at Km 44.78 [Guntakal-SEC-07],2021-11-21,2021,Fair,73.6,2026-08-25,2026-04-29,2026-09-22,Medium,Active
+AST-ENG-0032,Ballast,Engineering,Hyderabad-SEC-07,65.31,Deep Ballast Cushion Bed at Km 65.31 [Hyderabad-SEC-07],2013-11-12,2013,Critical,30.0,2026-07-15,2026-04-27,2026-09-26,High,Active
+AST-ENG-0033,Ballast,Engineering,Guntakal-SEC-07,9.01,Deep Ballast Cushion Bed at Km 9.01 [Guntakal-SEC-07],2018-01-10,2018,Fair,58.1,2026-08-09,2026-06-24,2026-09-21,Medium,Active
+AST-ENG-0034,Track,Engineering,Guntakal-SEC-05,82.4,Track Section (60kg 90UTS Rail) at Km 82.40 [Guntakal-SEC-05],2020-06-07,2020,Fair,70.6,2026-07-12,2026-05-30,2026-09-12,Medium,Active
+AST-ENG-0035,Rail,Engineering,Secunderabad-SEC-08,6.19,Welded Long Rail (LWR/CWR) at Km 6.19 [Secunderabad-SEC-08],2017-10-21,2017,Poor,46.6,2026-08-08,2026-07-17,2026-09-29,Medium,Active
+AST-ENG-0036,Track,Engineering,Guntakal-SEC-07,58.73,Curved Track Transition Segment at Km 58.73 [Guntakal-SEC-07],2015-07-22,2015,Fair,55.5,2026-08-19,2026-06-19,2026-10-06,High,Active
+AST-ENG-0037,Track,Engineering,Hyderabad-SEC-03,96.04,Curved Track Transition Segment at Km 96.04 [Hyderabad-SEC-03],2016-03-08,2016,Fair,64.4,2026-08-10,2026-03-10,2026-10-02,High,Active
+AST-ENG-0038,Ballast,Engineering,Guntakal-SEC-05,20.27,Deep Ballast Cushion Bed at Km 20.27 [Guntakal-SEC-05],2021-02-27,2021,Good,80.3,2026-08-25,2026-04-01,2026-09-18,High,Active
+AST-ENG-0039,Points & Crossing,Engineering,Hyderabad-SEC-02,105.88,1-in-12 Turnout Point & Crossing at Km 105.88 [Hyderabad-SEC-02],2012-11-27,2012,Poor,50.6,2026-08-12,2026-03-30,2026-09-05,Low,Active
+AST-ENG-0040,Ballast,Engineering,Hyderabad-SEC-01,120.83,Deep Ballast Cushion Bed at Km 120.83 [Hyderabad-SEC-01],2018-12-12,2018,Poor,53.0,2026-08-13,2026-03-08,2026-09-19,High,Active
+AST-ENG-0041,Track,Engineering,Vijayawada-SEC-05,53.09,Curved Track Transition Segment at Km 53.09 [Vijayawada-SEC-05],2022-08-18,2022,Fair,77.9,2026-07-08,2026-01-26,2026-09-21,High,Active
+AST-ENG-0042,Track,Engineering,Guntur-SEC-03,22.38,Track Section (60kg 90UTS Rail) at Km 22.38 [Guntur-SEC-03],2017-09-23,2017,Fair,59.3,2026-08-25,2026-02-28,2026-09-13,High,Active
+AST-ENG-0043,Points & Crossing,Engineering,Guntakal-SEC-08,76.99,1-in-12 Turnout Point & Crossing at Km 76.99 [Guntakal-SEC-08],2014-12-24,2014,Fair,55.0,2026-08-26,2026-03-28,2026-09-15,Medium,Active
+AST-ENG-0044,Track,Engineering,Hyderabad-SEC-06,43.63,Track Section (60kg 90UTS Rail) at Km 43.63 [Hyderabad-SEC-06],2018-07-18,2018,Poor,52.7,2026-07-25,2026-01-27,2026-10-14,High,Active
+AST-ENG-0045,Sleeper,Engineering,Hyderabad-SEC-01,15.58,Pre-stressed Concrete Sleeper Bed at Km 15.58 [Hyderabad-SEC-01],2023-07-11,2023,Good,85.4,2026-08-08,2026-07-14,2026-10-09,Medium,Active
+AST-ENG-0046,Points & Crossing,Engineering,Vijayawada-SEC-05,23.55,1-in-12 Turnout Point & Crossing at Km 23.55 [Vijayawada-SEC-05],2016-09-10,2016,Fair,56.1,2026-08-03,2026-06-01,2026-10-12,High,Active
+AST-ENG-0047,Track,Engineering,Hyderabad-SEC-07,91.04,Curved Track Transition Segment at Km 91.04 [Hyderabad-SEC-07],2017-09-06,2017,Poor,52.3,2026-08-26,2026-06-27,2026-09-22,Medium,Active
+AST-ENG-0048,Track,Engineering,Vijayawada-SEC-03,4.95,Track Section (60kg 90UTS Rail) at Km 4.95 [Vijayawada-SEC-03],2020-11-23,2020,Fair,69.3,2026-08-27,2026-05-09,2026-09-06,High,Active
+AST-ENG-0049,Rail,Engineering,Vijayawada-SEC-06,74.97,Welded Long Rail (LWR/CWR) at Km 74.97 [Vijayawada-SEC-06],2021-04-05,2021,Good,81.2,2026-08-07,2026-03-21,2026-09-08,Low,Active
+AST-ENG-0050,Rail,Engineering,Secunderabad-SEC-05,53.99,Welded Long Rail (LWR/CWR) at Km 53.99 [Secunderabad-SEC-05],2016-11-04,2016,Fair,56.3,2026-07-27,2026-06-12,2026-10-07,Medium,Active
+AST-ENG-0051,Track,Engineering,Guntakal-SEC-07,96.01,Curved Track Transition Segment at Km 96.01 [Guntakal-SEC-07],2021-06-03,2021,Good,81.6,2026-08-22,2026-04-03,2026-09-21,High,Active
+AST-ENG-0052,Track,Engineering,Vijayawada-SEC-07,24.4,Curved Track Transition Segment at Km 24.40 [Vijayawada-SEC-07],2020-09-11,2020,Fair,74.2,2026-07-12,2026-02-21,2026-09-27,High,Active
+AST-ENG-0053,Sleeper,Engineering,Vijayawada-SEC-05,113.09,Pre-stressed Concrete Sleeper Bed at Km 113.09 [Vijayawada-SEC-05],2023-06-25,2023,Good,83.6,2026-08-01,2026-02-16,2026-09-26,High,Active
+AST-ENG-0054,Ballast,Engineering,Guntur-SEC-05,104.28,Deep Ballast Cushion Bed at Km 104.28 [Guntur-SEC-05],2023-03-14,2023,Good,87.5,2026-07-05,2026-05-21,2026-09-22,High,Active
+AST-ENG-0055,Rail,Engineering,Guntur-SEC-05,37.64,Welded Long Rail (LWR/CWR) at Km 37.64 [Guntur-SEC-05],2022-05-08,2022,Good,82.7,2026-08-18,2026-03-13,2026-09-09,High,Active
+AST-ENG-0056,Track,Engineering,Hyderabad-SEC-05,64.67,Curved Track Transition Segment at Km 64.67 [Hyderabad-SEC-05],2018-01-18,2018,Fair,57.7,2026-07-15,2026-03-18,2026-09-23,High,Active
+AST-ENG-0057,Ballast,Engineering,Guntur-SEC-08,127.29,Deep Ballast Cushion Bed at Km 127.29 [Guntur-SEC-08],2022-09-17,2022,Good,83.9,2026-08-05,2026-02-06,2026-09-23,High,Active
+AST-ENG-0058,Track,Engineering,Guntur-SEC-02,101.7,Track Section (60kg 90UTS Rail) at Km 101.70 [Guntur-SEC-02],2016-09-23,2016,Fair,58.7,2026-08-06,2026-02-24,2026-10-13,Medium,Active
+AST-ENG-0059,Track,Engineering,Guntur-SEC-07,119.34,Curved Track Transition Segment at Km 119.34 [Guntur-SEC-07],2017-01-02,2017,Poor,51.5,2026-07-18,2026-06-03,2026-10-14,Low,Active
+AST-ENG-0060,Sleeper,Engineering,Guntakal-SEC-02,46.4,Pre-stressed Concrete Sleeper Bed at Km 46.40 [Guntakal-SEC-02],2024-08-17,2024,Good,91.6,2026-07-18,2026-03-31,2026-09-07,Medium,Active
+AST-ENG-0061,Track,Engineering,Vijayawada-SEC-05,75.92,Track Section (60kg 90UTS Rail) at Km 75.92 [Vijayawada-SEC-05],2013-03-11,2013,Critical,30.0,2026-07-29,2026-05-23,2026-10-10,Medium,Active
+AST-ENG-0062,Track,Engineering,Guntakal-SEC-04,12.72,Curved Track Transition Segment at Km 12.72 [Guntakal-SEC-04],2023-09-22,2023,Good,85.1,2026-08-19,2026-07-08,2026-09-03,High,Active
+AST-ENG-0063,Rail,Engineering,Guntur-SEC-03,7.18,Welded Long Rail (LWR/CWR) at Km 7.18 [Guntur-SEC-03],2023-09-08,2023,Good,82.1,2026-07-28,2026-04-17,2026-09-23,High,Active
+AST-ENG-0064,Track,Engineering,Hyderabad-SEC-07,67.68,Curved Track Transition Segment at Km 67.68 [Hyderabad-SEC-07],2017-05-02,2017,Poor,54.0,2026-08-19,2026-07-30,2026-10-02,Medium,Active
+AST-ENG-0065,Track,Engineering,Guntakal-SEC-01,117.28,Curved Track Transition Segment at Km 117.28 [Guntakal-SEC-01],2015-06-09,2015,Poor,47.4,2026-07-12,2026-03-17,2026-09-21,High,Active
+AST-ENG-0066,Track,Engineering,Secunderabad-SEC-04,114.28,Track Section (60kg 90UTS Rail) at Km 114.28 [Secunderabad-SEC-04],2023-12-21,2023,Good,84.5,2026-07-15,2026-02-14,2026-09-21,Low,Active
+AST-ENG-0067,Rail,Engineering,Hyderabad-SEC-08,13.61,Welded Long Rail (LWR/CWR) at Km 13.61 [Hyderabad-SEC-08],2020-10-11,2020,Fair,71.7,2026-07-16,2026-04-06,2026-09-25,High,Active
+AST-ENG-0068,Sleeper,Engineering,Hyderabad-SEC-04,121.03,Pre-stressed Concrete Sleeper Bed at Km 121.03 [Hyderabad-SEC-04],2024-05-28,2024,Good,90.4,2026-07-03,2026-03-12,2026-10-12,High,Active
+AST-ENG-0069,Track,Engineering,Hyderabad-SEC-07,137.16,Track Section (60kg 90UTS Rail) at Km 137.16 [Hyderabad-SEC-07],2019-04-07,2019,Fair,68.0,2026-07-04,2026-02-05,2026-09-10,Medium,Active
+AST-ENG-0070,Ballast,Engineering,Guntakal-SEC-02,108.83,Deep Ballast Cushion Bed at Km 108.83 [Guntakal-SEC-02],2019-03-18,2019,Fair,63.6,2026-07-04,2026-03-28,2026-09-25,Low,Active
+AST-ENG-0071,Ballast,Engineering,Guntur-SEC-02,75.05,Deep Ballast Cushion Bed at Km 75.05 [Guntur-SEC-02],2020-04-05,2020,Fair,69.9,2026-07-13,2026-05-20,2026-09-11,High,Active
+AST-ENG-0072,Ballast,Engineering,Hyderabad-SEC-05,9.49,Deep Ballast Cushion Bed at Km 9.49 [Hyderabad-SEC-05],2012-05-26,2012,Poor,40.5,2026-07-06,2026-05-07,2026-09-10,High,Active
+AST-ENG-0073,Sleeper,Engineering,Hyderabad-SEC-03,97.32,Pre-stressed Concrete Sleeper Bed at Km 97.32 [Hyderabad-SEC-03],2019-03-06,2019,Fair,63.4,2026-07-10,2026-05-09,2026-10-15,High,Active
+AST-ENG-0074,Rail,Engineering,Hyderabad-SEC-08,69.07,Welded Long Rail (LWR/CWR) at Km 69.07 [Hyderabad-SEC-08],2012-05-08,2012,Critical,33.0,2026-07-24,2026-06-16,2026-10-01,Medium,Active
+AST-ENG-0075,Points & Crossing,Engineering,Guntur-SEC-03,22.55,1-in-12 Turnout Point & Crossing at Km 22.55 [Guntur-SEC-03],2014-12-17,2014,Fair,56.8,2026-08-27,2026-07-29,2026-09-08,High,Active
+AST-ENG-0076,Track,Engineering,Guntakal-SEC-01,46.7,Track Section (60kg 90UTS Rail) at Km 46.70 [Guntakal-SEC-01],2014-09-07,2014,Critical,31.9,2026-08-22,2026-04-21,2026-10-14,High,Active
+AST-ENG-0077,Ballast,Engineering,Vijayawada-SEC-03,34.52,Deep Ballast Cushion Bed at Km 34.52 [Vijayawada-SEC-03],2019-04-12,2019,Fair,72.7,2026-07-03,2026-03-02,2026-09-29,Medium,Active
+AST-ENG-0078,Points & Crossing,Engineering,Guntakal-SEC-08,99.0,1-in-12 Turnout Point & Crossing at Km 99.00 [Guntakal-SEC-08],2022-12-15,2022,Fair,76.6,2026-07-23,2026-02-03,2026-10-02,High,Active
+AST-ENG-0079,Track,Engineering,Vijayawada-SEC-06,103.73,Track Section (60kg 90UTS Rail) at Km 103.73 [Vijayawada-SEC-06],2024-02-12,2024,Good,89.4,2026-07-19,2026-05-25,2026-09-09,High,Active
+AST-ENG-0080,Track,Engineering,Guntur-SEC-04,27.31,Curved Track Transition Segment at Km 27.31 [Guntur-SEC-04],2012-09-05,2012,Critical,30.0,2026-07-18,2026-04-26,2026-09-20,Medium,Active
+AST-ENG-0081,Rail,Engineering,Guntur-SEC-02,2.32,Welded Long Rail (LWR/CWR) at Km 2.32 [Guntur-SEC-02],2019-05-27,2019,Fair,69.3,2026-08-19,2026-07-08,2026-09-11,Medium,Active
+AST-ENG-0082,Rail,Engineering,Guntakal-SEC-07,64.39,Welded Long Rail (LWR/CWR) at Km 64.39 [Guntakal-SEC-07],2022-10-02,2022,Fair,76.7,2026-07-16,2026-02-08,2026-09-22,Medium,Active
+AST-ENG-0083,Points & Crossing,Engineering,Secunderabad-SEC-06,65.08,1-in-12 Turnout Point & Crossing at Km 65.08 [Secunderabad-SEC-06],2020-09-27,2020,Fair,71.0,2026-08-21,2026-05-28,2026-09-20,High,Active
+AST-ENG-0084,Rail,Engineering,Hyderabad-SEC-06,6.82,Welded Long Rail (LWR/CWR) at Km 6.82 [Hyderabad-SEC-06],2019-10-04,2019,Fair,68.7,2026-07-17,2026-02-05,2026-10-01,Medium,Active
+AST-ENG-0085,Points & Crossing,Engineering,Hyderabad-SEC-03,4.05,1-in-12 Turnout Point & Crossing at Km 4.05 [Hyderabad-SEC-03],2014-01-04,2014,Poor,46.2,2026-08-17,2026-03-19,2026-09-18,High,Active
+AST-ENG-0086,Track,Engineering,Secunderabad-SEC-03,105.1,Track Section (60kg 90UTS Rail) at Km 105.10 [Secunderabad-SEC-03],2024-10-17,2024,Good,92.4,2026-07-04,2026-03-26,2026-09-11,High,Active
+AST-ENG-0087,Ballast,Engineering,Guntur-SEC-07,34.64,Deep Ballast Cushion Bed at Km 34.64 [Guntur-SEC-07],2019-12-08,2019,Fair,68.5,2026-07-26,2026-04-22,2026-09-28,High,Active
+AST-ENG-0088,Track,Engineering,Vijayawada-SEC-08,83.8,Curved Track Transition Segment at Km 83.80 [Vijayawada-SEC-08],2015-02-19,2015,Poor,48.4,2026-08-03,2026-03-18,2026-10-05,High,Active
+AST-ENG-0089,Track,Engineering,Vijayawada-SEC-06,54.48,Track Section (60kg 90UTS Rail) at Km 54.48 [Vijayawada-SEC-06],2020-08-26,2020,Fair,76.9,2026-08-12,2026-03-17,2026-09-22,High,Active
+AST-ENG-0090,Rail,Engineering,Guntur-SEC-04,121.04,Welded Long Rail (LWR/CWR) at Km 121.04 [Guntur-SEC-04],2012-06-20,2012,Critical,30.0,2026-08-17,2026-03-20,2026-09-09,Medium,Active
+AST-ENG-0091,Rail,Engineering,Vijayawada-SEC-06,82.53,Welded Long Rail (LWR/CWR) at Km 82.53 [Vijayawada-SEC-06],2014-08-13,2014,Critical,33.8,2026-07-07,2026-05-26,2026-09-28,High,Active
+AST-ENG-0092,Track,Engineering,Secunderabad-SEC-01,34.96,Track Section (60kg 90UTS Rail) at Km 34.96 [Secunderabad-SEC-01],2016-03-17,2016,Fair,58.3,2026-08-04,2026-06-29,2026-09-18,High,Active
+AST-ENG-0093,Ballast,Engineering,Secunderabad-SEC-03,31.38,Deep Ballast Cushion Bed at Km 31.38 [Secunderabad-SEC-03],2024-12-18,2024,Good,92.4,2026-07-30,2026-02-25,2026-10-14,High,Active
+AST-ENG-0094,Rail,Engineering,Guntur-SEC-06,117.88,Welded Long Rail (LWR/CWR) at Km 117.88 [Guntur-SEC-06],2022-01-28,2022,Fair,76.3,2026-07-17,2026-03-01,2026-09-05,High,Active
+AST-ENG-0095,Points & Crossing,Engineering,Vijayawada-SEC-03,91.61,1-in-12 Turnout Point & Crossing at Km 91.61 [Vijayawada-SEC-03],2015-01-10,2015,Poor,44.5,2026-08-25,2026-04-12,2026-09-18,High,Active
+AST-ENG-0096,Ballast,Engineering,Hyderabad-SEC-03,24.3,Deep Ballast Cushion Bed at Km 24.30 [Hyderabad-SEC-03],2020-10-18,2020,Fair,75.4,2026-07-06,2026-06-08,2026-10-06,High,Active
+AST-ENG-0097,Track,Engineering,Hyderabad-SEC-03,55.62,Track Section (60kg 90UTS Rail) at Km 55.62 [Hyderabad-SEC-03],2015-01-01,2015,Poor,50.1,2026-07-23,2026-06-16,2026-09-30,Medium,Active
+AST-ENG-0098,Sleeper,Engineering,Vijayawada-SEC-04,24.85,Pre-stressed Concrete Sleeper Bed at Km 24.85 [Vijayawada-SEC-04],2020-04-17,2020,Fair,67.7,2026-08-02,2026-05-08,2026-10-13,Medium,Active
+AST-ENG-0099,Points & Crossing,Engineering,Guntur-SEC-06,13.85,1-in-12 Turnout Point & Crossing at Km 13.85 [Guntur-SEC-06],2013-12-25,2013,Poor,50.3,2026-07-22,2026-02-25,2026-09-17,Medium,Active
+AST-ENG-0100,Sleeper,Engineering,Guntur-SEC-07,122.01,Pre-stressed Concrete Sleeper Bed at Km 122.01 [Guntur-SEC-07],2022-06-06,2022,Good,81.1,2026-08-20,2026-07-01,2026-09-02,Medium,Active
+AST-ENG-0101,Track,Engineering,Secunderabad-SEC-06,135.25,Curved Track Transition Segment at Km 135.25 [Secunderabad-SEC-06],2022-07-22,2022,Good,80.3,2026-07-26,2026-04-11,2026-09-07,Medium,Active
+AST-ENG-0102,Points & Crossing,Engineering,Hyderabad-SEC-06,3.92,1-in-12 Turnout Point & Crossing at Km 3.92 [Hyderabad-SEC-06],2015-02-13,2015,Critical,37.4,2026-08-08,2026-02-22,2026-10-15,Medium,Active
+AST-ENG-0103,Ballast,Engineering,Hyderabad-SEC-05,25.97,Deep Ballast Cushion Bed at Km 25.97 [Hyderabad-SEC-05],2020-01-01,2020,Fair,73.9,2026-07-11,2026-05-13,2026-10-01,Medium,Active
+AST-ENG-0104,Sleeper,Engineering,Vijayawada-SEC-08,93.36,Pre-stressed Concrete Sleeper Bed at Km 93.36 [Vijayawada-SEC-08],2021-09-22,2021,Fair,76.5,2026-08-23,2026-07-07,2026-09-02,Medium,Active
+AST-ENG-0105,Points & Crossing,Engineering,Guntakal-SEC-04,21.52,1-in-12 Turnout Point & Crossing at Km 21.52 [Guntakal-SEC-04],2012-08-20,2012,Poor,40.7,2026-08-18,2026-04-28,2026-10-12,Medium,Active
+AST-ENG-0106,Track,Engineering,Guntur-SEC-05,82.63,Track Section (60kg 90UTS Rail) at Km 82.63 [Guntur-SEC-05],2015-06-15,2015,Critical,39.2,2026-07-04,2026-03-13,2026-09-19,High,Active
+AST-ENG-0107,Points & Crossing,Engineering,Guntur-SEC-05,102.18,1-in-12 Turnout Point & Crossing at Km 102.18 [Guntur-SEC-05],2016-08-24,2016,Poor,49.4,2026-07-28,2026-04-29,2026-09-22,Medium,Active
+AST-ENG-0108,Track,Engineering,Secunderabad-SEC-07,86.13,Track Section (60kg 90UTS Rail) at Km 86.13 [Secunderabad-SEC-07],2015-04-23,2015,Poor,53.4,2026-07-10,2026-03-14,2026-09-16,Low,Active
+AST-ENG-0109,Track,Engineering,Guntakal-SEC-05,24.06,Track Section (60kg 90UTS Rail) at Km 24.06 [Guntakal-SEC-05],2015-07-05,2015,Poor,45.0,2026-07-17,2026-02-15,2026-09-27,High,Active
+AST-ENG-0110,Rail,Engineering,Hyderabad-SEC-04,43.1,Welded Long Rail (LWR/CWR) at Km 43.10 [Hyderabad-SEC-04],2020-07-23,2020,Fair,75.0,2026-07-03,2026-02-23,2026-09-17,High,Active
+AST-ENG-0111,Rail,Engineering,Guntakal-SEC-04,6.21,Welded Long Rail (LWR/CWR) at Km 6.21 [Guntakal-SEC-04],2015-05-06,2015,Critical,38.2,2026-07-16,2026-02-03,2026-09-10,High,Active
+AST-ENG-0112,Ballast,Engineering,Guntur-SEC-01,89.45,Deep Ballast Cushion Bed at Km 89.45 [Guntur-SEC-01],2012-10-10,2012,Critical,30.0,2026-07-07,2026-01-21,2026-10-04,High,Active
+AST-ENG-0113,Sleeper,Engineering,Guntakal-SEC-04,117.26,Pre-stressed Concrete Sleeper Bed at Km 117.26 [Guntakal-SEC-04],2023-11-18,2023,Good,82.9,2026-07-26,2026-04-29,2026-10-14,Medium,Active
+AST-ENG-0114,Points & Crossing,Engineering,Hyderabad-SEC-08,71.34,1-in-12 Turnout Point & Crossing at Km 71.34 [Hyderabad-SEC-08],2024-07-17,2024,Good,91.9,2026-08-01,2026-03-05,2026-09-29,High,Active
+AST-ENG-0115,Sleeper,Engineering,Guntakal-SEC-08,119.73,Pre-stressed Concrete Sleeper Bed at Km 119.73 [Guntakal-SEC-08],2020-10-13,2020,Fair,73.7,2026-07-11,2026-06-19,2026-09-08,High,Active
+AST-ENG-0116,Track,Engineering,Vijayawada-SEC-04,69.18,Curved Track Transition Segment at Km 69.18 [Vijayawada-SEC-04],2019-03-14,2019,Fair,66.5,2026-08-04,2026-07-13,2026-10-06,High,Active
+AST-ENG-0117,Track,Engineering,Secunderabad-SEC-07,17.25,Curved Track Transition Segment at Km 17.25 [Secunderabad-SEC-07],2013-08-20,2013,Poor,43.2,2026-07-25,2026-01-31,2026-09-08,High,Active
+AST-ENG-0118,Track,Engineering,Guntakal-SEC-05,44.17,Track Section (60kg 90UTS Rail) at Km 44.17 [Guntakal-SEC-05],2013-02-25,2013,Poor,43.4,2026-08-18,2026-04-08,2026-10-12,High,Active
+AST-ENG-0119,Sleeper,Engineering,Secunderabad-SEC-07,115.92,Pre-stressed Concrete Sleeper Bed at Km 115.92 [Secunderabad-SEC-07],2024-09-28,2024,Good,90.6,2026-07-20,2026-05-20,2026-09-09,High,Active
+AST-ENG-0120,Track,Engineering,Vijayawada-SEC-08,21.77,Curved Track Transition Segment at Km 21.77 [Vijayawada-SEC-08],2013-09-26,2013,Critical,30.0,2026-07-10,2026-05-23,2026-09-07,High,Active
+AST-ENG-0121,Track,Engineering,Guntur-SEC-06,59.8,Track Section (60kg 90UTS Rail) at Km 59.80 [Guntur-SEC-06],2019-08-02,2019,Fair,67.6,2026-08-05,2026-06-26,2026-09-05,High,Active
+AST-ENG-0122,Points & Crossing,Engineering,Guntur-SEC-04,90.0,1-in-12 Turnout Point & Crossing at Km 90.00 [Guntur-SEC-04],2023-09-17,2023,Good,87.6,2026-08-21,2026-05-09,2026-09-12,High,Active
+AST-ENG-0123,Points & Crossing,Engineering,Vijayawada-SEC-02,84.75,1-in-12 Turnout Point & Crossing at Km 84.75 [Vijayawada-SEC-02],2016-07-26,2016,Fair,62.4,2026-08-13,2026-04-27,2026-09-06,High,Active
+AST-ENG-0124,Rail,Engineering,Secunderabad-SEC-06,81.32,Welded Long Rail (LWR/CWR) at Km 81.32 [Secunderabad-SEC-06],2016-06-14,2016,Poor,43.6,2026-07-03,2026-01-21,2026-09-21,High,Active
+AST-ENG-0125,Rail,Engineering,Hyderabad-SEC-07,73.8,Welded Long Rail (LWR/CWR) at Km 73.80 [Hyderabad-SEC-07],2018-05-02,2018,Fair,60.9,2026-08-11,2026-03-15,2026-10-01,High,Active
+AST-ENG-0126,Ballast,Engineering,Guntakal-SEC-01,29.9,Deep Ballast Cushion Bed at Km 29.90 [Guntakal-SEC-01],2021-08-06,2021,Fair,78.0,2026-07-25,2026-04-22,2026-09-18,High,Active
+AST-ENG-0127,Sleeper,Engineering,Hyderabad-SEC-07,35.3,Pre-stressed Concrete Sleeper Bed at Km 35.30 [Hyderabad-SEC-07],2021-10-11,2021,Fair,73.8,2026-07-12,2026-01-15,2026-09-09,Medium,Active
+AST-ENG-0128,Rail,Engineering,Guntur-SEC-02,90.93,Welded Long Rail (LWR/CWR) at Km 90.93 [Guntur-SEC-02],2019-10-13,2019,Fair,63.7,2026-08-04,2026-04-01,2026-10-15,Medium,Active
+AST-ENG-0129,Points & Crossing,Engineering,Guntakal-SEC-05,80.15,1-in-12 Turnout Point & Crossing at Km 80.15 [Guntakal-SEC-05],2012-06-13,2012,Critical,30.0,2026-07-08,2026-04-20,2026-10-02,High,Active
+AST-ENG-0130,Rail,Engineering,Guntur-SEC-03,65.77,Welded Long Rail (LWR/CWR) at Km 65.77 [Guntur-SEC-03],2012-12-10,2012,Critical,32.1,2026-07-24,2026-06-26,2026-09-09,Medium,Active
+AST-ENG-0131,Points & Crossing,Engineering,Guntur-SEC-04,37.37,1-in-12 Turnout Point & Crossing at Km 37.37 [Guntur-SEC-04],2023-05-01,2023,Good,88.0,2026-08-24,2026-07-21,2026-09-16,High,Active
+AST-ENG-0132,Rail,Engineering,Guntakal-SEC-08,130.98,Welded Long Rail (LWR/CWR) at Km 130.98 [Guntakal-SEC-08],2020-08-04,2020,Fair,68.9,2026-07-24,2026-02-27,2026-10-12,Medium,Active
+AST-ENG-0133,Track,Engineering,Guntakal-SEC-03,18.64,Curved Track Transition Segment at Km 18.64 [Guntakal-SEC-03],2015-02-23,2015,Critical,34.1,2026-08-21,2026-07-19,2026-10-09,Low,Active
+AST-ENG-0134,Track,Engineering,Guntur-SEC-01,6.11,Curved Track Transition Segment at Km 6.11 [Guntur-SEC-01],2020-12-01,2020,Fair,67.7,2026-07-03,2026-04-06,2026-09-28,Low,Active
+AST-ENG-0135,Track,Engineering,Hyderabad-SEC-04,95.02,Curved Track Transition Segment at Km 95.02 [Hyderabad-SEC-04],2015-01-14,2015,Poor,52.9,2026-08-10,2026-02-13,2026-10-06,High,Active
+AST-ENG-0136,Track,Engineering,Guntur-SEC-02,100.51,Track Section (60kg 90UTS Rail) at Km 100.51 [Guntur-SEC-02],2019-10-14,2019,Fair,61.1,2026-07-30,2026-02-03,2026-10-12,High,Active
+AST-ENG-0137,Track,Engineering,Secunderabad-SEC-01,40.95,Track Section (60kg 90UTS Rail) at Km 40.95 [Secunderabad-SEC-01],2024-03-14,2024,Good,92.0,2026-07-11,2026-02-28,2026-10-05,Medium,Active
+AST-ENG-0138,Ballast,Engineering,Vijayawada-SEC-06,45.67,Deep Ballast Cushion Bed at Km 45.67 [Vijayawada-SEC-06],2016-01-04,2016,Fair,60.2,2026-08-03,2026-06-30,2026-09-25,High,Active
+AST-ENG-0139,Track,Engineering,Secunderabad-SEC-05,120.19,Track Section (60kg 90UTS Rail) at Km 120.19 [Secunderabad-SEC-05],2017-10-22,2017,Fair,66.4,2026-07-23,2026-05-13,2026-09-14,High,Active
+AST-ENG-0140,Rail,Engineering,Secunderabad-SEC-06,43.21,Welded Long Rail (LWR/CWR) at Km 43.21 [Secunderabad-SEC-06],2013-09-03,2013,Critical,32.1,2026-07-29,2026-02-22,2026-09-24,Medium,Active
+AST-ENG-0141,Sleeper,Engineering,Vijayawada-SEC-01,24.74,Pre-stressed Concrete Sleeper Bed at Km 24.74 [Vijayawada-SEC-01],2020-05-22,2020,Fair,77.2,2026-08-11,2026-02-27,2026-10-13,Medium,Active
+AST-ENG-0142,Sleeper,Engineering,Vijayawada-SEC-05,27.09,Pre-stressed Concrete Sleeper Bed at Km 27.09 [Vijayawada-SEC-05],2017-08-03,2017,Poor,48.0,2026-07-20,2026-06-01,2026-10-11,Low,Active
+AST-ENG-0143,Rail,Engineering,Hyderabad-SEC-03,7.84,Welded Long Rail (LWR/CWR) at Km 7.84 [Hyderabad-SEC-03],2017-04-24,2017,Fair,62.3,2026-07-18,2026-06-25,2026-09-21,High,Active
+AST-ENG-0144,Ballast,Engineering,Guntur-SEC-06,55.57,Deep Ballast Cushion Bed at Km 55.57 [Guntur-SEC-06],2013-04-10,2013,Poor,50.5,2026-07-15,2026-03-16,2026-09-06,Medium,Active
+AST-ENG-0145,Ballast,Engineering,Guntakal-SEC-03,42.51,Deep Ballast Cushion Bed at Km 42.51 [Guntakal-SEC-03],2012-02-10,2012,Critical,30.0,2026-08-22,2026-06-17,2026-10-13,High,Active
+AST-ENG-0146,Points & Crossing,Engineering,Hyderabad-SEC-03,2.58,1-in-12 Turnout Point & Crossing at Km 2.58 [Hyderabad-SEC-03],2015-01-21,2015,Critical,38.4,2026-08-21,2026-06-03,2026-10-03,Low,Active
+AST-ENG-0147,Rail,Engineering,Guntur-SEC-03,95.94,Welded Long Rail (LWR/CWR) at Km 95.94 [Guntur-SEC-03],2023-10-08,2023,Good,89.2,2026-07-05,2026-01-24,2026-10-03,Low,Active
+AST-ENG-0148,Track,Engineering,Guntur-SEC-08,96.9,Track Section (60kg 90UTS Rail) at Km 96.90 [Guntur-SEC-08],2022-11-11,2022,Fair,77.3,2026-08-15,2026-03-15,2026-09-18,Medium,Active
+AST-ENG-0149,Track,Engineering,Hyderabad-SEC-02,48.87,Curved Track Transition Segment at Km 48.87 [Hyderabad-SEC-02],2020-02-21,2020,Fair,69.3,2026-07-10,2026-06-20,2026-09-29,Medium,Active
+AST-ENG-0150,Track,Engineering,Secunderabad-SEC-04,90.37,Track Section (60kg 90UTS Rail) at Km 90.37 [Secunderabad-SEC-04],2019-03-28,2019,Fair,64.0,2026-08-02,2026-06-18,2026-10-13,Low,Active
+AST-ENG-0151,Sleeper,Engineering,Secunderabad-SEC-08,37.73,Pre-stressed Concrete Sleeper Bed at Km 37.73 [Secunderabad-SEC-08],2018-04-21,2018,Fair,67.8,2026-08-14,2026-04-04,2026-10-15,High,Active
+AST-ENG-0152,Rail,Engineering,Secunderabad-SEC-03,103.86,Welded Long Rail (LWR/CWR) at Km 103.86 [Secunderabad-SEC-03],2019-06-06,2019,Fair,68.6,2026-07-07,2026-01-09,2026-09-10,Medium,Active
+AST-ENG-0153,Points & Crossing,Engineering,Hyderabad-SEC-07,42.92,1-in-12 Turnout Point & Crossing at Km 42.92 [Hyderabad-SEC-07],2024-07-10,2024,Good,90.9,2026-07-31,2026-02-24,2026-09-29,High,Active
+AST-ENG-0154,Points & Crossing,Engineering,Guntur-SEC-02,53.25,1-in-12 Turnout Point & Crossing at Km 53.25 [Guntur-SEC-02],2015-10-18,2015,Poor,41.2,2026-07-22,2026-03-04,2026-09-18,Medium,Active
+AST-ENG-0155,Ballast,Engineering,Vijayawada-SEC-08,102.68,Deep Ballast Cushion Bed at Km 102.68 [Vijayawada-SEC-08],2024-06-18,2024,Good,92.6,2026-08-15,2026-05-24,2026-09-13,High,Active
+AST-ENG-0156,Sleeper,Engineering,Vijayawada-SEC-04,31.67,Pre-stressed Concrete Sleeper Bed at Km 31.67 [Vijayawada-SEC-04],2016-10-14,2016,Poor,53.3,2026-07-29,2026-07-04,2026-09-19,Low,Active
+AST-ENG-0157,Ballast,Engineering,Guntakal-SEC-03,97.47,Deep Ballast Cushion Bed at Km 97.47 [Guntakal-SEC-03],2012-05-27,2012,Critical,30.0,2026-07-29,2026-04-19,2026-10-16,Medium,Active
+AST-ENG-0158,Rail,Engineering,Guntur-SEC-01,124.54,Welded Long Rail (LWR/CWR) at Km 124.54 [Guntur-SEC-01],2018-12-11,2018,Fair,63.6,2026-08-20,2026-05-26,2026-09-09,Medium,Active
+AST-ENG-0159,Sleeper,Engineering,Hyderabad-SEC-02,121.32,Pre-stressed Concrete Sleeper Bed at Km 121.32 [Hyderabad-SEC-02],2017-10-11,2017,Poor,47.1,2026-08-11,2026-02-20,2026-10-15,High,Active
+AST-ENG-0160,Rail,Engineering,Guntakal-SEC-03,127.54,Welded Long Rail (LWR/CWR) at Km 127.54 [Guntakal-SEC-03],2016-08-09,2016,Poor,53.5,2026-07-25,2026-06-21,2026-10-07,High,Active
+AST-ENG-0161,Sleeper,Engineering,Guntakal-SEC-02,56.27,Pre-stressed Concrete Sleeper Bed at Km 56.27 [Guntakal-SEC-02],2018-02-20,2018,Fair,64.6,2026-07-10,2026-02-02,2026-10-16,High,Active
+AST-ENG-0162,Track,Engineering,Hyderabad-SEC-04,1.06,Track Section (60kg 90UTS Rail) at Km 1.06 [Hyderabad-SEC-04],2012-12-02,2012,Critical,30.0,2026-07-18,2026-05-31,2026-09-03,High,Active
+AST-ENG-0163,Rail,Engineering,Secunderabad-SEC-04,107.94,Welded Long Rail (LWR/CWR) at Km 107.94 [Secunderabad-SEC-04],2013-08-25,2013,Poor,52.8,2026-07-10,2026-01-24,2026-09-11,Medium,Active
+AST-ENG-0164,Track,Engineering,Vijayawada-SEC-07,6.39,Curved Track Transition Segment at Km 6.39 [Vijayawada-SEC-07],2012-04-02,2012,Poor,40.1,2026-07-26,2026-03-11,2026-09-30,Medium,Active
+AST-ENG-0165,Ballast,Engineering,Secunderabad-SEC-07,125.6,Deep Ballast Cushion Bed at Km 125.60 [Secunderabad-SEC-07],2018-02-04,2018,Fair,65.9,2026-08-12,2026-04-28,2026-09-07,High,Active
+AST-ENG-0166,Rail,Engineering,Vijayawada-SEC-04,4.95,Welded Long Rail (LWR/CWR) at Km 4.95 [Vijayawada-SEC-04],2015-01-02,2015,Critical,38.1,2026-08-27,2026-03-04,2026-09-15,High,Active
+AST-ENG-0167,Track,Engineering,Secunderabad-SEC-01,44.0,Curved Track Transition Segment at Km 44.00 [Secunderabad-SEC-01],2015-08-03,2015,Critical,37.4,2026-07-27,2026-06-17,2026-09-23,Low,Active
+AST-ENG-0168,Sleeper,Engineering,Vijayawada-SEC-04,114.18,Pre-stressed Concrete Sleeper Bed at Km 114.18 [Vijayawada-SEC-04],2012-02-05,2012,Critical,36.3,2026-08-25,2026-04-02,2026-09-07,Medium,Active
+AST-ENG-0169,Track,Engineering,Hyderabad-SEC-07,120.86,Curved Track Transition Segment at Km 120.86 [Hyderabad-SEC-07],2019-01-28,2019,Fair,69.6,2026-07-27,2026-02-08,2026-09-13,Medium,Active
+AST-ENG-0170,Rail,Engineering,Hyderabad-SEC-08,24.57,Welded Long Rail (LWR/CWR) at Km 24.57 [Hyderabad-SEC-08],2020-02-24,2020,Fair,65.8,2026-08-15,2026-06-11,2026-10-03,High,Active
+AST-ENG-0171,Ballast,Engineering,Vijayawada-SEC-01,138.6,Deep Ballast Cushion Bed at Km 138.60 [Vijayawada-SEC-01],2013-09-14,2013,Poor,50.5,2026-07-23,2026-06-08,2026-09-10,Medium,Active
+AST-ENG-0172,Points & Crossing,Engineering,Hyderabad-SEC-07,84.27,1-in-12 Turnout Point & Crossing at Km 84.27 [Hyderabad-SEC-07],2019-01-22,2019,Fair,68.5,2026-07-06,2026-03-26,2026-09-22,High,Active
+AST-ENG-0173,Track,Engineering,Guntakal-SEC-05,8.86,Curved Track Transition Segment at Km 8.86 [Guntakal-SEC-05],2015-06-04,2015,Poor,50.6,2026-08-01,2026-03-07,2026-09-11,Low,Active
+AST-ENG-0174,Sleeper,Engineering,Guntakal-SEC-05,81.87,Pre-stressed Concrete Sleeper Bed at Km 81.87 [Guntakal-SEC-05],2016-09-24,2016,Fair,62.7,2026-08-10,2026-06-26,2026-10-01,Low,Active
+AST-ENG-0175,Sleeper,Engineering,Vijayawada-SEC-03,53.27,Pre-stressed Concrete Sleeper Bed at Km 53.27 [Vijayawada-SEC-03],2023-07-13,2023,Good,83.4,2026-07-25,2026-05-28,2026-10-08,High,Active
+AST-ENG-0176,Sleeper,Engineering,Hyderabad-SEC-08,111.18,Pre-stressed Concrete Sleeper Bed at Km 111.18 [Hyderabad-SEC-08],2012-09-24,2012,Critical,30.0,2026-08-19,2026-05-17,2026-09-11,Medium,Active
+AST-ENG-0177,Sleeper,Engineering,Secunderabad-SEC-02,104.84,Pre-stressed Concrete Sleeper Bed at Km 104.84 [Secunderabad-SEC-02],2018-03-17,2018,Fair,67.5,2026-07-29,2026-07-08,2026-10-15,Medium,Active
+AST-ENG-0178,Track,Engineering,Guntakal-SEC-08,7.14,Track Section (60kg 90UTS Rail) at Km 7.14 [Guntakal-SEC-08],2022-02-18,2022,Fair,76.1,2026-07-21,2026-02-14,2026-09-30,High,Active
+AST-ENG-0179,Track,Engineering,Secunderabad-SEC-08,44.48,Curved Track Transition Segment at Km 44.48 [Secunderabad-SEC-08],2020-01-27,2020,Fair,77.4,2026-08-13,2026-02-19,2026-09-11,High,Active
+AST-ENG-0180,Points & Crossing,Engineering,Vijayawada-SEC-04,54.39,1-in-12 Turnout Point & Crossing at Km 54.39 [Vijayawada-SEC-04],2023-07-24,2023,Good,82.4,2026-07-17,2026-03-04,2026-10-05,Low,Active
+AST-ENG-0181,Track,Engineering,Vijayawada-SEC-01,128.23,Curved Track Transition Segment at Km 128.23 [Vijayawada-SEC-01],2023-01-21,2023,Good,85.7,2026-08-21,2026-03-09,2026-09-27,Medium,Active
+AST-ENG-0182,Rail,Engineering,Vijayawada-SEC-04,14.04,Welded Long Rail (LWR/CWR) at Km 14.04 [Vijayawada-SEC-04],2017-07-02,2017,Fair,58.2,2026-08-26,2026-06-30,2026-09-10,High,Active
+AST-ENG-0183,Ballast,Engineering,Guntur-SEC-02,139.42,Deep Ballast Cushion Bed at Km 139.42 [Guntur-SEC-02],2021-07-20,2021,Fair,71.2,2026-08-14,2026-05-25,2026-09-16,High,Active
+AST-ENG-0184,Points & Crossing,Engineering,Guntakal-SEC-03,108.93,1-in-12 Turnout Point & Crossing at Km 108.93 [Guntakal-SEC-03],2017-01-03,2017,Fair,64.0,2026-07-11,2026-03-26,2026-09-09,High,Active
+AST-ENG-0185,Ballast,Engineering,Secunderabad-SEC-04,61.58,Deep Ballast Cushion Bed at Km 61.58 [Secunderabad-SEC-04],2019-02-24,2019,Fair,62.9,2026-07-10,2026-02-24,2026-09-06,Low,Active
+AST-ENG-0186,Points & Crossing,Engineering,Secunderabad-SEC-08,24.5,1-in-12 Turnout Point & Crossing at Km 24.50 [Secunderabad-SEC-08],2015-04-21,2015,Poor,51.4,2026-08-01,2026-04-22,2026-10-07,High,Active
+AST-ENG-0187,Ballast,Engineering,Hyderabad-SEC-07,121.26,Deep Ballast Cushion Bed at Km 121.26 [Hyderabad-SEC-07],2018-09-01,2018,Fair,56.6,2026-08-07,2026-05-20,2026-09-15,High,Active
+AST-ENG-0188,Ballast,Engineering,Secunderabad-SEC-05,6.81,Deep Ballast Cushion Bed at Km 6.81 [Secunderabad-SEC-05],2012-03-06,2012,Critical,38.7,2026-08-17,2026-07-06,2026-09-24,Medium,Active
+AST-ENG-0189,Ballast,Engineering,Secunderabad-SEC-01,52.14,Deep Ballast Cushion Bed at Km 52.14 [Secunderabad-SEC-01],2013-02-09,2013,Critical,37.2,2026-08-19,2026-03-04,2026-10-13,High,Active
+AST-ENG-0190,Sleeper,Engineering,Secunderabad-SEC-08,113.28,Pre-stressed Concrete Sleeper Bed at Km 113.28 [Secunderabad-SEC-08],2016-02-19,2016,Fair,64.6,2026-07-25,2026-06-06,2026-09-15,Low,Active
+AST-ENG-0191,Track,Engineering,Guntur-SEC-02,103.5,Track Section (60kg 90UTS Rail) at Km 103.50 [Guntur-SEC-02],2015-06-26,2015,Fair,57.9,2026-08-20,2026-07-03,2026-09-13,High,Active
+AST-ENG-0192,Rail,Engineering,Vijayawada-SEC-06,98.56,Welded Long Rail (LWR/CWR) at Km 98.56 [Vijayawada-SEC-06],2022-12-13,2022,Good,84.0,2026-07-08,2026-02-07,2026-10-01,Medium,Active
+AST-ENG-0193,Track,Engineering,Secunderabad-SEC-03,41.19,Track Section (60kg 90UTS Rail) at Km 41.19 [Secunderabad-SEC-03],2017-05-06,2017,Fair,62.1,2026-08-03,2026-03-08,2026-10-16,High,Active
+AST-ENG-0194,Track,Engineering,Vijayawada-SEC-02,36.58,Curved Track Transition Segment at Km 36.58 [Vijayawada-SEC-02],2018-05-27,2018,Poor,54.0,2026-07-18,2026-05-24,2026-10-11,Medium,Active
+AST-ENG-0195,Ballast,Engineering,Guntur-SEC-08,44.15,Deep Ballast Cushion Bed at Km 44.15 [Guntur-SEC-08],2022-08-13,2022,Good,82.0,2026-08-10,2026-03-29,2026-09-07,High,Active
+AST-ENG-0196,Track,Engineering,Vijayawada-SEC-07,55.39,Track Section (60kg 90UTS Rail) at Km 55.39 [Vijayawada-SEC-07],2022-06-11,2022,Good,85.8,2026-07-22,2026-03-29,2026-09-25,Low,Active
+AST-ENG-0197,Track,Engineering,Secunderabad-SEC-01,80.35,Track Section (60kg 90UTS Rail) at Km 80.35 [Secunderabad-SEC-01],2017-07-09,2017,Poor,52.8,2026-08-13,2026-06-07,2026-10-04,Medium,Active
+AST-ENG-0198,Rail,Engineering,Hyderabad-SEC-07,24.17,Welded Long Rail (LWR/CWR) at Km 24.17 [Hyderabad-SEC-07],2019-08-04,2019,Fair,75.3,2026-07-10,2026-01-23,2026-09-27,High,Active
+AST-ENG-0199,Rail,Engineering,Guntakal-SEC-03,56.53,Welded Long Rail (LWR/CWR) at Km 56.53 [Guntakal-SEC-03],2016-01-08,2016,Poor,53.5,2026-08-26,2026-05-23,2026-09-28,Medium,Active
+AST-ENG-0200,Track,Engineering,Vijayawada-SEC-01,115.87,Curved Track Transition Segment at Km 115.87 [Vijayawada-SEC-01],2022-01-16,2022,Good,82.6,2026-07-26,2026-02-10,2026-09-26,High,Active
+AST-S&T-0201,Interlocking,S&T,Guntur-SEC-03,102.02,Electronic Interlocking (EI) Field Unit at Km 102.02 [Guntur-SEC-03],2012-08-18,2012,Critical,32.7,2026-08-25,2026-06-08,2026-10-08,High,Active
+AST-S&T-0202,Telecom Equipment,S&T,Vijayawada-SEC-04,5.71,24-Core Armoured Signalling & OFC Cable at Km 5.71 [Vijayawada-SEC-04],2020-08-14,2020,Fair,70.4,2026-08-12,2026-02-21,2026-10-03,High,Active
+AST-S&T-0203,Interlocking,S&T,Secunderabad-SEC-01,4.61,Electronic Interlocking (EI) Field Unit at Km 4.61 [Secunderabad-SEC-01],2020-10-26,2020,Fair,71.5,2026-07-16,2026-06-26,2026-09-03,High,Active
+AST-S&T-0204,Point Machine,S&T,Hyderabad-SEC-01,113.9,Electric Point Machine (IRS Rotary) at Km 113.90 [Hyderabad-SEC-01],2012-08-01,2012,Critical,30.0,2026-07-18,2026-03-17,2026-10-11,High,Active
+AST-S&T-0205,Track Circuit,S&T,Hyderabad-SEC-08,73.47,High-Voltage Impulse Track Circuit at Km 73.47 [Hyderabad-SEC-08],2014-08-17,2014,Poor,53.7,2026-07-14,2026-03-24,2026-09-11,High,Active
+AST-S&T-0206,Axle Counter,S&T,Guntakal-SEC-02,31.2,Digital Dual-Section Axle Counter (HASDAC) at Km 31.20 [Guntakal-SEC-02],2024-08-09,2024,Good,90.9,2026-07-07,2026-03-16,2026-09-19,High,Active
+AST-S&T-0207,Telecom Equipment,S&T,Vijayawada-SEC-06,16.71,24-Core Armoured Signalling & OFC Cable at Km 16.71 [Vijayawada-SEC-06],2019-08-15,2019,Fair,65.1,2026-08-22,2026-05-26,2026-09-07,Medium,Active
+AST-S&T-0208,Track Circuit,S&T,Vijayawada-SEC-06,120.38,High-Voltage Impulse Track Circuit at Km 120.38 [Vijayawada-SEC-06],2016-08-21,2016,Poor,45.3,2026-07-16,2026-03-23,2026-09-30,High,Active
+AST-S&T-0209,Signal,S&T,Guntakal-SEC-07,120.8,Multi-Aspect Color Light Signal (MACLS) at Km 120.80 [Guntakal-SEC-07],2020-10-19,2020,Fair,78.5,2026-08-14,2026-06-05,2026-09-12,High,Active
+AST-S&T-0210,Interlocking,S&T,Guntur-SEC-04,99.07,Electronic Interlocking (EI) Field Unit at Km 99.07 [Guntur-SEC-04],2018-10-06,2018,Poor,52.5,2026-08-17,2026-04-05,2026-09-07,High,Active
+AST-S&T-0211,Signal,S&T,Vijayawada-SEC-05,134.75,Multi-Aspect Color Light Signal (MACLS) at Km 134.75 [Vijayawada-SEC-05],2014-10-09,2014,Critical,35.7,2026-07-27,2026-06-19,2026-09-25,Medium,Active
+AST-S&T-0212,Interlocking,S&T,Vijayawada-SEC-01,89.72,Electronic Interlocking (EI) Field Unit at Km 89.72 [Vijayawada-SEC-01],2017-03-20,2017,Fair,64.4,2026-07-27,2026-04-28,2026-09-12,High,Active
+AST-S&T-0213,Interlocking,S&T,Guntakal-SEC-05,69.93,Electronic Interlocking (EI) Field Unit at Km 69.93 [Guntakal-SEC-05],2015-08-04,2015,Poor,48.1,2026-08-02,2026-05-24,2026-09-20,High,Active
+AST-S&T-0214,Signal,S&T,Guntur-SEC-04,120.53,Multi-Aspect Color Light Signal (MACLS) at Km 120.53 [Guntur-SEC-04],2023-07-24,2023,Good,87.6,2026-08-27,2026-07-25,2026-09-06,High,Active
+AST-S&T-0215,Track Circuit,S&T,Hyderabad-SEC-08,133.14,High-Voltage Impulse Track Circuit at Km 133.14 [Hyderabad-SEC-08],2018-01-27,2018,Poor,53.9,2026-07-31,2026-04-15,2026-10-12,Medium,Active
+AST-S&T-0216,Signal,S&T,Guntakal-SEC-06,103.77,Multi-Aspect Color Light Signal (MACLS) at Km 103.77 [Guntakal-SEC-06],2012-08-21,2012,Poor,41.6,2026-07-25,2026-04-19,2026-09-09,Low,Active
+AST-S&T-0217,Signal,S&T,Hyderabad-SEC-03,17.26,Multi-Aspect Color Light Signal (MACLS) at Km 17.26 [Hyderabad-SEC-03],2013-04-26,2013,Poor,46.8,2026-07-07,2026-03-19,2026-09-29,High,Active
+AST-S&T-0218,Point Machine,S&T,Secunderabad-SEC-02,78.04,Electric Point Machine (IRS Rotary) at Km 78.04 [Secunderabad-SEC-02],2019-09-24,2019,Fair,59.7,2026-07-20,2026-04-12,2026-10-13,Medium,Active
+AST-S&T-0219,Signal,S&T,Hyderabad-SEC-08,59.51,Multi-Aspect Color Light Signal (MACLS) at Km 59.51 [Hyderabad-SEC-08],2013-01-04,2013,Critical,35.8,2026-07-05,2026-03-26,2026-09-20,Low,Active
+AST-S&T-0220,Track Circuit,S&T,Guntakal-SEC-04,53.66,High-Voltage Impulse Track Circuit at Km 53.66 [Guntakal-SEC-04],2013-06-16,2013,Poor,43.2,2026-07-16,2026-04-29,2026-10-11,Medium,Active
+AST-S&T-0221,Signal,S&T,Vijayawada-SEC-01,106.28,Multi-Aspect Color Light Signal (MACLS) at Km 106.28 [Vijayawada-SEC-01],2022-03-12,2022,Good,83.1,2026-07-04,2026-06-10,2026-10-12,Medium,Active
+AST-S&T-0222,Signal,S&T,Vijayawada-SEC-03,132.7,Multi-Aspect Color Light Signal (MACLS) at Km 132.70 [Vijayawada-SEC-03],2020-11-17,2020,Fair,69.6,2026-07-11,2026-06-11,2026-09-20,Medium,Active
+AST-S&T-0223,Signal,S&T,Guntakal-SEC-06,35.7,Multi-Aspect Color Light Signal (MACLS) at Km 35.70 [Guntakal-SEC-06],2024-05-06,2024,Good,91.9,2026-07-18,2026-05-06,2026-09-15,Medium,Active
+AST-S&T-0224,Interlocking,S&T,Hyderabad-SEC-05,106.29,Electronic Interlocking (EI) Field Unit at Km 106.29 [Hyderabad-SEC-05],2017-02-14,2017,Fair,56.7,2026-08-09,2026-06-19,2026-09-19,Medium,Active
+AST-S&T-0225,Interlocking,S&T,Guntakal-SEC-01,126.22,Electronic Interlocking (EI) Field Unit at Km 126.22 [Guntakal-SEC-01],2012-06-19,2012,Poor,41.7,2026-07-20,2026-02-27,2026-09-04,Medium,Active
+AST-S&T-0226,Track Circuit,S&T,Guntakal-SEC-08,51.79,High-Voltage Impulse Track Circuit at Km 51.79 [Guntakal-SEC-08],2018-12-26,2018,Fair,56.5,2026-07-10,2026-04-03,2026-09-13,Medium,Active
+AST-S&T-0227,Axle Counter,S&T,Guntakal-SEC-05,137.36,Digital Dual-Section Axle Counter (HASDAC) at Km 137.36 [Guntakal-SEC-05],2013-09-26,2013,Critical,30.0,2026-07-13,2026-05-05,2026-09-18,High,Active
+AST-S&T-0228,Point Machine,S&T,Guntakal-SEC-07,56.45,Electric Point Machine (IRS Rotary) at Km 56.45 [Guntakal-SEC-07],2017-08-26,2017,Fair,60.4,2026-08-01,2026-02-18,2026-10-16,High,Active
+AST-S&T-0229,Telecom Equipment,S&T,Guntur-SEC-03,91.15,24-Core Armoured Signalling & OFC Cable at Km 91.15 [Guntur-SEC-03],2021-09-22,2021,Good,81.0,2026-08-08,2026-06-01,2026-09-17,High,Active
+AST-S&T-0230,Signal,S&T,Hyderabad-SEC-08,133.28,Multi-Aspect Color Light Signal (MACLS) at Km 133.28 [Hyderabad-SEC-08],2016-04-23,2016,Fair,64.3,2026-08-10,2026-03-31,2026-09-30,High,Active
+AST-S&T-0231,Interlocking,S&T,Vijayawada-SEC-05,94.63,Electronic Interlocking (EI) Field Unit at Km 94.63 [Vijayawada-SEC-05],2020-11-13,2020,Fair,69.2,2026-08-23,2026-03-24,2026-09-02,High,Active
+AST-S&T-0232,Axle Counter,S&T,Guntakal-SEC-02,11.43,Digital Dual-Section Axle Counter (HASDAC) at Km 11.43 [Guntakal-SEC-02],2013-04-21,2013,Critical,30.0,2026-08-11,2026-07-16,2026-09-29,Medium,Active
+AST-S&T-0233,Point Machine,S&T,Guntakal-SEC-05,59.83,Electric Point Machine (IRS Rotary) at Km 59.83 [Guntakal-SEC-05],2013-05-07,2013,Critical,30.0,2026-07-15,2026-03-30,2026-09-19,Medium,Active
+AST-S&T-0234,Telecom Equipment,S&T,Secunderabad-SEC-08,72.05,24-Core Armoured Signalling & OFC Cable at Km 72.05 [Secunderabad-SEC-08],2019-06-13,2019,Fair,67.8,2026-08-20,2026-04-01,2026-09-11,Low,Active
+AST-S&T-0235,Axle Counter,S&T,Guntakal-SEC-02,97.93,Digital Dual-Section Axle Counter (HASDAC) at Km 97.93 [Guntakal-SEC-02],2016-02-06,2016,Poor,43.3,2026-08-27,2026-06-26,2026-10-04,Medium,Active
+AST-S&T-0236,Telecom Equipment,S&T,Hyderabad-SEC-04,47.84,24-Core Armoured Signalling & OFC Cable at Km 47.84 [Hyderabad-SEC-04],2017-09-01,2017,Poor,50.3,2026-07-15,2026-03-28,2026-10-12,Medium,Active
+AST-S&T-0237,Axle Counter,S&T,Hyderabad-SEC-08,112.73,Digital Dual-Section Axle Counter (HASDAC) at Km 112.73 [Hyderabad-SEC-08],2020-02-27,2020,Fair,71.7,2026-07-25,2026-03-01,2026-10-03,Medium,Active
+AST-S&T-0238,Axle Counter,S&T,Hyderabad-SEC-05,80.91,Digital Dual-Section Axle Counter (HASDAC) at Km 80.91 [Hyderabad-SEC-05],2024-11-04,2024,Good,90.6,2026-07-29,2026-02-26,2026-10-13,High,Active
+AST-S&T-0239,Axle Counter,S&T,Guntur-SEC-08,48.1,Digital Dual-Section Axle Counter (HASDAC) at Km 48.10 [Guntur-SEC-08],2012-12-12,2012,Critical,38.4,2026-07-10,2026-04-12,2026-10-13,Medium,Active
+AST-S&T-0240,Interlocking,S&T,Guntur-SEC-03,68.88,Electronic Interlocking (EI) Field Unit at Km 68.88 [Guntur-SEC-03],2020-12-16,2020,Fair,71.5,2026-08-15,2026-07-14,2026-09-27,Low,Active
+AST-S&T-0241,Interlocking,S&T,Guntakal-SEC-01,109.04,Electronic Interlocking (EI) Field Unit at Km 109.04 [Guntakal-SEC-01],2019-02-16,2019,Fair,67.6,2026-07-25,2026-05-20,2026-09-28,Medium,Active
+AST-S&T-0242,Point Machine,S&T,Secunderabad-SEC-03,115.09,Electric Point Machine (IRS Rotary) at Km 115.09 [Secunderabad-SEC-03],2012-02-19,2012,Poor,48.0,2026-08-17,2026-06-28,2026-10-11,High,Active
+AST-S&T-0243,Signal,S&T,Guntakal-SEC-05,64.43,Multi-Aspect Color Light Signal (MACLS) at Km 64.43 [Guntakal-SEC-05],2017-09-02,2017,Fair,57.8,2026-07-27,2026-03-15,2026-10-04,Low,Active
+AST-S&T-0244,Track Circuit,S&T,Guntakal-SEC-06,97.45,High-Voltage Impulse Track Circuit at Km 97.45 [Guntakal-SEC-06],2019-10-03,2019,Fair,75.0,2026-07-03,2026-03-12,2026-10-09,Low,Active
+AST-S&T-0245,Point Machine,S&T,Vijayawada-SEC-04,128.81,Electric Point Machine (IRS Rotary) at Km 128.81 [Vijayawada-SEC-04],2023-12-17,2023,Good,88.1,2026-07-30,2026-06-23,2026-10-02,Low,Active
+AST-S&T-0246,Signal,S&T,Guntakal-SEC-02,44.69,Multi-Aspect Color Light Signal (MACLS) at Km 44.69 [Guntakal-SEC-02],2023-05-07,2023,Good,87.1,2026-08-20,2026-07-06,2026-09-22,Medium,Active
+AST-S&T-0247,Axle Counter,S&T,Guntur-SEC-08,89.25,Digital Dual-Section Axle Counter (HASDAC) at Km 89.25 [Guntur-SEC-08],2015-07-13,2015,Poor,48.3,2026-07-07,2026-04-05,2026-10-02,High,Active
+AST-S&T-0248,Point Machine,S&T,Guntur-SEC-06,28.16,Electric Point Machine (IRS Rotary) at Km 28.16 [Guntur-SEC-06],2013-03-25,2013,Poor,45.7,2026-08-19,2026-03-17,2026-10-03,Medium,Active
+AST-S&T-0249,Axle Counter,S&T,Vijayawada-SEC-07,25.13,Digital Dual-Section Axle Counter (HASDAC) at Km 25.13 [Vijayawada-SEC-07],2016-05-28,2016,Poor,43.4,2026-08-27,2026-05-29,2026-09-16,Medium,Active
+AST-S&T-0250,Track Circuit,S&T,Hyderabad-SEC-05,109.32,High-Voltage Impulse Track Circuit at Km 109.32 [Hyderabad-SEC-05],2014-09-06,2014,Poor,48.7,2026-07-06,2026-04-30,2026-09-09,Low,Active
+AST-S&T-0251,Interlocking,S&T,Vijayawada-SEC-06,28.36,Electronic Interlocking (EI) Field Unit at Km 28.36 [Vijayawada-SEC-06],2013-09-25,2013,Poor,47.8,2026-07-26,2026-06-16,2026-10-12,High,Active
+AST-S&T-0252,Axle Counter,S&T,Hyderabad-SEC-08,135.16,Digital Dual-Section Axle Counter (HASDAC) at Km 135.16 [Hyderabad-SEC-08],2016-05-03,2016,Poor,45.5,2026-08-07,2026-03-08,2026-09-26,High,Active
+AST-S&T-0253,Point Machine,S&T,Guntur-SEC-07,11.37,Electric Point Machine (IRS Rotary) at Km 11.37 [Guntur-SEC-07],2017-12-05,2017,Fair,68.0,2026-07-12,2026-04-12,2026-10-12,High,Active
+AST-S&T-0254,Signal,S&T,Guntakal-SEC-08,124.64,Multi-Aspect Color Light Signal (MACLS) at Km 124.64 [Guntakal-SEC-08],2022-11-26,2022,Fair,77.1,2026-08-03,2026-06-03,2026-09-27,Low,Active
+AST-S&T-0255,Track Circuit,S&T,Hyderabad-SEC-08,137.67,High-Voltage Impulse Track Circuit at Km 137.67 [Hyderabad-SEC-08],2020-04-12,2020,Fair,65.5,2026-07-11,2026-01-21,2026-09-05,High,Active
+AST-S&T-0256,Telecom Equipment,S&T,Secunderabad-SEC-05,7.74,24-Core Armoured Signalling & OFC Cable at Km 7.74 [Secunderabad-SEC-05],2017-03-18,2017,Poor,49.6,2026-08-02,2026-04-19,2026-10-09,High,Active
+AST-S&T-0257,Signal,S&T,Secunderabad-SEC-02,45.96,Multi-Aspect Color Light Signal (MACLS) at Km 45.96 [Secunderabad-SEC-02],2022-09-08,2022,Good,85.5,2026-07-04,2026-01-10,2026-09-04,Medium,Active
+AST-S&T-0258,Track Circuit,S&T,Guntakal-SEC-04,115.49,High-Voltage Impulse Track Circuit at Km 115.49 [Guntakal-SEC-04],2017-06-15,2017,Poor,51.3,2026-07-14,2026-05-17,2026-09-15,Medium,Active
+AST-S&T-0259,Point Machine,S&T,Hyderabad-SEC-02,75.54,Electric Point Machine (IRS Rotary) at Km 75.54 [Hyderabad-SEC-02],2012-03-05,2012,Critical,37.0,2026-08-06,2026-05-18,2026-10-11,Medium,Active
+AST-S&T-0260,Point Machine,S&T,Hyderabad-SEC-02,82.79,Electric Point Machine (IRS Rotary) at Km 82.79 [Hyderabad-SEC-02],2015-04-17,2015,Critical,39.4,2026-08-14,2026-07-30,2026-09-23,Medium,Active
+AST-S&T-0261,Signal,S&T,Hyderabad-SEC-06,100.78,Multi-Aspect Color Light Signal (MACLS) at Km 100.78 [Hyderabad-SEC-06],2023-07-04,2023,Good,82.7,2026-08-19,2026-06-29,2026-09-30,High,Active
+AST-S&T-0262,Track Circuit,S&T,Vijayawada-SEC-07,122.42,High-Voltage Impulse Track Circuit at Km 122.42 [Vijayawada-SEC-07],2020-04-26,2020,Fair,75.0,2026-07-27,2026-05-05,2026-09-21,Medium,Active
+AST-S&T-0263,Interlocking,S&T,Secunderabad-SEC-06,84.55,Electronic Interlocking (EI) Field Unit at Km 84.55 [Secunderabad-SEC-06],2017-12-28,2017,Fair,60.4,2026-07-18,2026-05-16,2026-10-10,Low,Active
+AST-S&T-0264,Interlocking,S&T,Hyderabad-SEC-07,125.71,Electronic Interlocking (EI) Field Unit at Km 125.71 [Hyderabad-SEC-07],2013-08-02,2013,Critical,30.0,2026-08-15,2026-04-18,2026-09-07,Medium,Active
+AST-S&T-0265,Signal,S&T,Hyderabad-SEC-04,62.6,Multi-Aspect Color Light Signal (MACLS) at Km 62.60 [Hyderabad-SEC-04],2022-04-15,2022,Good,82.4,2026-07-03,2026-03-05,2026-10-04,High,Active
+AST-S&T-0266,Axle Counter,S&T,Guntur-SEC-08,73.53,Digital Dual-Section Axle Counter (HASDAC) at Km 73.53 [Guntur-SEC-08],2012-06-24,2012,Critical,30.0,2026-07-15,2026-01-16,2026-10-07,High,Active
+AST-S&T-0267,Point Machine,S&T,Guntur-SEC-07,57.43,Electric Point Machine (IRS Rotary) at Km 57.43 [Guntur-SEC-07],2017-04-19,2017,Poor,50.4,2026-07-07,2026-05-06,2026-09-23,Medium,Active
+AST-S&T-0268,Telecom Equipment,S&T,Vijayawada-SEC-08,64.13,24-Core Armoured Signalling & OFC Cable at Km 64.13 [Vijayawada-SEC-08],2023-08-07,2023,Good,89.3,2026-08-27,2026-03-20,2026-09-05,Medium,Active
+AST-S&T-0269,Point Machine,S&T,Vijayawada-SEC-03,63.04,Electric Point Machine (IRS Rotary) at Km 63.04 [Vijayawada-SEC-03],2014-07-09,2014,Critical,33.4,2026-08-07,2026-06-13,2026-10-03,High,Active
+AST-S&T-0270,Interlocking,S&T,Vijayawada-SEC-07,59.55,Electronic Interlocking (EI) Field Unit at Km 59.55 [Vijayawada-SEC-07],2024-01-09,2024,Good,92.0,2026-08-25,2026-05-28,2026-10-16,Medium,Active
+AST-S&T-0271,Signal,S&T,Guntur-SEC-08,22.76,Multi-Aspect Color Light Signal (MACLS) at Km 22.76 [Guntur-SEC-08],2016-11-22,2016,Fair,61.6,2026-08-06,2026-06-26,2026-09-22,High,Active
+AST-S&T-0272,Telecom Equipment,S&T,Secunderabad-SEC-05,56.06,24-Core Armoured Signalling & OFC Cable at Km 56.06 [Secunderabad-SEC-05],2017-08-13,2017,Fair,58.4,2026-07-08,2026-03-24,2026-10-14,Low,Active
+AST-S&T-0273,Signal,S&T,Vijayawada-SEC-02,134.19,Multi-Aspect Color Light Signal (MACLS) at Km 134.19 [Vijayawada-SEC-02],2017-09-22,2017,Poor,47.9,2026-08-22,2026-03-26,2026-10-04,Medium,Active
+AST-S&T-0274,Point Machine,S&T,Hyderabad-SEC-03,109.42,Electric Point Machine (IRS Rotary) at Km 109.42 [Hyderabad-SEC-03],2020-04-27,2020,Fair,76.6,2026-07-20,2026-06-28,2026-09-30,Medium,Active
+AST-S&T-0275,Signal,S&T,Hyderabad-SEC-07,14.3,Multi-Aspect Color Light Signal (MACLS) at Km 14.30 [Hyderabad-SEC-07],2019-06-16,2019,Fair,75.0,2026-08-03,2026-07-07,2026-09-09,High,Active
+AST-S&T-0276,Axle Counter,S&T,Guntur-SEC-01,123.49,Digital Dual-Section Axle Counter (HASDAC) at Km 123.49 [Guntur-SEC-01],2016-05-15,2016,Poor,50.1,2026-07-26,2026-05-11,2026-10-03,High,Active
+AST-S&T-0277,Signal,S&T,Hyderabad-SEC-06,93.54,Multi-Aspect Color Light Signal (MACLS) at Km 93.54 [Hyderabad-SEC-06],2019-12-15,2019,Fair,63.1,2026-07-13,2026-06-13,2026-09-14,Low,Active
+AST-S&T-0278,Track Circuit,S&T,Vijayawada-SEC-01,27.57,High-Voltage Impulse Track Circuit at Km 27.57 [Vijayawada-SEC-01],2023-10-14,2023,Good,82.3,2026-08-03,2026-07-08,2026-09-13,High,Active
+AST-S&T-0279,Axle Counter,S&T,Hyderabad-SEC-04,35.4,Digital Dual-Section Axle Counter (HASDAC) at Km 35.40 [Hyderabad-SEC-04],2017-05-24,2017,Fair,58.2,2026-08-21,2026-05-14,2026-09-20,Medium,Active
+AST-S&T-0280,Point Machine,S&T,Vijayawada-SEC-05,31.29,Electric Point Machine (IRS Rotary) at Km 31.29 [Vijayawada-SEC-05],2019-05-25,2019,Fair,63.8,2026-08-13,2026-04-12,2026-10-14,High,Active
+AST-S&T-0281,Track Circuit,S&T,Vijayawada-SEC-05,2.92,High-Voltage Impulse Track Circuit at Km 2.92 [Vijayawada-SEC-05],2016-07-04,2016,Poor,51.0,2026-08-22,2026-07-08,2026-10-04,Medium,Active
+AST-S&T-0282,Axle Counter,S&T,Vijayawada-SEC-08,30.34,Digital Dual-Section Axle Counter (HASDAC) at Km 30.34 [Vijayawada-SEC-08],2020-03-02,2020,Fair,74.2,2026-08-27,2026-03-02,2026-09-21,Medium,Active
+AST-S&T-0283,Signal,S&T,Guntakal-SEC-08,31.15,Multi-Aspect Color Light Signal (MACLS) at Km 31.15 [Guntakal-SEC-08],2018-11-17,2018,Fair,62.4,2026-07-29,2026-03-08,2026-09-20,High,Active
+AST-S&T-0284,Telecom Equipment,S&T,Vijayawada-SEC-05,138.06,24-Core Armoured Signalling & OFC Cable at Km 138.06 [Vijayawada-SEC-05],2023-02-15,2023,Good,87.8,2026-07-10,2026-02-23,2026-09-24,High,Active
+AST-S&T-0285,Axle Counter,S&T,Vijayawada-SEC-04,124.15,Digital Dual-Section Axle Counter (HASDAC) at Km 124.15 [Vijayawada-SEC-04],2022-03-12,2022,Good,82.5,2026-08-07,2026-04-05,2026-09-22,High,Active
+AST-S&T-0286,Point Machine,S&T,Guntakal-SEC-04,105.61,Electric Point Machine (IRS Rotary) at Km 105.61 [Guntakal-SEC-04],2023-07-27,2023,Good,89.2,2026-08-22,2026-07-03,2026-09-05,Medium,Active
+AST-S&T-0287,Point Machine,S&T,Vijayawada-SEC-04,55.06,Electric Point Machine (IRS Rotary) at Km 55.06 [Vijayawada-SEC-04],2019-10-15,2019,Fair,71.9,2026-07-30,2026-03-28,2026-09-27,Low,Active
+AST-S&T-0288,Axle Counter,S&T,Hyderabad-SEC-08,67.9,Digital Dual-Section Axle Counter (HASDAC) at Km 67.90 [Hyderabad-SEC-08],2021-11-16,2021,Fair,73.0,2026-08-23,2026-04-21,2026-09-19,Medium,Active
+AST-S&T-0289,Telecom Equipment,S&T,Secunderabad-SEC-07,79.84,24-Core Armoured Signalling & OFC Cable at Km 79.84 [Secunderabad-SEC-07],2016-01-20,2016,Poor,44.0,2026-08-14,2026-04-01,2026-10-08,Medium,Active
+AST-S&T-0290,Axle Counter,S&T,Guntur-SEC-06,41.23,Digital Dual-Section Axle Counter (HASDAC) at Km 41.23 [Guntur-SEC-06],2014-03-10,2014,Poor,47.3,2026-07-17,2026-01-24,2026-09-02,High,Active
+AST-S&T-0291,Interlocking,S&T,Guntur-SEC-05,16.85,Electronic Interlocking (EI) Field Unit at Km 16.85 [Guntur-SEC-05],2016-11-28,2016,Poor,46.4,2026-07-23,2026-07-01,2026-10-03,Medium,Active
+AST-S&T-0292,Interlocking,S&T,Vijayawada-SEC-03,58.17,Electronic Interlocking (EI) Field Unit at Km 58.17 [Vijayawada-SEC-03],2017-06-02,2017,Fair,61.7,2026-07-20,2026-03-01,2026-09-18,High,Active
+AST-S&T-0293,Signal,S&T,Vijayawada-SEC-02,49.64,Multi-Aspect Color Light Signal (MACLS) at Km 49.64 [Vijayawada-SEC-02],2021-07-02,2021,Fair,76.5,2026-08-12,2026-03-14,2026-09-29,High,Active
+AST-S&T-0294,Interlocking,S&T,Guntakal-SEC-07,16.4,Electronic Interlocking (EI) Field Unit at Km 16.40 [Guntakal-SEC-07],2012-05-16,2012,Poor,49.3,2026-07-08,2026-02-28,2026-09-28,Medium,Active
+AST-S&T-0295,Signal,S&T,Vijayawada-SEC-08,67.83,Multi-Aspect Color Light Signal (MACLS) at Km 67.83 [Vijayawada-SEC-08],2016-10-22,2016,Poor,50.6,2026-07-14,2026-01-29,2026-09-08,High,Active
+AST-S&T-0296,Telecom Equipment,S&T,Vijayawada-SEC-01,134.97,24-Core Armoured Signalling & OFC Cable at Km 134.97 [Vijayawada-SEC-01],2014-05-19,2014,Poor,52.5,2026-07-16,2026-03-09,2026-10-13,High,Active
+AST-S&T-0297,Telecom Equipment,S&T,Hyderabad-SEC-04,124.75,24-Core Armoured Signalling & OFC Cable at Km 124.75 [Hyderabad-SEC-04],2019-05-11,2019,Fair,62.5,2026-07-22,2026-06-04,2026-10-07,Medium,Active
+AST-S&T-0298,Point Machine,S&T,Guntakal-SEC-01,97.58,Electric Point Machine (IRS Rotary) at Km 97.58 [Guntakal-SEC-01],2014-03-21,2014,Poor,47.7,2026-08-26,2026-03-04,2026-09-18,Low,Active
+AST-S&T-0299,Interlocking,S&T,Guntakal-SEC-05,12.73,Electronic Interlocking (EI) Field Unit at Km 12.73 [Guntakal-SEC-05],2019-07-27,2019,Fair,74.7,2026-08-15,2026-05-19,2026-09-15,Medium,Active
+AST-S&T-0300,Signal,S&T,Guntur-SEC-05,22.69,Multi-Aspect Color Light Signal (MACLS) at Km 22.69 [Guntur-SEC-05],2018-09-07,2018,Fair,60.0,2026-07-08,2026-03-29,2026-09-26,Medium,Active
+AST-S&T-0301,Axle Counter,S&T,Secunderabad-SEC-07,105.45,Digital Dual-Section Axle Counter (HASDAC) at Km 105.45 [Secunderabad-SEC-07],2014-02-01,2014,Poor,50.2,2026-08-20,2026-07-22,2026-09-17,Low,Active
+AST-S&T-0302,Interlocking,S&T,Vijayawada-SEC-04,40.54,Electronic Interlocking (EI) Field Unit at Km 40.54 [Vijayawada-SEC-04],2019-06-07,2019,Fair,74.8,2026-08-05,2026-07-10,2026-09-13,Low,Active
+AST-S&T-0303,Telecom Equipment,S&T,Hyderabad-SEC-08,69.25,24-Core Armoured Signalling & OFC Cable at Km 69.25 [Hyderabad-SEC-08],2023-08-12,2023,Good,86.1,2026-07-26,2026-02-25,2026-10-02,Medium,Active
+AST-S&T-0304,Signal,S&T,Secunderabad-SEC-03,97.22,Multi-Aspect Color Light Signal (MACLS) at Km 97.22 [Secunderabad-SEC-03],2020-02-02,2020,Fair,77.0,2026-08-15,2026-06-27,2026-09-04,Medium,Active
+AST-S&T-0305,Track Circuit,S&T,Vijayawada-SEC-06,9.32,High-Voltage Impulse Track Circuit at Km 9.32 [Vijayawada-SEC-06],2024-05-16,2024,Good,88.6,2026-07-27,2026-06-22,2026-09-10,Low,Active
+AST-S&T-0306,Point Machine,S&T,Guntur-SEC-08,109.53,Electric Point Machine (IRS Rotary) at Km 109.53 [Guntur-SEC-08],2020-12-16,2020,Fair,66.5,2026-07-08,2026-05-10,2026-09-04,Medium,Active
+AST-S&T-0307,Point Machine,S&T,Guntakal-SEC-07,120.03,Electric Point Machine (IRS Rotary) at Km 120.03 [Guntakal-SEC-07],2015-02-13,2015,Fair,58.3,2026-07-23,2026-06-14,2026-09-18,Medium,Active
+AST-S&T-0308,Point Machine,S&T,Guntakal-SEC-04,122.21,Electric Point Machine (IRS Rotary) at Km 122.21 [Guntakal-SEC-04],2019-07-26,2019,Fair,60.5,2026-08-25,2026-07-18,2026-09-12,High,Active
+AST-S&T-0309,Axle Counter,S&T,Secunderabad-SEC-04,97.62,Digital Dual-Section Axle Counter (HASDAC) at Km 97.62 [Secunderabad-SEC-04],2018-02-05,2018,Fair,55.3,2026-07-17,2026-04-10,2026-09-23,Low,Active
+AST-S&T-0310,Interlocking,S&T,Vijayawada-SEC-07,99.13,Electronic Interlocking (EI) Field Unit at Km 99.13 [Vijayawada-SEC-07],2014-06-27,2014,Fair,57.4,2026-07-15,2026-06-18,2026-09-07,High,Active
+AST-S&T-0311,Signal,S&T,Guntakal-SEC-08,62.99,Multi-Aspect Color Light Signal (MACLS) at Km 62.99 [Guntakal-SEC-08],2014-07-12,2014,Critical,37.0,2026-08-11,2026-03-03,2026-09-07,High,Active
+AST-S&T-0312,Track Circuit,S&T,Hyderabad-SEC-04,14.87,High-Voltage Impulse Track Circuit at Km 14.87 [Hyderabad-SEC-04],2023-12-13,2023,Good,84.6,2026-07-04,2026-05-06,2026-09-04,High,Active
+AST-S&T-0313,Interlocking,S&T,Guntakal-SEC-06,107.71,Electronic Interlocking (EI) Field Unit at Km 107.71 [Guntakal-SEC-06],2024-09-08,2024,Good,89.8,2026-07-28,2026-06-18,2026-09-26,Low,Active
+AST-S&T-0314,Interlocking,S&T,Vijayawada-SEC-05,29.32,Electronic Interlocking (EI) Field Unit at Km 29.32 [Vijayawada-SEC-05],2014-09-11,2014,Poor,54.7,2026-08-24,2026-06-27,2026-10-08,High,Active
+AST-S&T-0315,Track Circuit,S&T,Hyderabad-SEC-08,26.77,High-Voltage Impulse Track Circuit at Km 26.77 [Hyderabad-SEC-08],2016-03-04,2016,Poor,43.1,2026-08-12,2026-06-28,2026-09-16,High,Active
+AST-S&T-0316,Point Machine,S&T,Guntur-SEC-07,102.44,Electric Point Machine (IRS Rotary) at Km 102.44 [Guntur-SEC-07],2013-01-26,2013,Critical,36.6,2026-07-06,2026-04-20,2026-09-23,Medium,Active
+AST-S&T-0317,Interlocking,S&T,Hyderabad-SEC-05,106.23,Electronic Interlocking (EI) Field Unit at Km 106.23 [Hyderabad-SEC-05],2018-02-20,2018,Fair,55.0,2026-08-07,2026-06-04,2026-09-05,Medium,Active
+AST-S&T-0318,Signal,S&T,Guntakal-SEC-06,51.23,Multi-Aspect Color Light Signal (MACLS) at Km 51.23 [Guntakal-SEC-06],2022-02-25,2022,Good,85.2,2026-08-20,2026-04-22,2026-10-04,Medium,Active
+AST-S&T-0319,Track Circuit,S&T,Vijayawada-SEC-01,77.68,High-Voltage Impulse Track Circuit at Km 77.68 [Vijayawada-SEC-01],2016-01-04,2016,Poor,47.4,2026-08-01,2026-03-21,2026-09-13,High,Active
+AST-S&T-0320,Signal,S&T,Guntur-SEC-04,120.37,Multi-Aspect Color Light Signal (MACLS) at Km 120.37 [Guntur-SEC-04],2013-03-22,2013,Poor,51.2,2026-07-08,2026-05-25,2026-09-27,Medium,Active
+AST-S&T-0321,Interlocking,S&T,Guntakal-SEC-03,49.7,Electronic Interlocking (EI) Field Unit at Km 49.70 [Guntakal-SEC-03],2022-12-09,2022,Fair,79.7,2026-07-19,2026-04-11,2026-10-03,High,Active
+AST-S&T-0322,Signal,S&T,Vijayawada-SEC-05,39.14,Multi-Aspect Color Light Signal (MACLS) at Km 39.14 [Vijayawada-SEC-05],2021-09-08,2021,Fair,73.2,2026-07-21,2026-04-20,2026-09-16,Medium,Active
+AST-S&T-0323,Interlocking,S&T,Hyderabad-SEC-06,43.87,Electronic Interlocking (EI) Field Unit at Km 43.87 [Hyderabad-SEC-06],2013-11-04,2013,Critical,35.3,2026-07-27,2026-07-06,2026-09-06,Medium,Active
+AST-S&T-0324,Interlocking,S&T,Guntur-SEC-07,76.85,Electronic Interlocking (EI) Field Unit at Km 76.85 [Guntur-SEC-07],2024-10-21,2024,Good,92.4,2026-07-03,2026-04-05,2026-09-03,Medium,Active
+AST-S&T-0325,Interlocking,S&T,Guntakal-SEC-03,101.3,Electronic Interlocking (EI) Field Unit at Km 101.30 [Guntakal-SEC-03],2013-09-01,2013,Poor,43.3,2026-08-13,2026-05-04,2026-09-04,High,Active
+AST-S&T-0326,Axle Counter,S&T,Secunderabad-SEC-07,117.42,Digital Dual-Section Axle Counter (HASDAC) at Km 117.42 [Secunderabad-SEC-07],2017-03-02,2017,Fair,67.6,2026-07-17,2026-04-18,2026-09-27,Medium,Active
+AST-S&T-0327,Point Machine,S&T,Vijayawada-SEC-02,1.31,Electric Point Machine (IRS Rotary) at Km 1.31 [Vijayawada-SEC-02],2016-01-25,2016,Poor,53.5,2026-08-09,2026-06-30,2026-09-25,High,Active
+AST-S&T-0328,Axle Counter,S&T,Hyderabad-SEC-06,66.88,Digital Dual-Section Axle Counter (HASDAC) at Km 66.88 [Hyderabad-SEC-06],2012-06-08,2012,Poor,42.9,2026-08-06,2026-04-17,2026-09-11,Low,Active
+AST-S&T-0329,Signal,S&T,Secunderabad-SEC-04,9.31,Multi-Aspect Color Light Signal (MACLS) at Km 9.31 [Secunderabad-SEC-04],2012-09-28,2012,Critical,35.5,2026-08-13,2026-07-18,2026-10-03,Low,Active
+AST-S&T-0330,Telecom Equipment,S&T,Secunderabad-SEC-01,100.7,24-Core Armoured Signalling & OFC Cable at Km 100.70 [Secunderabad-SEC-01],2013-06-23,2013,Poor,47.5,2026-07-20,2026-06-10,2026-09-02,High,Active
+AST-S&T-0331,Signal,S&T,Vijayawada-SEC-01,125.86,Multi-Aspect Color Light Signal (MACLS) at Km 125.86 [Vijayawada-SEC-01],2024-08-06,2024,Good,92.3,2026-07-11,2026-04-06,2026-10-09,Medium,Active
+AST-S&T-0332,Signal,S&T,Guntakal-SEC-03,79.37,Multi-Aspect Color Light Signal (MACLS) at Km 79.37 [Guntakal-SEC-03],2016-06-05,2016,Poor,50.8,2026-08-12,2026-07-06,2026-09-14,High,Active
+AST-S&T-0333,Signal,S&T,Hyderabad-SEC-05,135.7,Multi-Aspect Color Light Signal (MACLS) at Km 135.70 [Hyderabad-SEC-05],2023-11-24,2023,Good,88.3,2026-08-10,2026-05-19,2026-09-04,Medium,Active
+AST-S&T-0334,Interlocking,S&T,Secunderabad-SEC-08,73.63,Electronic Interlocking (EI) Field Unit at Km 73.63 [Secunderabad-SEC-08],2017-11-07,2017,Fair,59.6,2026-08-03,2026-04-10,2026-09-09,High,Active
+AST-S&T-0335,Axle Counter,S&T,Guntakal-SEC-02,84.8,Digital Dual-Section Axle Counter (HASDAC) at Km 84.80 [Guntakal-SEC-02],2022-06-23,2022,Fair,77.8,2026-07-16,2026-02-27,2026-10-08,Medium,Active
+AST-S&T-0336,Track Circuit,S&T,Secunderabad-SEC-07,64.82,High-Voltage Impulse Track Circuit at Km 64.82 [Secunderabad-SEC-07],2018-05-08,2018,Poor,53.6,2026-08-20,2026-07-26,2026-10-03,Medium,Active
+AST-S&T-0337,Track Circuit,S&T,Vijayawada-SEC-01,98.62,High-Voltage Impulse Track Circuit at Km 98.62 [Vijayawada-SEC-01],2019-06-26,2019,Fair,69.1,2026-07-15,2026-06-19,2026-10-10,High,Active
+AST-S&T-0338,Point Machine,S&T,Hyderabad-SEC-04,35.43,Electric Point Machine (IRS Rotary) at Km 35.43 [Hyderabad-SEC-04],2016-06-09,2016,Poor,50.6,2026-08-06,2026-06-14,2026-10-11,Low,Active
+AST-S&T-0339,Signal,S&T,Guntur-SEC-05,139.03,Multi-Aspect Color Light Signal (MACLS) at Km 139.03 [Guntur-SEC-05],2019-08-15,2019,Fair,72.1,2026-07-21,2026-04-28,2026-09-19,Medium,Active
+AST-S&T-0340,Telecom Equipment,S&T,Guntakal-SEC-08,18.08,24-Core Armoured Signalling & OFC Cable at Km 18.08 [Guntakal-SEC-08],2015-09-04,2015,Poor,52.2,2026-08-02,2026-05-10,2026-10-16,Medium,Active
+AST-S&T-0341,Track Circuit,S&T,Secunderabad-SEC-03,27.14,High-Voltage Impulse Track Circuit at Km 27.14 [Secunderabad-SEC-03],2023-01-16,2023,Good,87.0,2026-08-17,2026-06-24,2026-10-07,Medium,Active
+AST-S&T-0342,Axle Counter,S&T,Hyderabad-SEC-02,101.11,Digital Dual-Section Axle Counter (HASDAC) at Km 101.11 [Hyderabad-SEC-02],2022-12-20,2022,Fair,77.5,2026-08-12,2026-04-23,2026-09-17,High,Active
+AST-S&T-0343,Point Machine,S&T,Guntakal-SEC-08,41.41,Electric Point Machine (IRS Rotary) at Km 41.41 [Guntakal-SEC-08],2022-07-17,2022,Fair,76.5,2026-08-06,2026-03-27,2026-09-10,High,Active
+AST-S&T-0344,Axle Counter,S&T,Secunderabad-SEC-04,52.93,Digital Dual-Section Axle Counter (HASDAC) at Km 52.93 [Secunderabad-SEC-04],2024-11-25,2024,Good,92.4,2026-07-29,2026-04-09,2026-09-23,High,Active
+AST-S&T-0345,Signal,S&T,Vijayawada-SEC-02,57.7,Multi-Aspect Color Light Signal (MACLS) at Km 57.70 [Vijayawada-SEC-02],2023-08-02,2023,Good,87.8,2026-07-17,2026-01-21,2026-09-29,Medium,Active
+AST-S&T-0346,Track Circuit,S&T,Hyderabad-SEC-07,91.88,High-Voltage Impulse Track Circuit at Km 91.88 [Hyderabad-SEC-07],2015-09-13,2015,Poor,52.9,2026-08-19,2026-06-17,2026-10-02,Low,Active
+AST-S&T-0347,Interlocking,S&T,Hyderabad-SEC-02,46.96,Electronic Interlocking (EI) Field Unit at Km 46.96 [Hyderabad-SEC-02],2023-04-10,2023,Good,83.1,2026-07-06,2026-02-14,2026-09-23,Medium,Active
+AST-S&T-0348,Telecom Equipment,S&T,Guntakal-SEC-08,55.32,24-Core Armoured Signalling & OFC Cable at Km 55.32 [Guntakal-SEC-08],2015-05-19,2015,Poor,50.1,2026-07-03,2026-06-09,2026-09-12,High,Active
+AST-S&T-0349,Telecom Equipment,S&T,Vijayawada-SEC-02,102.49,24-Core Armoured Signalling & OFC Cable at Km 102.49 [Vijayawada-SEC-02],2021-07-28,2021,Fair,74.0,2026-08-12,2026-07-02,2026-10-02,Medium,Active
+AST-S&T-0350,Signal,S&T,Guntur-SEC-08,11.64,Multi-Aspect Color Light Signal (MACLS) at Km 11.64 [Guntur-SEC-08],2016-03-09,2016,Poor,49.4,2026-07-24,2026-02-28,2026-09-19,Medium,Active
+AST-S&T-0351,Point Machine,S&T,Guntakal-SEC-08,47.89,Electric Point Machine (IRS Rotary) at Km 47.89 [Guntakal-SEC-08],2024-12-22,2024,Good,89.3,2026-07-09,2026-02-09,2026-09-23,Low,Active
+AST-S&T-0352,Interlocking,S&T,Hyderabad-SEC-07,47.25,Electronic Interlocking (EI) Field Unit at Km 47.25 [Hyderabad-SEC-07],2021-04-23,2021,Good,80.2,2026-08-03,2026-02-10,2026-09-15,High,Active
+AST-S&T-0353,Telecom Equipment,S&T,Hyderabad-SEC-08,48.34,24-Core Armoured Signalling & OFC Cable at Km 48.34 [Hyderabad-SEC-08],2013-08-19,2013,Critical,30.0,2026-08-27,2026-07-08,2026-10-01,Medium,Active
+AST-S&T-0354,Point Machine,S&T,Guntakal-SEC-07,128.79,Electric Point Machine (IRS Rotary) at Km 128.79 [Guntakal-SEC-07],2013-07-06,2013,Poor,51.6,2026-08-11,2026-04-11,2026-09-08,High,Active
+AST-S&T-0355,Telecom Equipment,S&T,Vijayawada-SEC-06,97.9,24-Core Armoured Signalling & OFC Cable at Km 97.90 [Vijayawada-SEC-06],2022-10-24,2022,Good,80.2,2026-07-15,2026-01-22,2026-09-22,Medium,Active
+AST-S&T-0356,Track Circuit,S&T,Guntur-SEC-01,48.1,High-Voltage Impulse Track Circuit at Km 48.10 [Guntur-SEC-01],2024-11-14,2024,Good,92.2,2026-08-25,2026-05-10,2026-09-22,Low,Active
+AST-S&T-0357,Interlocking,S&T,Hyderabad-SEC-04,83.15,Electronic Interlocking (EI) Field Unit at Km 83.15 [Hyderabad-SEC-04],2018-05-21,2018,Fair,69.1,2026-08-13,2026-02-17,2026-10-07,High,Active
+AST-S&T-0358,Point Machine,S&T,Guntur-SEC-03,94.59,Electric Point Machine (IRS Rotary) at Km 94.59 [Guntur-SEC-03],2017-09-19,2017,Fair,60.0,2026-08-03,2026-05-04,2026-10-09,Medium,Active
+AST-S&T-0359,Signal,S&T,Secunderabad-SEC-01,130.24,Multi-Aspect Color Light Signal (MACLS) at Km 130.24 [Secunderabad-SEC-01],2015-06-08,2015,Poor,41.5,2026-08-08,2026-03-02,2026-09-17,High,Active
+AST-S&T-0360,Axle Counter,S&T,Hyderabad-SEC-03,57.25,Digital Dual-Section Axle Counter (HASDAC) at Km 57.25 [Hyderabad-SEC-03],2023-12-15,2023,Good,84.2,2026-07-24,2026-06-27,2026-09-05,High,Active
+AST-S&T-0361,Telecom Equipment,S&T,Secunderabad-SEC-08,65.59,24-Core Armoured Signalling & OFC Cable at Km 65.59 [Secunderabad-SEC-08],2017-10-14,2017,Fair,61.5,2026-08-05,2026-06-14,2026-09-26,Medium,Active
+AST-S&T-0362,Interlocking,S&T,Hyderabad-SEC-02,17.91,Electronic Interlocking (EI) Field Unit at Km 17.91 [Hyderabad-SEC-02],2020-12-03,2020,Fair,76.9,2026-07-31,2026-05-09,2026-09-06,Medium,Active
+AST-S&T-0363,Signal,S&T,Secunderabad-SEC-06,108.88,Multi-Aspect Color Light Signal (MACLS) at Km 108.88 [Secunderabad-SEC-06],2012-01-11,2012,Critical,30.0,2026-07-06,2026-04-13,2026-10-08,High,Active
+AST-S&T-0364,Signal,S&T,Guntur-SEC-06,46.3,Multi-Aspect Color Light Signal (MACLS) at Km 46.30 [Guntur-SEC-06],2016-12-05,2016,Poor,50.0,2026-08-26,2026-03-20,2026-09-13,Low,Active
+AST-S&T-0365,Signal,S&T,Secunderabad-SEC-06,2.61,Multi-Aspect Color Light Signal (MACLS) at Km 2.61 [Secunderabad-SEC-06],2016-01-11,2016,Poor,52.8,2026-08-09,2026-05-11,2026-09-20,Low,Active
+AST-S&T-0366,Axle Counter,S&T,Hyderabad-SEC-02,54.73,Digital Dual-Section Axle Counter (HASDAC) at Km 54.73 [Hyderabad-SEC-02],2013-10-13,2013,Poor,45.7,2026-07-29,2026-03-06,2026-09-16,High,Active
+AST-S&T-0367,Telecom Equipment,S&T,Guntakal-SEC-02,51.03,24-Core Armoured Signalling & OFC Cable at Km 51.03 [Guntakal-SEC-02],2023-12-23,2023,Good,88.8,2026-08-07,2026-05-26,2026-09-02,High,Active
+AST-S&T-0368,Telecom Equipment,S&T,Guntakal-SEC-04,42.63,24-Core Armoured Signalling & OFC Cable at Km 42.63 [Guntakal-SEC-04],2014-02-26,2014,Fair,55.1,2026-07-18,2026-04-22,2026-09-02,High,Active
+AST-S&T-0369,Interlocking,S&T,Guntakal-SEC-02,47.68,Electronic Interlocking (EI) Field Unit at Km 47.68 [Guntakal-SEC-02],2014-01-10,2014,Poor,53.0,2026-08-25,2026-06-02,2026-09-28,Medium,Active
+AST-S&T-0370,Signal,S&T,Hyderabad-SEC-07,88.44,Multi-Aspect Color Light Signal (MACLS) at Km 88.44 [Hyderabad-SEC-07],2023-02-05,2023,Good,87.1,2026-07-15,2026-04-05,2026-10-02,Low,Active
+AST-S&T-0371,Telecom Equipment,S&T,Hyderabad-SEC-03,87.45,24-Core Armoured Signalling & OFC Cable at Km 87.45 [Hyderabad-SEC-03],2022-10-22,2022,Good,83.4,2026-08-03,2026-05-14,2026-09-05,High,Active
+AST-S&T-0372,Interlocking,S&T,Guntur-SEC-02,66.94,Electronic Interlocking (EI) Field Unit at Km 66.94 [Guntur-SEC-02],2024-12-14,2024,Good,88.0,2026-08-11,2026-07-05,2026-10-12,High,Active
+AST-S&T-0373,Track Circuit,S&T,Hyderabad-SEC-02,134.29,High-Voltage Impulse Track Circuit at Km 134.29 [Hyderabad-SEC-02],2021-07-19,2021,Fair,73.2,2026-08-26,2026-06-14,2026-09-04,Low,Active
+AST-S&T-0374,Interlocking,S&T,Guntakal-SEC-02,72.49,Electronic Interlocking (EI) Field Unit at Km 72.49 [Guntakal-SEC-02],2013-10-16,2013,Critical,35.5,2026-08-22,2026-07-28,2026-09-03,Medium,Active
+AST-S&T-0375,Interlocking,S&T,Guntakal-SEC-02,58.22,Electronic Interlocking (EI) Field Unit at Km 58.22 [Guntakal-SEC-02],2020-07-11,2020,Fair,64.3,2026-08-08,2026-04-15,2026-09-07,Medium,Active
+AST-S&T-0376,Track Circuit,S&T,Guntur-SEC-08,28.61,High-Voltage Impulse Track Circuit at Km 28.61 [Guntur-SEC-08],2020-02-07,2020,Fair,76.9,2026-07-25,2026-04-18,2026-09-14,Medium,Active
+AST-S&T-0377,Point Machine,S&T,Vijayawada-SEC-03,86.39,Electric Point Machine (IRS Rotary) at Km 86.39 [Vijayawada-SEC-03],2016-08-13,2016,Poor,48.7,2026-07-24,2026-04-02,2026-09-03,High,Active
+AST-S&T-0378,Track Circuit,S&T,Secunderabad-SEC-08,114.78,High-Voltage Impulse Track Circuit at Km 114.78 [Secunderabad-SEC-08],2020-07-24,2020,Fair,77.7,2026-07-15,2026-05-15,2026-09-19,Medium,Active
+AST-S&T-0379,Axle Counter,S&T,Secunderabad-SEC-05,51.61,Digital Dual-Section Axle Counter (HASDAC) at Km 51.61 [Secunderabad-SEC-05],2016-04-26,2016,Poor,51.9,2026-07-13,2026-01-28,2026-09-04,High,Active
+AST-S&T-0380,Interlocking,S&T,Guntur-SEC-08,8.64,Electronic Interlocking (EI) Field Unit at Km 8.64 [Guntur-SEC-08],2020-04-09,2020,Fair,67.0,2026-07-19,2026-06-25,2026-09-17,Medium,Active
+AST-S&T-0381,Signal,S&T,Vijayawada-SEC-04,70.36,Multi-Aspect Color Light Signal (MACLS) at Km 70.36 [Vijayawada-SEC-04],2021-03-16,2021,Good,80.4,2026-07-04,2026-04-14,2026-09-16,Medium,Active
+AST-S&T-0382,Interlocking,S&T,Vijayawada-SEC-03,130.36,Electronic Interlocking (EI) Field Unit at Km 130.36 [Vijayawada-SEC-03],2020-12-20,2020,Fair,73.1,2026-07-18,2026-01-24,2026-10-05,High,Active
+AST-S&T-0383,Axle Counter,S&T,Secunderabad-SEC-03,33.7,Digital Dual-Section Axle Counter (HASDAC) at Km 33.70 [Secunderabad-SEC-03],2016-03-24,2016,Poor,53.0,2026-08-04,2026-03-17,2026-09-22,High,Active
+AST-S&T-0384,Interlocking,S&T,Secunderabad-SEC-02,75.12,Electronic Interlocking (EI) Field Unit at Km 75.12 [Secunderabad-SEC-02],2023-06-01,2023,Good,85.8,2026-07-19,2026-05-21,2026-10-08,Medium,Active
+AST-S&T-0385,Signal,S&T,Vijayawada-SEC-02,33.06,Multi-Aspect Color Light Signal (MACLS) at Km 33.06 [Vijayawada-SEC-02],2013-04-03,2013,Critical,38.3,2026-08-25,2026-03-09,2026-09-05,Medium,Active
+AST-S&T-0386,Track Circuit,S&T,Guntakal-SEC-07,68.35,High-Voltage Impulse Track Circuit at Km 68.35 [Guntakal-SEC-07],2022-08-28,2022,Good,85.0,2026-08-01,2026-04-02,2026-10-07,High,Active
+AST-S&T-0387,Telecom Equipment,S&T,Guntakal-SEC-02,83.23,24-Core Armoured Signalling & OFC Cable at Km 83.23 [Guntakal-SEC-02],2020-06-01,2020,Fair,69.8,2026-07-05,2026-04-28,2026-09-18,Medium,Active
+AST-S&T-0388,Signal,S&T,Vijayawada-SEC-06,4.55,Multi-Aspect Color Light Signal (MACLS) at Km 4.55 [Vijayawada-SEC-06],2017-05-03,2017,Fair,56.6,2026-07-15,2026-05-04,2026-09-24,Medium,Active
+AST-S&T-0389,Track Circuit,S&T,Hyderabad-SEC-03,133.99,High-Voltage Impulse Track Circuit at Km 133.99 [Hyderabad-SEC-03],2018-04-03,2018,Fair,68.6,2026-07-08,2026-05-17,2026-09-30,Medium,Active
+AST-S&T-0390,Axle Counter,S&T,Guntur-SEC-07,82.45,Digital Dual-Section Axle Counter (HASDAC) at Km 82.45 [Guntur-SEC-07],2014-08-02,2014,Fair,55.2,2026-07-27,2026-03-13,2026-10-16,Medium,Active
+AST-S&T-0391,Track Circuit,S&T,Guntakal-SEC-02,36.11,High-Voltage Impulse Track Circuit at Km 36.11 [Guntakal-SEC-02],2013-03-23,2013,Poor,48.5,2026-08-17,2026-04-29,2026-10-03,Medium,Active
+AST-S&T-0392,Point Machine,S&T,Hyderabad-SEC-02,12.83,Electric Point Machine (IRS Rotary) at Km 12.83 [Hyderabad-SEC-02],2018-03-03,2018,Fair,62.0,2026-07-05,2026-05-26,2026-09-23,Medium,Active
+AST-S&T-0393,Telecom Equipment,S&T,Guntakal-SEC-05,37.02,24-Core Armoured Signalling & OFC Cable at Km 37.02 [Guntakal-SEC-05],2023-07-01,2023,Good,84.0,2026-08-26,2026-07-04,2026-09-13,Medium,Active
+AST-S&T-0394,Telecom Equipment,S&T,Vijayawada-SEC-03,28.29,24-Core Armoured Signalling & OFC Cable at Km 28.29 [Vijayawada-SEC-03],2016-06-14,2016,Fair,56.9,2026-08-27,2026-05-24,2026-09-18,High,Active
+AST-S&T-0395,Track Circuit,S&T,Guntakal-SEC-01,43.55,High-Voltage Impulse Track Circuit at Km 43.55 [Guntakal-SEC-01],2015-02-25,2015,Critical,35.0,2026-08-27,2026-07-14,2026-10-16,High,Active
+AST-S&T-0396,Track Circuit,S&T,Secunderabad-SEC-07,20.61,High-Voltage Impulse Track Circuit at Km 20.61 [Secunderabad-SEC-07],2015-03-23,2015,Fair,59.0,2026-08-09,2026-05-15,2026-09-22,Medium,Active
+AST-S&T-0397,Telecom Equipment,S&T,Guntakal-SEC-06,27.83,24-Core Armoured Signalling & OFC Cable at Km 27.83 [Guntakal-SEC-06],2015-12-17,2015,Critical,35.9,2026-08-14,2026-02-19,2026-09-12,Medium,Active
+AST-S&T-0398,Track Circuit,S&T,Vijayawada-SEC-07,68.89,High-Voltage Impulse Track Circuit at Km 68.89 [Vijayawada-SEC-07],2024-09-12,2024,Good,92.8,2026-08-22,2026-06-24,2026-09-13,Medium,Active
+AST-S&T-0399,Interlocking,S&T,Vijayawada-SEC-01,24.29,Electronic Interlocking (EI) Field Unit at Km 24.29 [Vijayawada-SEC-01],2016-10-18,2016,Fair,63.7,2026-07-08,2026-04-30,2026-09-03,High,Active
+AST-S&T-0400,Track Circuit,S&T,Guntur-SEC-04,107.14,High-Voltage Impulse Track Circuit at Km 107.14 [Guntur-SEC-04],2014-04-19,2014,Fair,56.8,2026-08-15,2026-05-05,2026-10-08,High,Active
+AST-TRD-0401,Isolator,TRD,Hyderabad-SEC-03,48.41,Motorized Track-side OHE Isolator Switch at Km 48.41 [Hyderabad-SEC-03],2016-08-19,2016,Fair,63.9,2026-07-24,2026-04-22,2026-09-24,High,Active
+AST-TRD-0402,OHE,TRD,Vijayawada-SEC-06,75.83,107 sq mm Hard-Drawn Copper Contact Wire at Km 75.83 [Vijayawada-SEC-06],2021-10-26,2021,Good,82.2,2026-07-07,2026-04-04,2026-09-08,Low,Active
+AST-TRD-0403,OHE Component,TRD,Guntakal-SEC-04,125.33,Auto-Tensioning Device (ATD) Pulley System at Km 125.33 [Guntakal-SEC-04],2013-12-07,2013,Critical,30.0,2026-08-27,2026-04-21,2026-09-29,High,Active
+AST-TRD-0404,OHE Component,TRD,Vijayawada-SEC-08,54.97,25kV Polymeric Stay/Bracket Insulator at Km 54.97 [Vijayawada-SEC-08],2012-05-17,2012,Critical,32.9,2026-07-14,2026-03-16,2026-09-07,Medium,Active
+AST-TRD-0405,OHE Component,TRD,Hyderabad-SEC-04,37.7,Auto-Tensioning Device (ATD) Pulley System at Km 37.70 [Hyderabad-SEC-04],2013-10-10,2013,Poor,42.2,2026-08-01,2026-04-14,2026-09-19,High,Active
+AST-TRD-0406,OHE Component,TRD,Hyderabad-SEC-01,12.76,25kV Polymeric Stay/Bracket Insulator at Km 12.76 [Hyderabad-SEC-01],2015-06-08,2015,Fair,58.6,2026-08-03,2026-06-25,2026-09-30,Low,Active
+AST-TRD-0407,OHE Component,TRD,Hyderabad-SEC-05,17.65,Auto-Tensioning Device (ATD) Pulley System at Km 17.65 [Hyderabad-SEC-05],2012-11-25,2012,Critical,35.9,2026-08-17,2026-07-12,2026-09-16,High,Active
+AST-TRD-0408,OHE Component,TRD,Secunderabad-SEC-05,16.01,Auto-Tensioning Device (ATD) Pulley System at Km 16.01 [Secunderabad-SEC-05],2017-05-20,2017,Poor,49.7,2026-07-10,2026-04-03,2026-10-08,Medium,Active
+AST-TRD-0409,OHE,TRD,Guntur-SEC-08,14.8,25kV AC Conventional OHE Catenary Wire at Km 14.80 [Guntur-SEC-08],2018-05-15,2018,Poor,52.5,2026-08-13,2026-07-27,2026-10-07,High,Active
+AST-TRD-0410,Power Substation,TRD,Guntakal-SEC-01,29.25,Traction Feeding Substation (TSS) Feeder Bay at Km 29.25 [Guntakal-SEC-01],2023-09-10,2023,Good,87.6,2026-08-03,2026-04-25,2026-10-12,Low,Active
+AST-TRD-0411,OHE,TRD,Guntur-SEC-08,1.67,25kV AC Conventional OHE Catenary Wire at Km 1.67 [Guntur-SEC-08],2012-07-05,2012,Critical,30.0,2026-08-27,2026-07-19,2026-09-15,Medium,Active
+AST-TRD-0412,OHE,TRD,Secunderabad-SEC-07,44.13,107 sq mm Hard-Drawn Copper Contact Wire at Km 44.13 [Secunderabad-SEC-07],2015-03-21,2015,Poor,52.0,2026-08-24,2026-07-22,2026-10-02,Low,Active
+AST-TRD-0413,OHE Component,TRD,Vijayawada-SEC-08,92.16,25kV Polymeric Stay/Bracket Insulator at Km 92.16 [Vijayawada-SEC-08],2022-12-08,2022,Fair,76.4,2026-07-13,2026-03-17,2026-10-07,Medium,Active
+AST-TRD-0414,Power Substation,TRD,Guntur-SEC-02,104.96,Traction Feeding Substation (TSS) Feeder Bay at Km 104.96 [Guntur-SEC-02],2024-01-16,2024,Good,89.0,2026-07-12,2026-06-08,2026-09-17,Low,Active
+AST-TRD-0415,OHE Component,TRD,Vijayawada-SEC-03,4.21,25kV Polymeric Stay/Bracket Insulator at Km 4.21 [Vijayawada-SEC-03],2022-10-09,2022,Good,84.8,2026-08-03,2026-04-21,2026-09-22,Medium,Active
+AST-TRD-0416,OHE Component,TRD,Hyderabad-SEC-01,49.39,Auto-Tensioning Device (ATD) Pulley System at Km 49.39 [Hyderabad-SEC-01],2019-07-22,2019,Fair,67.9,2026-07-27,2026-03-22,2026-09-26,Medium,Active
+AST-TRD-0417,OHE Component,TRD,Guntakal-SEC-02,132.3,Auto-Tensioning Device (ATD) Pulley System at Km 132.30 [Guntakal-SEC-02],2020-09-04,2020,Fair,78.6,2026-07-11,2026-05-05,2026-10-08,Medium,Active
+AST-TRD-0418,Isolator,TRD,Guntakal-SEC-07,107.78,Motorized Track-side OHE Isolator Switch at Km 107.78 [Guntakal-SEC-07],2013-11-18,2013,Critical,33.6,2026-08-01,2026-05-19,2026-09-25,Low,Active
+AST-TRD-0419,OHE Component,TRD,Guntakal-SEC-03,59.85,Auto-Tensioning Device (ATD) Pulley System at Km 59.85 [Guntakal-SEC-03],2015-04-06,2015,Poor,45.6,2026-07-12,2026-05-02,2026-09-03,High,Active
+AST-TRD-0420,OHE Component,TRD,Guntakal-SEC-01,82.71,Auto-Tensioning Device (ATD) Pulley System at Km 82.71 [Guntakal-SEC-01],2013-08-08,2013,Critical,30.0,2026-08-05,2026-03-19,2026-10-13,Medium,Active
+AST-TRD-0421,OHE,TRD,Secunderabad-SEC-01,130.68,25kV AC Conventional OHE Catenary Wire at Km 130.68 [Secunderabad-SEC-01],2012-02-21,2012,Critical,30.0,2026-08-03,2026-06-06,2026-10-03,High,Active
+AST-TRD-0422,Isolator,TRD,Vijayawada-SEC-05,108.87,Motorized Track-side OHE Isolator Switch at Km 108.87 [Vijayawada-SEC-05],2016-07-25,2016,Poor,40.4,2026-08-23,2026-03-26,2026-09-29,High,Active
+AST-TRD-0423,OHE Component,TRD,Guntakal-SEC-04,12.61,Auto-Tensioning Device (ATD) Pulley System at Km 12.61 [Guntakal-SEC-04],2024-04-24,2024,Good,89.8,2026-08-01,2026-05-27,2026-09-23,High,Active
+AST-TRD-0424,OHE,TRD,Vijayawada-SEC-04,61.65,25kV AC Conventional OHE Catenary Wire at Km 61.65 [Vijayawada-SEC-04],2020-09-13,2020,Fair,76.4,2026-08-21,2026-05-18,2026-09-21,Medium,Active
+AST-TRD-0425,OHE,TRD,Guntur-SEC-07,102.32,107 sq mm Hard-Drawn Copper Contact Wire at Km 102.32 [Guntur-SEC-07],2022-08-22,2022,Fair,78.6,2026-08-02,2026-06-10,2026-09-11,Low,Active
+AST-TRD-0426,OHE,TRD,Secunderabad-SEC-03,23.13,107 sq mm Hard-Drawn Copper Contact Wire at Km 23.13 [Secunderabad-SEC-03],2024-10-25,2024,Good,90.4,2026-08-06,2026-03-07,2026-10-06,Medium,Active
+AST-TRD-0427,Power Substation,TRD,Guntakal-SEC-07,13.1,Traction Feeding Substation (TSS) Feeder Bay at Km 13.10 [Guntakal-SEC-07],2020-03-18,2020,Fair,75.3,2026-08-07,2026-02-27,2026-09-18,Low,Active
+AST-TRD-0428,Isolator,TRD,Hyderabad-SEC-03,87.73,Motorized Track-side OHE Isolator Switch at Km 87.73 [Hyderabad-SEC-03],2024-06-10,2024,Good,90.1,2026-08-08,2026-04-10,2026-10-14,High,Active
+AST-TRD-0429,OHE,TRD,Guntakal-SEC-06,134.52,107 sq mm Hard-Drawn Copper Contact Wire at Km 134.52 [Guntakal-SEC-06],2014-05-25,2014,Poor,51.0,2026-07-31,2026-05-21,2026-09-06,Medium,Active
+AST-TRD-0430,OHE Component,TRD,Guntakal-SEC-04,105.5,25kV Polymeric Stay/Bracket Insulator at Km 105.50 [Guntakal-SEC-04],2024-07-21,2024,Good,89.6,2026-07-24,2026-05-06,2026-09-12,High,Active
+AST-TRD-0431,Power Substation,TRD,Secunderabad-SEC-05,47.21,Traction Feeding Substation (TSS) Feeder Bay at Km 47.21 [Secunderabad-SEC-05],2020-12-03,2020,Fair,68.2,2026-08-23,2026-03-03,2026-09-02,Low,Active
+AST-TRD-0432,OHE Component,TRD,Guntur-SEC-02,32.14,25kV Polymeric Stay/Bracket Insulator at Km 32.14 [Guntur-SEC-02],2022-08-04,2022,Good,85.1,2026-08-19,2026-02-26,2026-10-14,Medium,Active
+AST-TRD-0433,OHE Component,TRD,Vijayawada-SEC-02,52.33,Auto-Tensioning Device (ATD) Pulley System at Km 52.33 [Vijayawada-SEC-02],2021-04-07,2021,Fair,77.9,2026-08-11,2026-04-30,2026-09-25,Medium,Active
+AST-TRD-0434,OHE Component,TRD,Guntur-SEC-03,26.59,25kV Polymeric Stay/Bracket Insulator at Km 26.59 [Guntur-SEC-03],2015-04-15,2015,Poor,54.5,2026-07-06,2026-01-16,2026-09-10,Low,Active
+AST-TRD-0435,OHE,TRD,Secunderabad-SEC-04,20.0,107 sq mm Hard-Drawn Copper Contact Wire at Km 20.00 [Secunderabad-SEC-04],2014-06-18,2014,Poor,52.0,2026-07-04,2026-03-26,2026-09-09,Low,Active
+AST-TRD-0436,Power Substation,TRD,Guntakal-SEC-05,31.01,Traction Feeding Substation (TSS) Feeder Bay at Km 31.01 [Guntakal-SEC-05],2022-03-17,2022,Good,81.7,2026-07-15,2026-03-25,2026-09-21,Medium,Active
+AST-TRD-0437,Power Substation,TRD,Vijayawada-SEC-03,128.39,Traction Feeding Substation (TSS) Feeder Bay at Km 128.39 [Vijayawada-SEC-03],2021-05-06,2021,Fair,75.3,2026-07-24,2026-03-09,2026-09-16,Low,Active
+AST-TRD-0438,OHE Component,TRD,Hyderabad-SEC-04,27.18,25kV Polymeric Stay/Bracket Insulator at Km 27.18 [Hyderabad-SEC-04],2014-11-28,2014,Fair,57.6,2026-08-17,2026-06-27,2026-10-11,High,Active
+AST-TRD-0439,OHE,TRD,Secunderabad-SEC-03,6.02,107 sq mm Hard-Drawn Copper Contact Wire at Km 6.02 [Secunderabad-SEC-03],2021-10-16,2021,Fair,75.5,2026-08-22,2026-05-17,2026-09-21,Medium,Active
+AST-TRD-0440,OHE Component,TRD,Guntakal-SEC-08,8.57,Auto-Tensioning Device (ATD) Pulley System at Km 8.57 [Guntakal-SEC-08],2014-02-27,2014,Fair,57.6,2026-07-10,2026-05-08,2026-10-01,Medium,Active
+AST-TRD-0441,OHE Component,TRD,Guntakal-SEC-08,82.53,25kV Polymeric Stay/Bracket Insulator at Km 82.53 [Guntakal-SEC-08],2015-10-23,2015,Fair,57.6,2026-07-03,2026-02-20,2026-09-06,Low,Active
+AST-TRD-0442,Isolator,TRD,Secunderabad-SEC-03,92.84,Motorized Track-side OHE Isolator Switch at Km 92.84 [Secunderabad-SEC-03],2019-02-26,2019,Fair,69.6,2026-07-24,2026-04-26,2026-10-15,Low,Active
+AST-TRD-0443,OHE,TRD,Guntur-SEC-03,72.83,107 sq mm Hard-Drawn Copper Contact Wire at Km 72.83 [Guntur-SEC-03],2017-11-28,2017,Fair,67.5,2026-08-27,2026-04-30,2026-09-06,Low,Active
+AST-TRD-0444,OHE,TRD,Guntur-SEC-06,21.1,107 sq mm Hard-Drawn Copper Contact Wire at Km 21.10 [Guntur-SEC-06],2016-01-14,2016,Poor,47.4,2026-08-01,2026-05-18,2026-09-02,High,Active
+AST-TRD-0445,OHE Component,TRD,Guntakal-SEC-03,101.38,Auto-Tensioning Device (ATD) Pulley System at Km 101.38 [Guntakal-SEC-03],2017-04-18,2017,Fair,66.6,2026-08-04,2026-02-23,2026-10-04,Medium,Active
+AST-TRD-0446,OHE Component,TRD,Vijayawada-SEC-05,40.86,25kV Polymeric Stay/Bracket Insulator at Km 40.86 [Vijayawada-SEC-05],2012-04-28,2012,Poor,48.7,2026-08-01,2026-06-10,2026-09-20,Medium,Active
+AST-TRD-0447,Power Substation,TRD,Vijayawada-SEC-07,20.28,Traction Feeding Substation (TSS) Feeder Bay at Km 20.28 [Vijayawada-SEC-07],2018-01-07,2018,Fair,70.9,2026-07-15,2026-04-01,2026-09-30,High,Active
+AST-TRD-0448,OHE Component,TRD,Vijayawada-SEC-07,27.99,25kV Polymeric Stay/Bracket Insulator at Km 27.99 [Vijayawada-SEC-07],2017-06-27,2017,Fair,57.3,2026-07-04,2026-01-22,2026-10-02,High,Active
+AST-TRD-0449,Isolator,TRD,Hyderabad-SEC-03,44.75,Motorized Track-side OHE Isolator Switch at Km 44.75 [Hyderabad-SEC-03],2014-05-24,2014,Fair,55.4,2026-08-18,2026-05-26,2026-10-04,High,Active
+AST-TRD-0450,Isolator,TRD,Guntakal-SEC-04,133.24,Motorized Track-side OHE Isolator Switch at Km 133.24 [Guntakal-SEC-04],2019-09-07,2019,Fair,70.3,2026-07-07,2026-05-20,2026-09-21,High,Active
+AST-TRD-0451,OHE,TRD,Guntakal-SEC-02,60.74,107 sq mm Hard-Drawn Copper Contact Wire at Km 60.74 [Guntakal-SEC-02],2019-09-22,2019,Fair,72.4,2026-08-05,2026-05-09,2026-09-04,High,Active
+AST-TRD-0452,OHE Component,TRD,Guntur-SEC-05,29.57,Auto-Tensioning Device (ATD) Pulley System at Km 29.57 [Guntur-SEC-05],2012-11-01,2012,Poor,46.1,2026-08-25,2026-03-10,2026-09-20,Medium,Active
+AST-TRD-0453,Isolator,TRD,Secunderabad-SEC-04,98.84,Motorized Track-side OHE Isolator Switch at Km 98.84 [Secunderabad-SEC-04],2019-05-04,2019,Fair,73.9,2026-07-21,2026-03-04,2026-09-20,High,Active
+AST-TRD-0454,OHE Component,TRD,Secunderabad-SEC-02,135.59,Auto-Tensioning Device (ATD) Pulley System at Km 135.59 [Secunderabad-SEC-02],2012-02-16,2012,Critical,30.0,2026-08-08,2026-06-29,2026-10-01,High,Active
+AST-TRD-0455,OHE,TRD,Hyderabad-SEC-05,111.42,25kV AC Conventional OHE Catenary Wire at Km 111.42 [Hyderabad-SEC-05],2013-05-09,2013,Critical,35.9,2026-08-17,2026-05-07,2026-09-24,High,Active
+AST-TRD-0456,OHE Component,TRD,Guntur-SEC-03,86.49,Auto-Tensioning Device (ATD) Pulley System at Km 86.49 [Guntur-SEC-03],2013-07-18,2013,Critical,30.0,2026-07-11,2026-02-28,2026-09-05,Medium,Active
+AST-TRD-0457,OHE Component,TRD,Hyderabad-SEC-03,34.87,25kV Polymeric Stay/Bracket Insulator at Km 34.87 [Hyderabad-SEC-03],2016-09-21,2016,Poor,44.0,2026-07-24,2026-06-03,2026-10-06,High,Active
+AST-TRD-0458,Isolator,TRD,Guntur-SEC-05,136.3,Motorized Track-side OHE Isolator Switch at Km 136.30 [Guntur-SEC-05],2021-10-12,2021,Fair,71.1,2026-08-09,2026-03-21,2026-10-15,High,Active
+AST-TRD-0459,OHE Component,TRD,Vijayawada-SEC-03,131.92,25kV Polymeric Stay/Bracket Insulator at Km 131.92 [Vijayawada-SEC-03],2017-05-08,2017,Poor,51.9,2026-08-11,2026-05-03,2026-10-13,High,Active
+AST-TRD-0460,OHE Component,TRD,Guntakal-SEC-08,69.18,25kV Polymeric Stay/Bracket Insulator at Km 69.18 [Guntakal-SEC-08],2012-05-24,2012,Critical,30.0,2026-08-11,2026-06-12,2026-10-15,Low,Active
+AST-TRD-0461,Isolator,TRD,Guntur-SEC-05,122.37,Motorized Track-side OHE Isolator Switch at Km 122.37 [Guntur-SEC-05],2017-02-12,2017,Fair,66.9,2026-07-18,2026-03-04,2026-10-16,High,Active
+AST-TRD-0462,Power Substation,TRD,Vijayawada-SEC-04,66.58,Traction Feeding Substation (TSS) Feeder Bay at Km 66.58 [Vijayawada-SEC-04],2017-11-26,2017,Poor,50.0,2026-08-13,2026-06-22,2026-09-11,Medium,Active
+AST-TRD-0463,OHE Component,TRD,Guntur-SEC-03,84.28,Auto-Tensioning Device (ATD) Pulley System at Km 84.28 [Guntur-SEC-03],2013-11-23,2013,Critical,36.9,2026-08-13,2026-05-01,2026-09-03,Medium,Active
+AST-TRD-0464,OHE,TRD,Guntur-SEC-07,110.0,107 sq mm Hard-Drawn Copper Contact Wire at Km 110.00 [Guntur-SEC-07],2015-09-15,2015,Poor,54.9,2026-07-13,2026-05-11,2026-09-25,High,Active
+AST-TRD-0465,OHE,TRD,Vijayawada-SEC-07,43.99,25kV AC Conventional OHE Catenary Wire at Km 43.99 [Vijayawada-SEC-07],2014-12-26,2014,Poor,47.3,2026-07-15,2026-01-22,2026-09-04,High,Active
+AST-TRD-0466,OHE Component,TRD,Vijayawada-SEC-01,18.95,25kV Polymeric Stay/Bracket Insulator at Km 18.95 [Vijayawada-SEC-01],2019-11-15,2019,Fair,65.3,2026-08-03,2026-04-23,2026-09-27,Low,Active
+AST-TRD-0467,OHE Component,TRD,Guntakal-SEC-08,100.18,Auto-Tensioning Device (ATD) Pulley System at Km 100.18 [Guntakal-SEC-08],2019-12-06,2019,Fair,72.7,2026-07-09,2026-03-26,2026-09-29,Medium,Active
+AST-TRD-0468,OHE Component,TRD,Vijayawada-SEC-01,12.86,25kV Polymeric Stay/Bracket Insulator at Km 12.86 [Vijayawada-SEC-01],2020-11-28,2020,Fair,71.5,2026-08-26,2026-07-25,2026-09-10,Medium,Active
+AST-TRD-0469,Power Substation,TRD,Secunderabad-SEC-04,132.28,Traction Feeding Substation (TSS) Feeder Bay at Km 132.28 [Secunderabad-SEC-04],2021-04-26,2021,Fair,73.2,2026-08-15,2026-05-11,2026-09-08,High,Active
+AST-TRD-0470,OHE Component,TRD,Guntur-SEC-01,75.6,Auto-Tensioning Device (ATD) Pulley System at Km 75.60 [Guntur-SEC-01],2017-12-27,2017,Fair,59.9,2026-07-06,2026-01-10,2026-09-03,High,Active
+AST-TRD-0471,Power Substation,TRD,Hyderabad-SEC-02,49.51,Traction Feeding Substation (TSS) Feeder Bay at Km 49.51 [Hyderabad-SEC-02],2019-07-20,2019,Fair,62.6,2026-07-23,2026-06-16,2026-09-09,Medium,Active
+AST-TRD-0472,OHE Component,TRD,Secunderabad-SEC-05,98.69,25kV Polymeric Stay/Bracket Insulator at Km 98.69 [Secunderabad-SEC-05],2021-10-07,2021,Good,81.4,2026-08-06,2026-05-23,2026-09-08,Medium,Active
+AST-TRD-0473,OHE Component,TRD,Vijayawada-SEC-06,6.58,25kV Polymeric Stay/Bracket Insulator at Km 6.58 [Vijayawada-SEC-06],2013-08-18,2013,Poor,41.0,2026-07-17,2026-03-23,2026-09-09,High,Active
+AST-TRD-0474,Isolator,TRD,Guntur-SEC-01,60.7,Motorized Track-side OHE Isolator Switch at Km 60.70 [Guntur-SEC-01],2015-04-27,2015,Poor,53.7,2026-08-06,2026-07-02,2026-09-13,Medium,Active
+AST-TRD-0475,OHE,TRD,Vijayawada-SEC-03,7.33,25kV AC Conventional OHE Catenary Wire at Km 7.33 [Vijayawada-SEC-03],2014-04-05,2014,Poor,48.1,2026-07-28,2026-07-01,2026-10-05,Low,Active
+AST-TRD-0476,OHE,TRD,Guntur-SEC-05,114.33,25kV AC Conventional OHE Catenary Wire at Km 114.33 [Guntur-SEC-05],2019-05-01,2019,Fair,67.7,2026-07-13,2026-02-27,2026-09-13,Medium,Active
+AST-TRD-0477,OHE Component,TRD,Hyderabad-SEC-04,113.18,25kV Polymeric Stay/Bracket Insulator at Km 113.18 [Hyderabad-SEC-04],2014-04-19,2014,Poor,43.3,2026-08-12,2026-07-07,2026-09-11,High,Active
+AST-TRD-0478,OHE,TRD,Guntur-SEC-02,130.71,25kV AC Conventional OHE Catenary Wire at Km 130.71 [Guntur-SEC-02],2015-05-01,2015,Poor,53.7,2026-08-05,2026-03-18,2026-09-27,High,Active
+AST-TRD-0479,OHE Component,TRD,Hyderabad-SEC-02,71.65,Auto-Tensioning Device (ATD) Pulley System at Km 71.65 [Hyderabad-SEC-02],2016-12-16,2016,Fair,63.5,2026-08-03,2026-03-18,2026-09-30,Medium,Active
+AST-TRD-0480,Isolator,TRD,Guntakal-SEC-07,64.62,Motorized Track-side OHE Isolator Switch at Km 64.62 [Guntakal-SEC-07],2024-05-04,2024,Good,90.3,2026-08-24,2026-06-20,2026-09-21,Medium,Active
+AST-TRD-0481,OHE Component,TRD,Hyderabad-SEC-05,64.65,25kV Polymeric Stay/Bracket Insulator at Km 64.65 [Hyderabad-SEC-05],2024-11-05,2024,Good,89.4,2026-08-01,2026-02-03,2026-10-10,Low,Active
+AST-TRD-0482,OHE Component,TRD,Guntakal-SEC-07,14.28,Auto-Tensioning Device (ATD) Pulley System at Km 14.28 [Guntakal-SEC-07],2012-12-15,2012,Critical,30.0,2026-07-30,2026-06-01,2026-09-09,High,Active
+AST-TRD-0483,OHE,TRD,Vijayawada-SEC-02,125.49,107 sq mm Hard-Drawn Copper Contact Wire at Km 125.49 [Vijayawada-SEC-02],2023-07-24,2023,Good,86.5,2026-08-11,2026-05-04,2026-09-15,Medium,Active
+AST-TRD-0484,OHE,TRD,Hyderabad-SEC-04,60.67,107 sq mm Hard-Drawn Copper Contact Wire at Km 60.67 [Hyderabad-SEC-04],2020-03-02,2020,Fair,74.3,2026-08-17,2026-03-23,2026-09-06,High,Active
+AST-TRD-0485,OHE,TRD,Guntur-SEC-03,98.34,107 sq mm Hard-Drawn Copper Contact Wire at Km 98.34 [Guntur-SEC-03],2021-10-22,2021,Fair,70.6,2026-08-18,2026-05-31,2026-10-12,Low,Active
+AST-TRD-0486,OHE Component,TRD,Vijayawada-SEC-05,64.27,25kV Polymeric Stay/Bracket Insulator at Km 64.27 [Vijayawada-SEC-05],2019-04-15,2019,Fair,63.2,2026-07-25,2026-01-28,2026-09-22,High,Active
+AST-TRD-0487,OHE Component,TRD,Guntakal-SEC-01,133.26,25kV Polymeric Stay/Bracket Insulator at Km 133.26 [Guntakal-SEC-01],2019-03-02,2019,Fair,65.3,2026-08-16,2026-06-28,2026-09-29,Medium,Active
+AST-TRD-0488,OHE,TRD,Secunderabad-SEC-07,121.58,107 sq mm Hard-Drawn Copper Contact Wire at Km 121.58 [Secunderabad-SEC-07],2022-06-03,2022,Good,81.0,2026-08-24,2026-05-23,2026-09-14,High,Active
+AST-TRD-0489,Power Substation,TRD,Guntur-SEC-01,70.74,Traction Feeding Substation (TSS) Feeder Bay at Km 70.74 [Guntur-SEC-01],2024-03-01,2024,Good,90.3,2026-08-23,2026-02-28,2026-09-07,Medium,Active
+AST-TRD-0490,OHE,TRD,Vijayawada-SEC-02,52.36,25kV AC Conventional OHE Catenary Wire at Km 52.36 [Vijayawada-SEC-02],2012-07-24,2012,Critical,38.5,2026-07-15,2026-06-24,2026-10-07,High,Active
+AST-TRD-0491,OHE Component,TRD,Secunderabad-SEC-01,72.38,25kV Polymeric Stay/Bracket Insulator at Km 72.38 [Secunderabad-SEC-01],2016-03-04,2016,Fair,62.6,2026-08-04,2026-06-13,2026-09-27,Low,Active
+AST-TRD-0492,Isolator,TRD,Guntakal-SEC-05,115.89,Motorized Track-side OHE Isolator Switch at Km 115.89 [Guntakal-SEC-05],2015-02-25,2015,Poor,46.3,2026-08-02,2026-02-19,2026-10-06,High,Active
+AST-TRD-0493,OHE Component,TRD,Secunderabad-SEC-04,66.87,25kV Polymeric Stay/Bracket Insulator at Km 66.87 [Secunderabad-SEC-04],2016-03-02,2016,Fair,55.1,2026-07-30,2026-03-30,2026-09-28,Medium,Active
+AST-TRD-0494,Isolator,TRD,Guntakal-SEC-08,26.39,Motorized Track-side OHE Isolator Switch at Km 26.39 [Guntakal-SEC-08],2017-10-02,2017,Fair,59.0,2026-07-27,2026-04-01,2026-09-19,Medium,Active
+AST-TRD-0495,OHE Component,TRD,Secunderabad-SEC-06,109.37,25kV Polymeric Stay/Bracket Insulator at Km 109.37 [Secunderabad-SEC-06],2019-07-28,2019,Fair,71.5,2026-07-12,2026-06-03,2026-09-09,Medium,Active
+AST-TRD-0496,OHE,TRD,Guntakal-SEC-07,93.39,107 sq mm Hard-Drawn Copper Contact Wire at Km 93.39 [Guntakal-SEC-07],2023-07-05,2023,Good,82.7,2026-07-20,2026-04-30,2026-09-28,High,Active
+AST-TRD-0497,Isolator,TRD,Vijayawada-SEC-07,32.22,Motorized Track-side OHE Isolator Switch at Km 32.22 [Vijayawada-SEC-07],2019-10-12,2019,Fair,73.2,2026-07-22,2026-07-04,2026-10-02,High,Active
+AST-TRD-0498,Power Substation,TRD,Guntur-SEC-07,128.29,Traction Feeding Substation (TSS) Feeder Bay at Km 128.29 [Guntur-SEC-07],2020-05-05,2020,Fair,78.1,2026-08-17,2026-07-24,2026-09-23,High,Active
+AST-TRD-0499,OHE Component,TRD,Guntakal-SEC-06,120.13,25kV Polymeric Stay/Bracket Insulator at Km 120.13 [Guntakal-SEC-06],2013-11-03,2013,Poor,50.5,2026-08-23,2026-06-26,2026-09-24,Medium,Active
+AST-TRD-0500,OHE,TRD,Vijayawada-SEC-08,115.91,25kV AC Conventional OHE Catenary Wire at Km 115.91 [Vijayawada-SEC-08],2019-12-07,2019,Fair,60.8,2026-08-05,2026-05-06,2026-09-13,High,Active
+AST-TRD-0501,Isolator,TRD,Secunderabad-SEC-01,74.57,Motorized Track-side OHE Isolator Switch at Km 74.57 [Secunderabad-SEC-01],2020-04-07,2020,Fair,67.7,2026-08-19,2026-06-06,2026-09-06,Medium,Active
+AST-TRD-0502,OHE,TRD,Guntur-SEC-01,107.05,25kV AC Conventional OHE Catenary Wire at Km 107.05 [Guntur-SEC-01],2019-11-09,2019,Fair,58.1,2026-08-11,2026-07-17,2026-09-08,Medium,Active
+AST-TRD-0503,Power Substation,TRD,Hyderabad-SEC-03,135.51,Traction Feeding Substation (TSS) Feeder Bay at Km 135.51 [Hyderabad-SEC-03],2019-01-06,2019,Fair,61.0,2026-07-20,2026-04-26,2026-09-05,High,Active
+AST-TRD-0504,Power Substation,TRD,Hyderabad-SEC-08,40.71,Traction Feeding Substation (TSS) Feeder Bay at Km 40.71 [Hyderabad-SEC-08],2014-12-08,2014,Critical,36.0,2026-07-12,2026-01-19,2026-10-10,Medium,Active
+AST-TRD-0505,OHE Component,TRD,Guntur-SEC-06,132.7,25kV Polymeric Stay/Bracket Insulator at Km 132.70 [Guntur-SEC-06],2019-07-08,2019,Fair,70.4,2026-07-31,2026-07-09,2026-09-06,High,Active
+AST-TRD-0506,Isolator,TRD,Hyderabad-SEC-04,126.42,Motorized Track-side OHE Isolator Switch at Km 126.42 [Hyderabad-SEC-04],2024-12-05,2024,Good,90.4,2026-07-28,2026-02-05,2026-09-03,High,Active
+AST-TRD-0507,OHE Component,TRD,Hyderabad-SEC-07,20.82,Auto-Tensioning Device (ATD) Pulley System at Km 20.82 [Hyderabad-SEC-07],2018-06-15,2018,Fair,71.7,2026-08-04,2026-06-11,2026-10-09,High,Active
+AST-TRD-0508,OHE,TRD,Guntakal-SEC-04,109.15,25kV AC Conventional OHE Catenary Wire at Km 109.15 [Guntakal-SEC-04],2023-12-27,2023,Good,87.0,2026-07-17,2026-03-08,2026-09-18,High,Active
+AST-TRD-0509,OHE,TRD,Hyderabad-SEC-04,131.76,107 sq mm Hard-Drawn Copper Contact Wire at Km 131.76 [Hyderabad-SEC-04],2019-02-02,2019,Fair,72.3,2026-07-11,2026-01-21,2026-09-17,High,Active
+AST-TRD-0510,OHE,TRD,Guntur-SEC-08,17.98,25kV AC Conventional OHE Catenary Wire at Km 17.98 [Guntur-SEC-08],2018-07-09,2018,Fair,59.2,2026-07-29,2026-05-31,2026-09-29,High,Active
+AST-TRD-0511,Isolator,TRD,Vijayawada-SEC-05,84.45,Motorized Track-side OHE Isolator Switch at Km 84.45 [Vijayawada-SEC-05],2012-07-01,2012,Critical,32.2,2026-08-27,2026-06-09,2026-10-12,Medium,Active
+AST-TRD-0512,OHE,TRD,Hyderabad-SEC-05,134.96,107 sq mm Hard-Drawn Copper Contact Wire at Km 134.96 [Hyderabad-SEC-05],2017-12-25,2017,Fair,56.7,2026-07-27,2026-04-21,2026-10-05,High,Active
+AST-TRD-0513,Power Substation,TRD,Guntakal-SEC-01,66.61,Traction Feeding Substation (TSS) Feeder Bay at Km 66.61 [Guntakal-SEC-01],2015-12-28,2015,Poor,44.4,2026-08-18,2026-05-06,2026-10-13,High,Active
+AST-TRD-0514,OHE Component,TRD,Guntur-SEC-05,54.12,Auto-Tensioning Device (ATD) Pulley System at Km 54.12 [Guntur-SEC-05],2021-04-26,2021,Fair,72.6,2026-08-06,2026-07-11,2026-10-14,High,Active
+AST-TRD-0515,Isolator,TRD,Secunderabad-SEC-05,120.25,Motorized Track-side OHE Isolator Switch at Km 120.25 [Secunderabad-SEC-05],2022-11-04,2022,Fair,78.7,2026-07-12,2026-01-17,2026-10-04,Low,Active
+AST-TRD-0516,Power Substation,TRD,Hyderabad-SEC-06,45.23,Traction Feeding Substation (TSS) Feeder Bay at Km 45.23 [Hyderabad-SEC-06],2019-09-26,2019,Fair,73.5,2026-08-06,2026-03-09,2026-09-25,Medium,Active
+AST-TRD-0517,OHE,TRD,Secunderabad-SEC-03,50.92,107 sq mm Hard-Drawn Copper Contact Wire at Km 50.92 [Secunderabad-SEC-03],2017-03-15,2017,Poor,54.3,2026-08-11,2026-07-19,2026-09-11,High,Active
+AST-TRD-0518,OHE Component,TRD,Guntakal-SEC-01,36.83,Auto-Tensioning Device (ATD) Pulley System at Km 36.83 [Guntakal-SEC-01],2016-02-10,2016,Poor,47.5,2026-08-05,2026-07-20,2026-09-23,High,Active
+AST-TRD-0519,OHE,TRD,Hyderabad-SEC-06,136.46,25kV AC Conventional OHE Catenary Wire at Km 136.46 [Hyderabad-SEC-06],2015-04-01,2015,Poor,41.6,2026-07-18,2026-05-15,2026-10-14,Medium,Active
+AST-TRD-0520,OHE,TRD,Vijayawada-SEC-03,126.59,107 sq mm Hard-Drawn Copper Contact Wire at Km 126.59 [Vijayawada-SEC-03],2014-07-24,2014,Critical,37.8,2026-07-14,2026-01-23,2026-09-30,Low,Active
+AST-TRD-0521,Isolator,TRD,Guntur-SEC-06,84.03,Motorized Track-side OHE Isolator Switch at Km 84.03 [Guntur-SEC-06],2015-08-20,2015,Poor,42.3,2026-08-20,2026-07-02,2026-09-15,Medium,Active
+AST-TRD-0522,OHE,TRD,Vijayawada-SEC-02,18.15,25kV AC Conventional OHE Catenary Wire at Km 18.15 [Vijayawada-SEC-02],2018-06-13,2018,Fair,59.3,2026-08-08,2026-02-11,2026-10-09,High,Active
+AST-TRD-0523,Isolator,TRD,Secunderabad-SEC-07,138.25,Motorized Track-side OHE Isolator Switch at Km 138.25 [Secunderabad-SEC-07],2020-07-20,2020,Fair,77.9,2026-07-23,2026-01-31,2026-09-15,Medium,Active
+AST-TRD-0524,Power Substation,TRD,Guntakal-SEC-06,61.76,Traction Feeding Substation (TSS) Feeder Bay at Km 61.76 [Guntakal-SEC-06],2014-12-26,2014,Poor,54.2,2026-08-10,2026-03-25,2026-09-19,High,Active
+AST-TRD-0525,OHE,TRD,Secunderabad-SEC-07,71.64,25kV AC Conventional OHE Catenary Wire at Km 71.64 [Secunderabad-SEC-07],2013-03-02,2013,Critical,36.7,2026-07-10,2026-04-26,2026-09-09,High,Active
+AST-TRD-0526,OHE,TRD,Secunderabad-SEC-03,43.59,107 sq mm Hard-Drawn Copper Contact Wire at Km 43.59 [Secunderabad-SEC-03],2015-11-23,2015,Poor,44.3,2026-08-20,2026-02-21,2026-09-27,Medium,Active
+AST-TRD-0527,OHE Component,TRD,Guntakal-SEC-04,111.19,25kV Polymeric Stay/Bracket Insulator at Km 111.19 [Guntakal-SEC-04],2022-12-03,2022,Good,82.6,2026-08-16,2026-06-02,2026-10-13,High,Active
+AST-TRD-0528,OHE Component,TRD,Hyderabad-SEC-05,40.32,Auto-Tensioning Device (ATD) Pulley System at Km 40.32 [Hyderabad-SEC-05],2016-06-16,2016,Poor,52.4,2026-07-31,2026-07-01,2026-10-13,Medium,Active
+AST-TRD-0529,OHE,TRD,Guntur-SEC-02,123.78,107 sq mm Hard-Drawn Copper Contact Wire at Km 123.78 [Guntur-SEC-02],2021-12-15,2021,Good,80.5,2026-07-25,2026-04-26,2026-09-15,Low,Active
+AST-TRD-0530,OHE,TRD,Hyderabad-SEC-01,136.54,25kV AC Conventional OHE Catenary Wire at Km 136.54 [Hyderabad-SEC-01],2017-01-25,2017,Fair,57.2,2026-08-21,2026-04-15,2026-09-10,High,Active
+AST-TRD-0531,Isolator,TRD,Hyderabad-SEC-06,59.73,Motorized Track-side OHE Isolator Switch at Km 59.73 [Hyderabad-SEC-06],2017-05-02,2017,Poor,51.0,2026-07-29,2026-01-30,2026-10-09,High,Active
+AST-TRD-0532,Isolator,TRD,Secunderabad-SEC-08,114.12,Motorized Track-side OHE Isolator Switch at Km 114.12 [Secunderabad-SEC-08],2017-10-03,2017,Poor,53.9,2026-07-07,2026-02-02,2026-10-11,Low,Active
+AST-TRD-0533,OHE,TRD,Secunderabad-SEC-04,99.47,25kV AC Conventional OHE Catenary Wire at Km 99.47 [Secunderabad-SEC-04],2014-06-18,2014,Critical,31.9,2026-08-12,2026-05-13,2026-10-07,Medium,Active
+AST-TRD-0534,OHE,TRD,Secunderabad-SEC-05,95.01,25kV AC Conventional OHE Catenary Wire at Km 95.01 [Secunderabad-SEC-05],2020-06-27,2020,Fair,73.1,2026-07-20,2026-01-27,2026-09-24,Medium,Active
+AST-TRD-0535,OHE,TRD,Secunderabad-SEC-02,125.64,107 sq mm Hard-Drawn Copper Contact Wire at Km 125.64 [Secunderabad-SEC-02],2013-02-19,2013,Critical,38.4,2026-07-17,2026-04-24,2026-10-11,Medium,Active
+AST-TRD-0536,OHE Component,TRD,Vijayawada-SEC-07,101.32,Auto-Tensioning Device (ATD) Pulley System at Km 101.32 [Vijayawada-SEC-07],2017-06-13,2017,Fair,60.9,2026-08-09,2026-04-18,2026-09-21,Medium,Active
+AST-TRD-0537,OHE Component,TRD,Vijayawada-SEC-04,113.87,Auto-Tensioning Device (ATD) Pulley System at Km 113.87 [Vijayawada-SEC-04],2017-05-26,2017,Poor,49.1,2026-08-01,2026-02-21,2026-09-10,Medium,Active
+AST-TRD-0538,OHE Component,TRD,Vijayawada-SEC-02,41.86,25kV Polymeric Stay/Bracket Insulator at Km 41.86 [Vijayawada-SEC-02],2015-03-04,2015,Poor,54.5,2026-07-27,2026-04-16,2026-09-24,High,Active
+AST-TRD-0539,Power Substation,TRD,Vijayawada-SEC-07,6.31,Traction Feeding Substation (TSS) Feeder Bay at Km 6.31 [Vijayawada-SEC-07],2024-12-20,2024,Good,90.1,2026-07-31,2026-06-26,2026-09-11,High,Active
+AST-TRD-0540,OHE,TRD,Vijayawada-SEC-06,88.38,25kV AC Conventional OHE Catenary Wire at Km 88.38 [Vijayawada-SEC-06],2018-02-12,2018,Fair,60.7,2026-07-17,2026-02-08,2026-10-08,Medium,Active
+AST-TRD-0541,OHE Component,TRD,Secunderabad-SEC-07,28.29,25kV Polymeric Stay/Bracket Insulator at Km 28.29 [Secunderabad-SEC-07],2021-11-09,2021,Fair,73.1,2026-08-15,2026-05-19,2026-09-04,Medium,Active
+AST-TRD-0542,OHE Component,TRD,Guntur-SEC-03,89.49,Auto-Tensioning Device (ATD) Pulley System at Km 89.49 [Guntur-SEC-03],2012-06-02,2012,Poor,48.0,2026-08-23,2026-04-23,2026-10-12,High,Active
+AST-TRD-0543,OHE Component,TRD,Hyderabad-SEC-04,34.51,Auto-Tensioning Device (ATD) Pulley System at Km 34.51 [Hyderabad-SEC-04],2012-10-23,2012,Critical,37.9,2026-08-18,2026-05-13,2026-10-08,Medium,Active
+AST-TRD-0544,Isolator,TRD,Guntakal-SEC-05,55.52,Motorized Track-side OHE Isolator Switch at Km 55.52 [Guntakal-SEC-05],2017-05-02,2017,Poor,53.1,2026-08-07,2026-05-18,2026-10-01,Medium,Active
+AST-TRD-0545,OHE Component,TRD,Vijayawada-SEC-06,34.24,Auto-Tensioning Device (ATD) Pulley System at Km 34.24 [Vijayawada-SEC-06],2020-09-26,2020,Fair,68.6,2026-08-14,2026-05-09,2026-09-09,Medium,Active
+AST-TRD-0546,OHE Component,TRD,Secunderabad-SEC-03,49.3,Auto-Tensioning Device (ATD) Pulley System at Km 49.30 [Secunderabad-SEC-03],2017-08-09,2017,Fair,64.6,2026-07-11,2026-04-30,2026-10-16,High,Active
+AST-TRD-0547,OHE,TRD,Guntakal-SEC-07,55.32,25kV AC Conventional OHE Catenary Wire at Km 55.32 [Guntakal-SEC-07],2012-05-22,2012,Poor,45.7,2026-07-20,2026-06-29,2026-09-24,Medium,Active
+AST-TRD-0548,Isolator,TRD,Guntur-SEC-08,16.74,Motorized Track-side OHE Isolator Switch at Km 16.74 [Guntur-SEC-08],2016-04-17,2016,Fair,58.5,2026-07-30,2026-06-19,2026-10-13,High,Active
+AST-TRD-0549,OHE Component,TRD,Guntur-SEC-07,67.28,25kV Polymeric Stay/Bracket Insulator at Km 67.28 [Guntur-SEC-07],2012-10-16,2012,Poor,42.9,2026-07-13,2026-06-19,2026-09-10,Medium,Active
+AST-TRD-0550,OHE,TRD,Secunderabad-SEC-08,60.48,107 sq mm Hard-Drawn Copper Contact Wire at Km 60.48 [Secunderabad-SEC-08],2018-09-13,2018,Fair,71.8,2026-08-19,2026-03-16,2026-09-05,High,Active
+AST-TRD-0551,OHE Component,TRD,Guntakal-SEC-03,94.79,25kV Polymeric Stay/Bracket Insulator at Km 94.79 [Guntakal-SEC-03],2013-05-28,2013,Critical,33.0,2026-08-22,2026-02-26,2026-09-15,High,Active
+AST-TRD-0552,OHE Component,TRD,Guntakal-SEC-06,39.07,25kV Polymeric Stay/Bracket Insulator at Km 39.07 [Guntakal-SEC-06],2023-05-07,2023,Good,83.4,2026-07-04,2026-01-26,2026-09-15,Low,Active
+AST-TRD-0553,Power Substation,TRD,Hyderabad-SEC-01,82.71,Traction Feeding Substation (TSS) Feeder Bay at Km 82.71 [Hyderabad-SEC-01],2024-03-16,2024,Good,88.2,2026-07-19,2026-04-14,2026-09-06,High,Active
+AST-TRD-0554,OHE,TRD,Vijayawada-SEC-01,22.99,25kV AC Conventional OHE Catenary Wire at Km 22.99 [Vijayawada-SEC-01],2012-05-26,2012,Critical,30.0,2026-07-18,2026-01-22,2026-10-08,Low,Active
+AST-TRD-0555,Power Substation,TRD,Guntur-SEC-05,97.73,Traction Feeding Substation (TSS) Feeder Bay at Km 97.73 [Guntur-SEC-05],2021-12-17,2021,Good,82.2,2026-07-30,2026-05-13,2026-09-26,Low,Active
+AST-TRD-0556,OHE,TRD,Guntakal-SEC-07,63.83,25kV AC Conventional OHE Catenary Wire at Km 63.83 [Guntakal-SEC-07],2015-05-23,2015,Critical,36.6,2026-07-28,2026-06-16,2026-10-13,High,Active
+AST-TRD-0557,OHE,TRD,Vijayawada-SEC-01,52.9,25kV AC Conventional OHE Catenary Wire at Km 52.90 [Vijayawada-SEC-01],2013-11-26,2013,Poor,51.5,2026-08-23,2026-02-27,2026-09-03,Medium,Active
+AST-TRD-0558,OHE Component,TRD,Vijayawada-SEC-08,13.18,25kV Polymeric Stay/Bracket Insulator at Km 13.18 [Vijayawada-SEC-08],2015-03-04,2015,Fair,55.9,2026-07-22,2026-04-21,2026-09-18,Low,Active
+AST-TRD-0559,OHE Component,TRD,Vijayawada-SEC-03,89.56,25kV Polymeric Stay/Bracket Insulator at Km 89.56 [Vijayawada-SEC-03],2017-05-01,2017,Fair,59.6,2026-08-20,2026-04-04,2026-09-06,Medium,Active
+AST-TRD-0560,Isolator,TRD,Secunderabad-SEC-07,108.91,Motorized Track-side OHE Isolator Switch at Km 108.91 [Secunderabad-SEC-07],2019-01-26,2019,Fair,63.4,2026-08-09,2026-02-23,2026-10-12,Medium,Active
+AST-TRD-0561,OHE Component,TRD,Guntur-SEC-05,41.53,Auto-Tensioning Device (ATD) Pulley System at Km 41.53 [Guntur-SEC-05],2021-06-02,2021,Fair,77.7,2026-08-23,2026-07-28,2026-10-06,High,Active
+AST-TRD-0562,OHE Component,TRD,Secunderabad-SEC-06,75.09,25kV Polymeric Stay/Bracket Insulator at Km 75.09 [Secunderabad-SEC-06],2014-03-05,2014,Poor,45.9,2026-08-08,2026-06-04,2026-10-14,High,Active
+AST-TRD-0563,Isolator,TRD,Secunderabad-SEC-05,101.61,Motorized Track-side OHE Isolator Switch at Km 101.61 [Secunderabad-SEC-05],2021-11-07,2021,Fair,71.1,2026-08-05,2026-04-18,2026-09-29,Medium,Active
+AST-TRD-0564,OHE Component,TRD,Guntakal-SEC-04,128.79,25kV Polymeric Stay/Bracket Insulator at Km 128.79 [Guntakal-SEC-04],2017-09-20,2017,Poor,54.8,2026-08-20,2026-05-31,2026-09-16,High,Active
+AST-TRD-0565,OHE,TRD,Secunderabad-SEC-07,95.28,25kV AC Conventional OHE Catenary Wire at Km 95.28 [Secunderabad-SEC-07],2021-07-07,2021,Fair,77.4,2026-07-28,2026-03-12,2026-09-02,High,Active
+AST-TRD-0566,OHE,TRD,Hyderabad-SEC-05,18.17,107 sq mm Hard-Drawn Copper Contact Wire at Km 18.17 [Hyderabad-SEC-05],2021-07-03,2021,Fair,76.3,2026-07-23,2026-06-14,2026-09-30,High,Active
+AST-TRD-0567,OHE Component,TRD,Hyderabad-SEC-06,104.44,Auto-Tensioning Device (ATD) Pulley System at Km 104.44 [Hyderabad-SEC-06],2023-12-17,2023,Good,82.2,2026-08-24,2026-04-18,2026-09-02,High,Active
+AST-TRD-0568,Isolator,TRD,Hyderabad-SEC-03,15.6,Motorized Track-side OHE Isolator Switch at Km 15.60 [Hyderabad-SEC-03],2016-10-22,2016,Poor,49.9,2026-08-27,2026-03-25,2026-09-17,High,Active
+AST-TRD-0569,OHE Component,TRD,Vijayawada-SEC-01,129.55,Auto-Tensioning Device (ATD) Pulley System at Km 129.55 [Vijayawada-SEC-01],2014-12-22,2014,Critical,30.0,2026-08-03,2026-04-15,2026-09-15,High,Active
+AST-TRD-0570,OHE,TRD,Guntakal-SEC-07,97.52,25kV AC Conventional OHE Catenary Wire at Km 97.52 [Guntakal-SEC-07],2013-08-03,2013,Poor,54.3,2026-07-15,2026-04-01,2026-10-16,High,Active
+AST-TRD-0571,OHE,TRD,Guntakal-SEC-05,85.31,25kV AC Conventional OHE Catenary Wire at Km 85.31 [Guntakal-SEC-05],2023-05-21,2023,Good,88.4,2026-08-06,2026-07-05,2026-10-13,High,Active
+AST-TRD-0572,Power Substation,TRD,Guntakal-SEC-07,80.11,Traction Feeding Substation (TSS) Feeder Bay at Km 80.11 [Guntakal-SEC-07],2020-01-26,2020,Fair,65.6,2026-07-13,2026-04-20,2026-09-14,High,Active
+AST-TRD-0573,Isolator,TRD,Guntur-SEC-06,62.94,Motorized Track-side OHE Isolator Switch at Km 62.94 [Guntur-SEC-06],2015-03-20,2015,Poor,47.4,2026-07-10,2026-02-08,2026-09-17,High,Active
+AST-TRD-0574,OHE,TRD,Vijayawada-SEC-03,115.06,25kV AC Conventional OHE Catenary Wire at Km 115.06 [Vijayawada-SEC-03],2022-04-13,2022,Good,84.5,2026-07-27,2026-05-05,2026-10-15,Medium,Active
+AST-TRD-0575,OHE Component,TRD,Secunderabad-SEC-04,109.96,25kV Polymeric Stay/Bracket Insulator at Km 109.96 [Secunderabad-SEC-04],2024-04-27,2024,Good,90.5,2026-07-31,2026-04-06,2026-09-17,Medium,Active
+AST-TRD-0576,OHE,TRD,Guntur-SEC-04,24.66,25kV AC Conventional OHE Catenary Wire at Km 24.66 [Guntur-SEC-04],2013-09-17,2013,Critical,30.0,2026-07-27,2026-06-20,2026-10-08,High,Active
+AST-TRD-0577,Isolator,TRD,Secunderabad-SEC-07,57.95,Motorized Track-side OHE Isolator Switch at Km 57.95 [Secunderabad-SEC-07],2023-12-05,2023,Good,88.8,2026-07-09,2026-03-21,2026-09-12,High,Active
+AST-TRD-0578,OHE Component,TRD,Secunderabad-SEC-08,32.6,25kV Polymeric Stay/Bracket Insulator at Km 32.60 [Secunderabad-SEC-08],2023-07-12,2023,Good,88.6,2026-07-24,2026-04-20,2026-10-04,High,Active
+AST-TRD-0579,OHE Component,TRD,Hyderabad-SEC-04,105.41,Auto-Tensioning Device (ATD) Pulley System at Km 105.41 [Hyderabad-SEC-04],2016-01-09,2016,Poor,51.4,2026-08-04,2026-07-16,2026-10-11,High,Active
+AST-TRD-0580,Isolator,TRD,Guntakal-SEC-02,40.82,Motorized Track-side OHE Isolator Switch at Km 40.82 [Guntakal-SEC-02],2022-05-18,2022,Good,85.8,2026-08-17,2026-07-29,2026-10-16,High,Active
+AST-TRD-0581,OHE,TRD,Hyderabad-SEC-02,60.62,25kV AC Conventional OHE Catenary Wire at Km 60.62 [Hyderabad-SEC-02],2014-04-10,2014,Critical,34.9,2026-07-09,2026-04-17,2026-09-11,Low,Active
+AST-TRD-0582,OHE,TRD,Hyderabad-SEC-05,118.74,25kV AC Conventional OHE Catenary Wire at Km 118.74 [Hyderabad-SEC-05],2023-02-01,2023,Good,88.1,2026-08-06,2026-03-30,2026-09-23,Medium,Active
+AST-TRD-0583,OHE,TRD,Hyderabad-SEC-01,45.7,107 sq mm Hard-Drawn Copper Contact Wire at Km 45.70 [Hyderabad-SEC-01],2020-08-16,2020,Fair,77.7,2026-07-30,2026-06-13,2026-09-07,High,Active
+AST-TRD-0584,Power Substation,TRD,Guntakal-SEC-07,30.19,Traction Feeding Substation (TSS) Feeder Bay at Km 30.19 [Guntakal-SEC-07],2012-10-25,2012,Poor,43.0,2026-08-26,2026-07-19,2026-10-09,Medium,Active
+AST-TRD-0585,OHE,TRD,Vijayawada-SEC-07,113.63,25kV AC Conventional OHE Catenary Wire at Km 113.63 [Vijayawada-SEC-07],2016-01-15,2016,Poor,49.2,2026-08-14,2026-04-11,2026-09-05,Low,Active
+AST-TRD-0586,Isolator,TRD,Vijayawada-SEC-06,96.52,Motorized Track-side OHE Isolator Switch at Km 96.52 [Vijayawada-SEC-06],2014-06-26,2014,Poor,51.3,2026-07-16,2026-01-26,2026-09-25,Low,Active
+AST-TRD-0587,OHE Component,TRD,Hyderabad-SEC-07,113.48,25kV Polymeric Stay/Bracket Insulator at Km 113.48 [Hyderabad-SEC-07],2015-04-22,2015,Critical,36.6,2026-08-03,2026-04-13,2026-09-09,Medium,Active
+AST-TRD-0588,Isolator,TRD,Guntur-SEC-06,59.43,Motorized Track-side OHE Isolator Switch at Km 59.43 [Guntur-SEC-06],2017-11-01,2017,Fair,62.8,2026-08-03,2026-04-28,2026-09-10,High,Active
+AST-TRD-0589,Isolator,TRD,Guntur-SEC-01,45.16,Motorized Track-side OHE Isolator Switch at Km 45.16 [Guntur-SEC-01],2012-07-05,2012,Critical,30.0,2026-07-12,2026-04-07,2026-09-21,Low,Active
+AST-TRD-0590,OHE,TRD,Guntur-SEC-08,49.54,25kV AC Conventional OHE Catenary Wire at Km 49.54 [Guntur-SEC-08],2016-10-27,2016,Poor,42.7,2026-07-10,2026-02-02,2026-09-10,High,Active
+AST-TRD-0591,OHE,TRD,Hyderabad-SEC-08,58.39,107 sq mm Hard-Drawn Copper Contact Wire at Km 58.39 [Hyderabad-SEC-08],2020-07-25,2020,Fair,68.9,2026-08-04,2026-07-01,2026-10-06,Medium,Active
+AST-TRD-0592,OHE,TRD,Guntur-SEC-02,3.65,107 sq mm Hard-Drawn Copper Contact Wire at Km 3.65 [Guntur-SEC-02],2023-11-19,2023,Good,87.9,2026-07-06,2026-04-23,2026-09-12,High,Active
+AST-TRD-0593,OHE,TRD,Guntakal-SEC-06,9.25,107 sq mm Hard-Drawn Copper Contact Wire at Km 9.25 [Guntakal-SEC-06],2019-01-18,2019,Fair,61.5,2026-07-29,2026-05-24,2026-09-29,High,Active
+AST-TRD-0594,Power Substation,TRD,Vijayawada-SEC-08,115.93,Traction Feeding Substation (TSS) Feeder Bay at Km 115.93 [Vijayawada-SEC-08],2023-03-23,2023,Good,84.1,2026-07-17,2026-02-03,2026-09-08,High,Active
+AST-TRD-0595,OHE,TRD,Guntakal-SEC-01,137.82,107 sq mm Hard-Drawn Copper Contact Wire at Km 137.82 [Guntakal-SEC-01],2017-03-02,2017,Poor,48.1,2026-07-18,2026-06-20,2026-10-15,Medium,Active
+AST-TRD-0596,OHE Component,TRD,Guntur-SEC-07,8.14,Auto-Tensioning Device (ATD) Pulley System at Km 8.14 [Guntur-SEC-07],2021-01-08,2021,Fair,73.5,2026-08-26,2026-03-29,2026-09-16,High,Active
+AST-TRD-0597,OHE Component,TRD,Hyderabad-SEC-07,48.67,Auto-Tensioning Device (ATD) Pulley System at Km 48.67 [Hyderabad-SEC-07],2017-07-14,2017,Fair,60.3,2026-07-05,2026-02-09,2026-09-30,Low,Active
+AST-TRD-0598,OHE,TRD,Secunderabad-SEC-01,70.15,25kV AC Conventional OHE Catenary Wire at Km 70.15 [Secunderabad-SEC-01],2016-01-27,2016,Fair,63.7,2026-07-28,2026-02-08,2026-09-16,High,Active
+AST-TRD-0599,OHE,TRD,Guntur-SEC-05,32.39,25kV AC Conventional OHE Catenary Wire at Km 32.39 [Guntur-SEC-05],2023-07-09,2023,Good,82.1,2026-07-29,2026-05-11,2026-09-05,High,Active
+AST-TRD-0600,OHE Component,TRD,Secunderabad-SEC-02,73.74,Auto-Tensioning Device (ATD) Pulley System at Km 73.74 [Secunderabad-SEC-02],2015-09-12,2015,Fair,58.0,2026-07-03,2026-03-27,2026-09-08,Medium,Active

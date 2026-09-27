@@ -1,0 +1,15 @@
+section_id,section_name,from_station,to_station,from_km,to_km,distance_km,line_type,max_permissible_speed
+GDR-BZA-DN,Gudur - Vijayawada Down Line,GDR,BZA,134.3,428.76,294.46,Double/Triple (DN),130
+BZA-GDR-UP,Vijayawada - Gudur Up Line,BZA,GDR,428.76,134.3,294.46,Double/Triple (UP),130
+BZA-KI-UP,Vijayawada - Kondapalli Up Line,BZA,KI,586.5,568.0,18.5,Double/Triple (UP),130
+KI-BZA-DN,Kondapalli - Vijayawada Down Line,KI,BZA,568.0,586.5,18.5,Double/Triple (DN),130
+BZA-VSKP-DN,Vijayawada - Visakhapatnam Down Line,BZA,VSKP,428.76,778.66,349.9,Double Line (DN),130
+VSKP-BZA-UP,Visakhapatnam - Vijayawada Up Line,VSKP,BZA,778.66,428.76,349.9,Double Line (UP),130
+BZA-GDV,Vijayawada - Gudivada,BZA,GDV,0.0,42.69,42.69,Double Line,110
+GDV-MTM,Gudivada - Machilipatnam,GDV,MTM,0.0,36.74,36.74,Double Line,110
+GDV-BVRM,Gudivada - Bhimavaram,GDV,BVRM,42.69,108.25,65.56,Double Line,110
+BVRM-NDD,Bhimavaram - Nidadavolu,BVRM,NDD,108.25,154.75,46.5,Double Line,110
+BVRM-NS,Bhimavaram - Narasapur,BVRM,NS,0.0,29.48,29.48,Single Line,110
+SLO-COA,Samalkot - Kakinada Port,SLO,COA,0.0,15.6,15.6,Double Line,110
+GNT-TEL,Guntur - Tenali,GNT,TEL,0.0,25.47,25.47,Double Line,110
+TEL-RAL,Tenali - Repalle,TEL,RAL,0.0,34.0,34.0,Single Line,110

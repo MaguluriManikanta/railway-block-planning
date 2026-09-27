@@ -10,3 +10,6 @@ reports_output/
 *.db-wal
 *.db-shm
 app.db
+*.bak
+node_modules/
+*/node_modules/

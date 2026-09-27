@@ -1,0 +1,259 @@
+/* ============================================================
+   Complaint Page Styles
+   ============================================================ */
+
+.complaint-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.complaint-body {
+  flex: 1;
+  padding: 36px 16px 40px;
+}
+
+.complaint-container {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* ---- Page Title Block ---- */
+.complaint-title-block {
+  margin-bottom: 28px;
+}
+
+.complaint-title-block h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.complaint-title-block p {
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 640px;
+}
+
+.complaint-info-bar {
+  margin-top: 12px;
+  background: #fffbea;
+  border: 1px solid #e8d887;
+  border-left: 4px solid #d4a017;
+  color: #7a5c00;
+  font-size: 0.8rem;
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  max-width: 640px;
+}
+
+/* ---- Form Card ---- */
+.complaint-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* ---- Form Section ---- */
+.form-section {
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.form-section:last-child {
+  border-bottom: none;
+}
+
+.form-section-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 18px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e8edf5;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ---- Radio Groups ---- */
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+  accent-color: var(--navy);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+/* ---- Severity Chips ---- */
+.severity-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.severity-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  background: #ffffff;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+}
+
+.severity-chip input[type="radio"] {
+  display: none;
+}
+
+.severity-chip--low {
+  border-color: #2563a8;
+  color: #2563a8;
+  background: #eef4ff;
+}
+
+.severity-chip--medium {
+  border-color: #b07d10;
+  color: #7a5500;
+  background: #fffae8;
+}
+
+.severity-chip--high {
+  border-color: #c0520b;
+  color: #7a3200;
+  background: #fff3ea;
+}
+
+.severity-chip--critical {
+  border-color: var(--error);
+  color: var(--error);
+  background: #fdf0ef;
+}
+
+/* ---- Field error ---- */
+.field-error {
+  font-size: 0.77rem;
+  color: var(--error);
+  margin-top: 3px;
+  display: block;
+}
+
+.input-error {
+  border-color: var(--error) !important;
+}
+
+/* ---- Char count ---- */
+.char-count {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* ---- Required / Optional markers ---- */
+.required {
+  color: var(--error);
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.optional {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: 4px;
+}
+
+/* ---- Form Actions ---- */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 28px;
+  background: #f8f9fb;
+  border-top: 1px solid var(--border);
+}
+
+/* ---- Link button ---- */
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--navy-light);
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.link-btn:hover {
+  color: var(--navy);
+}
+
+/* ---- Footer ---- */
+.complaint-footer {
+  background: var(--navy);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.75rem;
+  text-align: center;
+  padding: 12px 0;
+  border-top: 3px solid #d4a017;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 680px) {
+  .form-section {
+    padding: 20px 16px;
+  }
+
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    padding: 16px;
+  }
+
+  .form-actions .btn-primary,
+  .form-actions .btn-outline {
+    width: 100%;
+    text-align: center;
+  }
+
+  .severity-group {
+    gap: 6px;
+  }
+}
