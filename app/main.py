@@ -410,6 +410,28 @@ if st.session_state.get("user"):
         justify-content: center !important;
     }
 
+    /* Floating Chatbot Label directly above robot icon */
+    .st-key-global_chatmind_ai_floating_btn::before {
+        content: "Chatbot" !important;
+        position: absolute !important;
+        bottom: 62px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.3px !important;
+        color: #e0f2fe !important;
+        background: rgba(15, 23, 42, 0.9) !important;
+        border: 1px solid rgba(56, 189, 248, 0.5) !important;
+        padding: 2px 7px !important;
+        border-radius: 6px !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+        white-space: nowrap !important;
+        pointer-events: none !important;
+        z-index: 1000000 !important;
+    }
+
     .st-key-global_chatmind_ai_floating_btn button {
         width: 56px !important;
         height: 56px !important;
